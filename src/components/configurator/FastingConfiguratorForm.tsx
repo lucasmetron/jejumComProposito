@@ -27,13 +27,41 @@ import {
   CalendarDays,
   Lock,
   Info,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
 import { clsx } from "clsx";
 
-const START_TIMES = [
-  { value: "08:00", label: "08:00", sub: "Manhã", icon: Sunrise },
-  { value: "12:00", label: "12:00", sub: "Meio-dia", icon: Sun },
-  { value: "18:00", label: "18:00", sub: "Noite", icon: Sunset },
+interface TimePeriod {
+  id: "morning" | "afternoon" | "night";
+  name: string;
+  hours: string[];
+  rangeLabel: string;
+  icon: any;
+}
+
+const TIME_PERIODS: TimePeriod[] = [
+  {
+    id: "morning",
+    name: "Manhã",
+    hours: ["04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00"],
+    rangeLabel: "04h às 11h",
+    icon: Sunrise,
+  },
+  {
+    id: "afternoon",
+    name: "Tarde",
+    hours: ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00"],
+    rangeLabel: "12h às 17h",
+    icon: Sun,
+  },
+  {
+    id: "night",
+    name: "Noite",
+    hours: ["18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00", "01:00", "02:00", "03:00"],
+    rangeLabel: "18h às 03h",
+    icon: Sunset,
+  },
 ];
 
 const WEEKDAYS = [
@@ -64,6 +92,45 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
   });
 
   const watchedValues = watch();
+
+  const [slotTimes, setSlotTimes] = React.useState<{
+    morning: string;
+    afternoon: string;
+    night: string;
+  }>(() => {
+    const pool = config?.allowedStartTimes || ["08:00", "12:00", "18:00"];
+    const morning = pool.find((t) => TIME_PERIODS[0].hours.includes(t)) || "08:00";
+    const afternoon = pool.find((t) => TIME_PERIODS[1].hours.includes(t)) || "12:00";
+    const night = pool.find((t) => TIME_PERIODS[2].hours.includes(t)) || "18:00";
+    return { morning, afternoon, night };
+  });
+
+  const handleStepTime = (periodId: "morning" | "afternoon" | "night", delta: number) => {
+    const period = TIME_PERIODS.find((p) => p.id === periodId);
+    if (!period) return;
+
+    const currentVal = slotTimes[periodId];
+    const currentIndex = period.hours.indexOf(currentVal);
+    let nextIndex = currentIndex + delta;
+
+    if (nextIndex < 0) nextIndex = period.hours.length - 1;
+    if (nextIndex >= period.hours.length) nextIndex = 0;
+
+    const newTime = period.hours[nextIndex];
+    setSlotTimes((prev) => ({ ...prev, [periodId]: newTime }));
+
+    // Atualizar no allowedStartTimes se estiver presente
+    const currentPool = watchedValues.allowedStartTimes || ["08:00", "12:00", "18:00"];
+    if (currentPool.includes(currentVal)) {
+      const updated = currentPool.map((t) => (t === currentVal ? newTime : t));
+      setValue("allowedStartTimes", updated);
+    }
+
+    // Atualizar startTime se for o selecionado no modo fixo
+    if (watchedValues.startTime === currentVal) {
+      setValue("startTime", newTime);
+    }
+  };
 
   // Keep store in sync when values change
   useEffect(() => {
@@ -364,79 +431,160 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 </div>
               </div>
 
-              {/* Se for Sorteio Aleatório: Seleção dos horários participantes */}
+              {/* Se for Sorteio Aleatório: Seleção dos horários participantes com Stepper */}
               {(watchedValues.timeMode || "random") === "random" && (
-                <div className="p-4 rounded-xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 space-y-2.5 animate-in fade-in">
+                <div className="p-4 rounded-2xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 space-y-3 animate-in fade-in">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-on-surface dark:text-white">
                       Horários participantes do sorteio:
                     </span>
                     <span className="text-[11px] text-secondary dark:text-gray-400">
-                      Clique para ativar/desativar
+                      Use as setas para ajustar o horário
                     </span>
                   </div>
-                  <div className="grid grid-cols-3 gap-2.5">
-                    {START_TIMES.map((time) => {
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {TIME_PERIODS.map((period) => {
+                      const currentTime = slotTimes[period.id];
                       const pool = watchedValues.allowedStartTimes || ["08:00", "12:00", "18:00"];
-                      const isIncluded = pool.includes(time.value);
-                      const Icon = time.icon;
+                      const isIncluded = pool.includes(currentTime);
+                      const Icon = period.icon;
+
                       return (
-                        <button
-                          type="button"
-                          key={time.value}
+                        <div
+                          key={period.id}
                           onClick={() => {
                             let updated: string[];
                             if (isIncluded) {
                               if (pool.length <= 1) return; // manter ao menos 1
-                              updated = pool.filter((t) => t !== time.value);
+                              updated = pool.filter((t) => t !== currentTime);
                             } else {
-                              updated = [...pool, time.value];
+                              updated = [...pool, currentTime];
                             }
                             setValue("allowedStartTimes", updated);
                           }}
                           className={clsx(
-                            "p-3 rounded-xl border text-center transition-all flex flex-col items-center gap-1",
+                            "p-3.5 rounded-2xl border transition-all flex flex-col items-center text-center cursor-pointer select-none relative",
                             isIncluded
-                              ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary"
-                              : "border-outline-variant/30 dark:border-white/5 opacity-50 hover:opacity-80 text-on-surface dark:text-gray-400"
+                              ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary shadow-sm"
+                              : "border-outline-variant/30 dark:border-white/5 opacity-55 hover:opacity-90 bg-surface-container-lowest dark:bg-slate-900 text-on-surface dark:text-gray-400"
                           )}
                         >
-                          <Icon className="w-4 h-4" />
-                          <span className="font-semibold text-xs md:text-sm">{time.label}</span>
-                          <span className="text-[10px]">{time.sub}</span>
-                        </button>
+                          <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider mb-1">
+                            <Icon className="w-4 h-4" />
+                            <span>{period.name}</span>
+                          </div>
+
+                          {/* Stepper com Horário */}
+                          <div className="flex items-center justify-center gap-1 my-1 w-full">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleStepTime(period.id, -1);
+                              }}
+                              className="p-1 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
+                              title={`Horário anterior (${period.rangeLabel})`}
+                            >
+                              <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+                            </button>
+
+                            <span className="font-mono font-bold text-base md:text-lg text-on-surface dark:text-white px-2 py-0.5 rounded-md bg-surface-container-high/50 dark:bg-slate-800/80 min-w-[65px]">
+                              {currentTime}
+                            </span>
+
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleStepTime(period.id, 1);
+                              }}
+                              className="p-1 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
+                              title={`Próximo horário (${period.rangeLabel})`}
+                            >
+                              <ChevronUp className="w-4 h-4 stroke-[2.5]" />
+                            </button>
+                          </div>
+
+                          <span className="text-[10px] text-on-surface-variant dark:text-gray-400 font-medium">
+                            Range: {period.rangeLabel}
+                          </span>
+                        </div>
                       );
                     })}
                   </div>
                 </div>
               )}
 
-              {/* Se for Horário Fixo: Seleção do horário único */}
+              {/* Se for Horário Fixo: Seleção do horário único com Stepper */}
               {watchedValues.timeMode === "fixed" && (
-                <div className="p-4 rounded-xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 space-y-3 animate-in fade-in">
-                  <span className="text-xs font-semibold text-on-surface dark:text-white block">
-                    Selecione o horário fixo de início para todos os dias:
-                  </span>
-                  <div className="grid grid-cols-3 gap-2.5">
-                    {START_TIMES.map((time) => {
-                      const isSelected = watchedValues.startTime === time.value;
-                      const Icon = time.icon;
+                <div className="p-4 rounded-2xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 space-y-3 animate-in fade-in">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-on-surface dark:text-white">
+                      Selecione o horário fixo de início:
+                    </span>
+                    <span className="text-[11px] text-secondary dark:text-gray-400">
+                      Use as setas para ajustar o horário
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {TIME_PERIODS.map((period) => {
+                      const currentTime = slotTimes[period.id];
+                      const isSelected = watchedValues.startTime === currentTime;
+                      const Icon = period.icon;
+
                       return (
-                        <button
-                          type="button"
-                          key={time.value}
-                          onClick={() => setValue("startTime", time.value)}
+                        <div
+                          key={period.id}
+                          onClick={() => setValue("startTime", currentTime)}
                           className={clsx(
-                            "p-3 rounded-xl border text-center transition-all flex flex-col items-center gap-1",
+                            "p-3.5 rounded-2xl border transition-all flex flex-col items-center text-center cursor-pointer select-none relative",
                             isSelected
-                              ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary"
-                              : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300"
+                              ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary shadow-sm"
+                              : "border-outline-variant/30 dark:border-white/5 opacity-55 hover:opacity-90 bg-surface-container-lowest dark:bg-slate-900 text-on-surface dark:text-gray-400"
                           )}
                         >
-                          <Icon className="w-4 h-4" />
-                          <span className="font-semibold text-xs md:text-sm">{time.label}</span>
-                          <span className="text-[10px] text-on-surface-variant dark:text-gray-400">{time.sub}</span>
-                        </button>
+                          <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider mb-1">
+                            <Icon className="w-4 h-4" />
+                            <span>{period.name}</span>
+                          </div>
+
+                          {/* Stepper com Horário */}
+                          <div className="flex items-center justify-center gap-1 my-1 w-full">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleStepTime(period.id, -1);
+                              }}
+                              className="p-1 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
+                              title={`Horário anterior (${period.rangeLabel})`}
+                            >
+                              <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+                            </button>
+
+                            <span className="font-mono font-bold text-base md:text-lg text-on-surface dark:text-white px-2 py-0.5 rounded-md bg-surface-container-high/50 dark:bg-slate-800/80 min-w-[65px]">
+                              {currentTime}
+                            </span>
+
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleStepTime(period.id, 1);
+                              }}
+                              className="p-1 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
+                              title={`Próximo horário (${period.rangeLabel})`}
+                            >
+                              <ChevronUp className="w-4 h-4 stroke-[2.5]" />
+                            </button>
+                          </div>
+
+                          <span className="text-[10px] text-on-surface-variant dark:text-gray-400 font-medium">
+                            Range: {period.rangeLabel}
+                          </span>
+                        </div>
                       );
                     })}
                   </div>
