@@ -59,7 +59,7 @@ export const useFastingStore = create<FastingStoreState>()(
     (set, get) => ({
       hasConfigured: false,
       config: DEFAULT_CONFIG,
-      events: [],
+      events: generateSpiritualFastSchedule(DEFAULT_CONFIG),
       selectedEventId: null,
       isGenerating: false,
       history: [],
@@ -67,14 +67,11 @@ export const useFastingStore = create<FastingStoreState>()(
       setConfig: (newConfig) => {
         set((state) => {
           const updatedConfig = { ...state.config, ...newConfig };
-          if (state.hasConfigured) {
-            const updatedEvents = generateSpiritualFastSchedule(updatedConfig);
-            return {
-              config: updatedConfig,
-              events: updatedEvents,
-            };
-          }
-          return { config: updatedConfig };
+          const updatedEvents = generateSpiritualFastSchedule(updatedConfig);
+          return {
+            config: updatedConfig,
+            events: updatedEvents,
+          };
         });
       },
 

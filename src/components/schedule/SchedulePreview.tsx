@@ -32,7 +32,7 @@ interface SchedulePreviewProps {
 }
 
 export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
-  const { events, config } = useFastingStore();
+  const { events, config, setSyncedCalendarEventIds } = useFastingStore();
   const { data: session, status } = useSession();
 
   const [selectedEvent, setSelectedEvent] = useState<SpiritualFastEvent | null>(null);
@@ -54,15 +54,23 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
     setSyncStatus({ type: null, message: "" });
 
     try {
+      const previousEventIds = config.syncedCalendarEventIds || [];
       const res = await fetch("/api/calendar/sync", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ events }),
+        body: JSON.stringify({
+          events,
+          previousEventIds,
+        }),
       });
 
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.message || "Erro ao sincronizar eventos.");
+      }
+
+      if (data.eventIds && Array.isArray(data.eventIds)) {
+        setSyncedCalendarEventIds(data.eventIds);
       }
 
       setSyncStatus({

@@ -132,11 +132,19 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
     }
   };
 
-  // Keep store in sync when values change
+  // Keep store in sync in real-time when values change
   useEffect(() => {
     const subscription = watch((value) => {
       if (value) {
-        setConfig(value as any);
+        const dur = value.durationDays ? Number(value.durationDays) : 7;
+        const freq = value.frequencyDays ? Number(value.frequencyDays) : dur;
+        const target = value.targetHours ? Number(value.targetHours) : 12;
+        setConfig({
+          ...value,
+          durationDays: dur,
+          frequencyDays: freq,
+          targetHours: target,
+        } as any);
       }
     });
     return () => subscription.unsubscribe();
