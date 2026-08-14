@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import { useFastingStore } from "@/store/useFastingStore";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
@@ -15,6 +16,7 @@ import {
   CheckCircle2,
   ShieldCheck,
   Calendar,
+  CalendarDays,
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -32,20 +34,25 @@ export function ManageFastModal({ isOpen, onClose }: ManageFastModalProps) {
   const [view, setView] = useState<ViewState>("menu");
   const [reflection, setReflection] = useState("");
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
+  const [customDate, setCustomDate] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleClose = () => {
     setView("menu");
     setReflection("");
     setFeedbackMsg(null);
+    setShowDatePicker(false);
     onClose();
   };
 
-  const handleReschedule = (startOption: "today" | "tomorrow") => {
-    rescheduleSchedule(startOption);
+  const handleReschedule = (startOption: "today" | "tomorrow" | "custom", date?: string) => {
+    rescheduleSchedule(startOption, date);
     setFeedbackMsg(
       startOption === "today"
         ? "Cronograma reajustado com sucesso para iniciar hoje!"
-        : "Cronograma reajustado com sucesso para iniciar amanhã!"
+        : startOption === "tomorrow"
+        ? "Cronograma reajustado com sucesso para iniciar amanhã!"
+        : `Cronograma reajustado para iniciar em ${date}!`
     );
     setTimeout(() => {
       handleClose();
@@ -87,7 +94,10 @@ export function ManageFastModal({ isOpen, onClose }: ManageFastModalProps) {
           </div>
         ) : (
           <button
-            onClick={() => setView("menu")}
+            onClick={() => {
+              setView("menu");
+              setShowDatePicker(false);
+            }}
             className="flex items-center gap-2 text-xs md:text-sm text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -126,7 +136,7 @@ export function ManageFastModal({ isOpen, onClose }: ManageFastModalProps) {
                 Esqueci de começar / Reajustar início
               </h4>
               <p className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5 leading-relaxed">
-                Empurra o início da escala para hoje ou amanhã, mantendo suas preferências de horas e dias.
+                Empurra o início da escala para hoje, amanhã ou outra data no calendário, mantendo suas preferências salvas.
               </p>
             </div>
           </button>
@@ -187,39 +197,82 @@ export function ManageFastModal({ isOpen, onClose }: ManageFastModalProps) {
         </div>
       ) : view === "reschedule" ? (
         /* ================= SUBTELA: REAGENDAR ================= */
-        <div className="flex flex-col gap-5 py-2">
+        <div className="flex flex-col gap-4 py-2">
           <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim text-xs leading-relaxed">
             <Calendar className="w-5 h-5 flex-shrink-0" />
             <span>
-              Esqueceu de iniciar ou precisa adiar? Escolha quando deseja que o cronograma comece a contar. Todos os seus parâmetros serão preservados.
+              Esqueceu de iniciar ou precisa adiar? Escolha quando deseja que a escala comece. Todos os seus parâmetros serão preservados.
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             <button
               onClick={() => handleReschedule("today")}
-              className="p-5 rounded-2xl border border-outline-variant/30 dark:border-white/10 hover:border-primary bg-surface-container-low dark:bg-slate-800 text-center hover:shadow-sm transition-all flex flex-col items-center gap-2 group"
+              className="p-4 rounded-2xl border border-outline-variant/30 dark:border-white/10 hover:border-primary bg-surface-container-low dark:bg-slate-800 text-center hover:shadow-sm transition-all flex flex-col items-center gap-1 group"
             >
-              <span className="font-semibold text-sm text-on-surface dark:text-white group-hover:text-primary dark:group-hover:text-primary-fixed-dim">
+              <span className="font-semibold text-xs md:text-sm text-on-surface dark:text-white group-hover:text-primary dark:group-hover:text-primary-fixed-dim">
                 Começar Hoje
               </span>
-              <span className="text-xs text-secondary dark:text-gray-400">
-                Ajustar a 1ª sessão para a data de hoje ({config.startTime})
+              <span className="text-[11px] text-secondary dark:text-gray-400">
+                Hoje ({config.startTime})
               </span>
             </button>
 
             <button
               onClick={() => handleReschedule("tomorrow")}
-              className="p-5 rounded-2xl border border-outline-variant/30 dark:border-white/10 hover:border-primary bg-surface-container-low dark:bg-slate-800 text-center hover:shadow-sm transition-all flex flex-col items-center gap-2 group"
+              className="p-4 rounded-2xl border border-outline-variant/30 dark:border-white/10 hover:border-primary bg-surface-container-low dark:bg-slate-800 text-center hover:shadow-sm transition-all flex flex-col items-center gap-1 group"
             >
-              <span className="font-semibold text-sm text-on-surface dark:text-white group-hover:text-primary dark:group-hover:text-primary-fixed-dim">
+              <span className="font-semibold text-xs md:text-sm text-on-surface dark:text-white group-hover:text-primary dark:group-hover:text-primary-fixed-dim">
                 Começar Amanhã
               </span>
-              <span className="text-xs text-secondary dark:text-gray-400">
-                Ajustar a 1ª sessão para amanhã ({config.startTime})
+              <span className="text-[11px] text-secondary dark:text-gray-400">
+                Amanhã ({config.startTime})
+              </span>
+            </button>
+
+            <button
+              onClick={() => setShowDatePicker(true)}
+              className={clsx(
+                "p-4 rounded-2xl border text-center hover:shadow-sm transition-all flex flex-col items-center gap-1 group",
+                showDatePicker
+                  ? "border-primary bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold"
+                  : "border-outline-variant/30 dark:border-white/10 hover:border-primary bg-surface-container-low dark:bg-slate-800 text-on-surface dark:text-white"
+              )}
+            >
+              <span className="font-semibold text-xs md:text-sm group-hover:text-primary dark:group-hover:text-primary-fixed-dim">
+                No Calendário
+              </span>
+              <span className="text-[11px] text-secondary dark:text-gray-400">
+                Escolher Data
               </span>
             </button>
           </div>
+
+          {showDatePicker && (
+            <div className="p-4 rounded-2xl border border-primary/30 bg-primary/5 dark:bg-primary/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in">
+              <div className="flex items-center gap-2 text-xs text-primary dark:text-primary-fixed-dim font-medium">
+                <CalendarDays className="w-4 h-4 flex-shrink-0" />
+                <span>Escolha a data no calendário:</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="date"
+                  min={format(new Date(), "yyyy-MM-dd")}
+                  value={customDate}
+                  onChange={(e) => setCustomDate(e.target.value)}
+                  className="p-2 rounded-lg border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-xs font-semibold focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer shadow-sm"
+                />
+                <Button
+                  size="sm"
+                  variant="primary"
+                  className="text-xs px-3"
+                  onClick={() => handleReschedule("custom", customDate)}
+                >
+                  Aplicar
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       ) : view === "interrupt" ? (
         /* ================= SUBTELA: INTERROMPER COM CARINHO ================= */

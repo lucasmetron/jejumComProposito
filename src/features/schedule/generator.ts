@@ -19,6 +19,8 @@ export function generateSpiritualFastSchedule(config: FastingConfig): SpiritualF
     isAbsoluteFast = false,
     purposeTitle,
     intention,
+    timeMode = "random",
+    allowedStartTimes = ["08:00", "12:00", "18:00"],
   } = config;
 
   // 1. Determine base start date
@@ -26,7 +28,16 @@ export function generateSpiritualFastSchedule(config: FastingConfig): SpiritualF
   if (startOption === "tomorrow") {
     baseDate = addDays(baseDate, 1);
   } else if (startOption === "custom" && customStartDate) {
-    baseDate = typeof customStartDate === "string" ? new Date(customStartDate) : customStartDate;
+    if (typeof customStartDate === "string") {
+      const parts = customStartDate.split("-").map(Number);
+      if (parts.length === 3) {
+        baseDate = new Date(parts[0], parts[1] - 1, parts[2]);
+      } else {
+        baseDate = new Date(customStartDate);
+      }
+    } else {
+      baseDate = customStartDate;
+    }
   }
 
   // Parse start hour & minute
@@ -115,8 +126,22 @@ export function generateSpiritualFastSchedule(config: FastingConfig): SpiritualF
   return selectedDates.map((date, index) => {
     const sessionHours = calculateSessionHours(index, selectedDates.length);
 
+    let currentStartHour = startHour;
+    let currentStartMinute = startMinute;
+
+    if (timeMode === "random") {
+      const timesPool =
+        allowedStartTimes && allowedStartTimes.length > 0
+          ? allowedStartTimes
+          : ["08:00", "12:00", "18:00"];
+      const timeChoice = timesPool[index % timesPool.length];
+      const [hStr, mStr] = timeChoice.split(":");
+      currentStartHour = parseInt(hStr, 10) || 8;
+      currentStartMinute = parseInt(mStr, 10) || 0;
+    }
+
     // Set precise start timestamp
-    let eventStart = setSeconds(setMinutes(setHours(date, startHour), startMinute), 0);
+    let eventStart = setSeconds(setMinutes(setHours(date, currentStartHour), currentStartMinute), 0);
     let eventEnd = addHours(eventStart, sessionHours);
 
     const waterSuffix = isAbsoluteFast ? "(Sem Água)" : "(Permitido Água)";
@@ -127,16 +152,33 @@ export function generateSpiritualFastSchedule(config: FastingConfig): SpiritualF
     const customTitlePrefix = purposeTitle?.trim() ? purposeTitle.trim() : defaultTitle;
     const title = `${customTitlePrefix} ${waterSuffix} - Sessão ${index + 1}/${selectedDates.length}`;
 
-    const hydrationGuidance = isAbsoluteFast
-      ? "Atenção: Jejum absoluto sem ingestão de líquidos. Mantenha vigília e oração constante."
-      : "Lembre-se: O consumo abundante de água é permitido e encorajado para preservar sua saúde enquanto você se consagra.";
+    let hydrationGuidance = "";
+    if (isAbsoluteFast) {
+      hydrationGuidance = "⚠️ Modalidade: Jejum Absoluto (Sem Água).\nAbstenção total de líquidos durante esta sessão. Mantenha vigília e atenção redobrada.";
+    } else {
+      const waterGlassCount = Math.max(1, Math.floor(sessionHours / 2));
+      const totalMl = waterGlassCount * 250;
 
-    const intentionNote = intention?.trim() ? `\nMotivo / Intenção de Oração: ${intention.trim()}` : "";
+      const waterTimes: string[] = [];
+      for (let h = 2; h < sessionHours; h += 2) {
+        const waterTime = addHours(eventStart, h);
+        waterTimes.push(format(waterTime, "HH:mm"));
+      }
+
+      const scheduleStr =
+        waterTimes.length > 0
+          ? `\n💧 Horários sugeridos de hidratação (1 copo / 250ml): ${waterTimes.join(", ")}`
+          : "";
+
+      hydrationGuidance = `💧 Plano de Hidratação (~${totalMl}ml recomendados):\nBeba aproximadamente 250ml a cada 2 horas para proteger a saúde renal e manter o foco espiritual.${scheduleStr}`;
+    }
+
+    const intentionNote = intention?.trim() ? `\n\n🙏 Motivo / Intenção de Oração: ${intention.trim()}` : "";
 
     const description = [
       `Jornada de Jejum Espiritual - Sessão ${index + 1} de ${selectedDates.length}`,
-      `Duração da sessão: ${sessionHours} horas`,
-      `Horário: das ${format(eventStart, "HH:mm")} às ${format(eventEnd, "HH:mm")}`,
+      `Duração da sessão: ${sessionHours} horas (${format(eventStart, "HH:mm")} às ${format(eventEnd, "HH:mm")})`,
+      "",
       hydrationGuidance,
       intentionNote,
     ]

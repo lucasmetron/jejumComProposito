@@ -23,6 +23,8 @@ export interface FastingConfig {
   targetHours: number; // Daily fasting window in hours (e.g., 12, 14, 16, 18, 24)
   frequencyDays: number; // Number of fasting days to schedule within the period
   startTime: string; // "08:00", "12:00", "18:00", or custom "HH:mm"
+  timeMode?: "random" | "fixed"; // "random" (sorteio entre horários) or "fixed" (horário fixo)
+  allowedStartTimes?: string[]; // Lista de horários participantes do sorteio (ex: ["08:00", "12:00", "18:00"])
   startOption: StartOption;
   customStartDate?: string | Date;
   distribution: DistributionStrategy;

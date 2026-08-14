@@ -17,7 +17,7 @@ export const fastingConfigSchema = z
         required_error: "Informe a meta de horas diárias para o jejum.",
         invalid_type_error: "As horas devem ser um número válido.",
       })
-      .min(4, "O período mínimo de jejum recomendado é de 4 horas.")
+      .min(1, "O período mínimo de jejum é de 1 hora.")
       .max(24, "A janela máxima diária é de 24 horas."),
     frequencyDays: z
       .number({
@@ -29,7 +29,12 @@ export const fastingConfigSchema = z
       .string({
         required_error: "Selecione o horário de início da consagração.",
       })
-      .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Informe um horário no formato HH:mm válido."),
+      .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Informe um horário no formato HH:mm válido.")
+      .default("08:00"),
+    timeMode: z.enum(["random", "fixed"]).default("random"),
+    allowedStartTimes: z
+      .array(z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/))
+      .default(["08:00", "12:00", "18:00"]),
     startOption: z.enum(["today", "tomorrow", "custom"], {
       required_error: "Indique se deseja iniciar hoje ou amanhã.",
     }),

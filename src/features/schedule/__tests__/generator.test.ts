@@ -21,7 +21,7 @@ describe("Spiritual Fast Schedule Generator", () => {
     expect(events).toHaveLength(3);
     expect(events[0].targetHours).toBe(16);
     expect(events[0].title).toContain("(Permitido Água)");
-    expect(events[0].description).toContain("consumo abundante de água é permitido");
+    expect(events[0].description).toContain("Plano de Hidratação");
   });
 
   it("should NEVER schedule events on blocked days", () => {
@@ -89,6 +89,40 @@ describe("Spiritual Fast Schedule Generator", () => {
     const events = generateSpiritualFastSchedule(config);
     expect(events[0].title).toContain("Jejum de Daniel");
     expect(events[0].title).toContain("(Sem Água)");
-    expect(events[0].description).toContain("Jejum absoluto sem ingestão de líquidos");
+    expect(events[0].description).toContain("Jejum Absoluto (Sem Água)");
+  });
+
+  it("should support timeMode random by rotating through allowedStartTimes", () => {
+    const config: FastingConfig = {
+      ...baseConfig,
+      durationDays: 7,
+      frequencyDays: 3,
+      timeMode: "random",
+      allowedStartTimes: ["08:00", "12:00", "18:00"],
+    };
+
+    const events = generateSpiritualFastSchedule(config);
+    expect(events).toHaveLength(3);
+    expect(events[0].start.getHours()).toBe(8);
+    expect(events[1].start.getHours()).toBe(12);
+    expect(events[2].start.getHours()).toBe(18);
+  });
+
+  it("should support timeMode fixed by keeping the same startTime for all sessions", () => {
+    const config: FastingConfig = {
+      ...baseConfig,
+      durationDays: 7,
+      frequencyDays: 3,
+      timeMode: "fixed",
+      startTime: "12:00",
+    };
+
+    const events = generateSpiritualFastSchedule(config);
+    expect(events).toHaveLength(3);
+    for (const event of events) {
+      expect(event.start.getHours()).toBe(12);
+      expect(event.start.getMinutes()).toBe(0);
+    }
   });
 });
+

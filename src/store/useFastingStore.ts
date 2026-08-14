@@ -26,7 +26,7 @@ export interface FastingStoreState {
   setConfig: (config: Partial<FastingConfig>) => void;
   generateSchedule: () => SpiritualFastEvent[];
   saveAndGenerateSchedule: () => SpiritualFastEvent[];
-  rescheduleSchedule: (startOption: "today" | "tomorrow") => SpiritualFastEvent[];
+  rescheduleSchedule: (startOption: "today" | "tomorrow" | "custom", customStartDate?: string | Date) => SpiritualFastEvent[];
   interruptFast: (reason?: string, reflection?: string) => void;
   resetConfig: () => void;
   clearFastingData: () => void;
@@ -36,9 +36,11 @@ export interface FastingStoreState {
 export const DEFAULT_CONFIG: FastingConfig = {
   period: "weekly",
   durationDays: 7,
-  targetHours: 16,
-  frequencyDays: 3,
+  targetHours: 12,
+  frequencyDays: 7,
   startTime: "08:00",
+  timeMode: "random",
+  allowedStartTimes: ["08:00", "12:00", "18:00"],
   startOption: "tomorrow",
   distribution: "alternated",
   blockedDays: [],
@@ -89,9 +91,13 @@ export const useFastingStore = create<FastingStoreState>()(
         return events;
       },
 
-      rescheduleSchedule: (startOption: "today" | "tomorrow") => {
+      rescheduleSchedule: (startOption: "today" | "tomorrow" | "custom", customStartDate?: string | Date) => {
         const { config } = get();
-        const updatedConfig = { ...config, startOption };
+        const updatedConfig = {
+          ...config,
+          startOption,
+          customStartDate: customStartDate !== undefined ? customStartDate : config.customStartDate,
+        };
         const updatedEvents = generateSpiritualFastSchedule(updatedConfig);
         set({
           config: updatedConfig,
