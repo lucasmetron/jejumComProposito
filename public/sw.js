@@ -34,8 +34,13 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests and skip next-auth / calendar API calls
-  if (event.request.method !== 'GET' || event.request.url.includes('/api/auth') || event.request.url.includes('/api/calendar')) {
+  // Ignorar requisições não-GET, requisições de API (/api/*), Next.js data ou URLs não-http
+  if (
+    event.request.method !== 'GET' ||
+    !event.request.url.startsWith('http') ||
+    event.request.url.includes('/api/') ||
+    event.request.url.includes('/_next/data/')
+  ) {
     return;
   }
 

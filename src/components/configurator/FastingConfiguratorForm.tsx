@@ -184,13 +184,13 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
     setConfig(finalData as any);
     setIsGoogleCalendarSynced(syncWithGoogle);
-    const generatedEvents = saveAndGenerateSchedule();
+    const candidateEvents = generateSchedule();
 
     let syncSuccess = true;
     let syncErrorMessage = "";
 
     const syncTask = (async () => {
-      if (syncWithGoogle && status === "authenticated" && generatedEvents.length > 0) {
+      if (syncWithGoogle && status === "authenticated" && candidateEvents.length > 0) {
         setLoadingStepText("Sincronizando com o Google Agenda & Lembretes...");
         try {
           const previousEventIds = config.syncedCalendarEventIds || [];
@@ -198,7 +198,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              events: generatedEvents,
+              events: candidateEvents,
               previousEventIds,
               includeWaterReminders,
             }),
@@ -207,7 +207,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           const json = await res.json();
           if (!res.ok) {
             syncSuccess = false;
-            syncErrorMessage = json.message || "Erro ao sincronizar com Google Agenda.";
+            syncErrorMessage = json.message || "Não foi possível inserir os eventos no Google Agenda. Verifique suas permissões.";
           } else if (json.eventIds && Array.isArray(json.eventIds)) {
             setSyncedCalendarEventIds(json.eventIds);
           }
@@ -224,6 +224,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
     setIsGeneratingModalOpen(false);
 
     if (syncSuccess) {
+      // Salva efetivamente e gera a escala definitiva
+      saveAndGenerateSchedule();
+
       toast.success(
         syncWithGoogle && status === "authenticated"
           ? "Jejum gerado e sincronizado com o Google Agenda com sucesso!"
@@ -238,14 +241,11 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
         onGenerated();
       }
     } else {
-      toast.error(`Atenção: ${syncErrorMessage}`, {
+      // Em caso de falha: NÃO avança de tela e pede para tentar novamente
+      toast.error(`${syncErrorMessage} Por favor, tente novamente.`, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 6000,
       });
-
-      if (onGenerated) {
-        onGenerated();
-      }
     }
   };
 
