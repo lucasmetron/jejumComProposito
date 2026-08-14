@@ -17,15 +17,45 @@ import {
 import Link from "next/link";
 import { clsx } from "clsx";
 
+import { toast } from "react-toastify";
+
 export default function PropositoPage() {
   const { hasConfigured, events, saveAndGenerateSchedule } = useFastingStore();
   const [activeTab, setActiveTab] = useState<"config" | "schedule">("config");
   const [justSaved, setJustSaved] = useState(false);
+  const [now, setNow] = useState<Date>(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const hasSchedule = hasConfigured && events.length > 0;
+
+  // Verifica se há alguma sessão de jejum ocorrendo exatamente agora
+  const isFastingNow =
+    hasSchedule &&
+    events.some((ev) => {
+      const start = new Date(ev.start);
+      const end = new Date(ev.end);
+      return now >= start && now <= end;
+    });
 
   // Switch to schedule on save and scroll smoothly to top
   const handleSaved = () => {
     setActiveTab("schedule");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleScheduleTabClick = () => {
+    if (!hasSchedule) {
+      toast.info("Cadastre e salve o seu propósito de jejum para ter acesso à sua escala.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
+      return;
+    }
+    setActiveTab("schedule");
   };
 
   return (
@@ -64,18 +94,27 @@ export default function PropositoPage() {
             Configuração
           </button>
           <button
-            onClick={() => setActiveTab("schedule")}
+            onClick={handleScheduleTabClick}
             className={clsx(
               "flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-medium transition-all relative",
-              activeTab === "schedule"
+              !hasSchedule && "opacity-40 hover:opacity-60 cursor-not-allowed",
+              hasSchedule && activeTab === "schedule"
                 ? "bg-surface-container-lowest dark:bg-slate-800 text-primary dark:text-primary-fixed-dim shadow-sm font-semibold"
                 : "text-secondary dark:text-gray-400 hover:text-on-surface dark:hover:text-gray-200"
             )}
           >
             <CalendarIcon className="w-4 h-4" />
             Minha Escala
-            {events.length > 0 && (
-              <span className="w-2 h-2 rounded-full bg-primary" />
+            {hasSchedule && (
+              <span
+                className={clsx(
+                  "w-2.5 h-2.5 rounded-full transition-colors flex-shrink-0 shadow-sm",
+                  isFastingNow
+                    ? "bg-emerald-500 animate-pulse"
+                    : "bg-red-500"
+                )}
+                title={isFastingNow ? "Jejum em andamento agora" : "Nenhum jejum em andamento no momento"}
+              />
             )}
           </button>
         </div>

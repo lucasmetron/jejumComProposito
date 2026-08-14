@@ -91,7 +91,8 @@ export default function RootLayout({
               pauseOnFocusLoss
               draggable
               pauseOnHover
-              toastClassName="!rounded-2xl !font-sans !shadow-lg dark:!bg-slate-900 dark:!text-white dark:!border dark:!border-white/10"
+              className="!p-2.5"
+              toastClassName="!rounded-2xl !p-2.5 !font-sans !shadow-lg dark:!bg-slate-900 dark:!text-white dark:!border dark:!border-white/10"
             />
           </ThemeProvider>
         </NextAuthProvider>

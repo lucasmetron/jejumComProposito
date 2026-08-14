@@ -20,10 +20,20 @@
 }
 
 /* Custom Toastify Styling */
+.Toastify__toast-container {
+  padding: 20px !important;
+}
+
 .Toastify__toast {
+  padding: 20px !important;
   border-radius: 16px !important;
   overflow: hidden !important;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.Toastify__toast-body {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .Toastify__progress-bar {

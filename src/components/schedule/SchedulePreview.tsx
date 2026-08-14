@@ -22,8 +22,11 @@ import {
   AlertTriangle,
   Sparkles,
   CheckCircle2,
-  Share2,
   CalendarPlus,
+  Share2,
+  HelpCircle,
+  Info,
+  Smartphone,
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -37,6 +40,7 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
 
   const [selectedEvent, setSelectedEvent] = useState<SpiritualFastEvent | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [showICSInfoModal, setShowICSInfoModal] = useState(false);
   const [syncStatus, setSyncStatus] = useState<{
     type: "success" | "error" | null;
     message: string;
@@ -181,52 +185,81 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
       </div>
 
       {/* Export & Sync Action Bar */}
-      <Card className="p-5 bg-surface-container-low dark:bg-slate-900 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-2.5">
-          <Share2 className="w-5 h-5 text-primary dark:text-primary-fixed-dim" />
-          <div>
-            <h4 className="font-semibold text-sm text-on-surface dark:text-white">Exportar & Sincronizar</h4>
-            <p className="text-xs text-on-surface-variant dark:text-gray-400">
-              Adicione aos seus calendários ou imprima o cronograma devocional
-            </p>
+      <Card className="p-5 bg-surface-container-low dark:bg-slate-900 flex flex-col gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <Share2 className="w-5 h-5 text-primary dark:text-primary-fixed-dim" />
+            <div>
+              <h4 className="font-semibold text-sm text-on-surface dark:text-white">Exportar & Sincronizar</h4>
+              <p className="text-xs text-on-surface-variant dark:text-gray-400">
+                Adicione aos seus calendários ou imprima o cronograma devocional
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => exportToPDF(events, config)}
+              icon={<FileText className="w-4 h-4" />}
+            >
+              Baixar PDF
+            </Button>
+
+            <div className="inline-flex items-center gap-1 bg-surface dark:bg-slate-800 rounded-xl p-0.5 border border-outline-variant/30 dark:border-white/10">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => exportToICS(events)}
+                icon={<Download className="w-4 h-4" />}
+                title="Baixar arquivo universal (.ics) para Apple Calendar ou Outlook"
+                className="hover:bg-transparent"
+              >
+                Baixar .ICS
+              </Button>
+              <button
+                type="button"
+                onClick={() => setShowICSInfoModal(true)}
+                title="O que é o arquivo .ICS e como usar?"
+                className="p-1.5 mr-1 rounded-lg text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-primary/10 dark:hover:bg-primary/20 transition-all flex items-center justify-center"
+              >
+                <HelpCircle className="w-4 h-4 text-primary dark:text-primary-fixed-dim" />
+              </button>
+            </div>
+
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              onClick={handleGoogleSync}
+              disabled={isSyncing}
+              icon={<CalendarPlus className="w-4 h-4" />}
+            >
+              {isSyncing
+                ? "Sincronizando..."
+                : status === "authenticated"
+                ? "Sincronizar Google Agenda"
+                : "Conectar & Sincronizar Google"}
+            </Button>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
-          <Button
+        {/* Faixa Explicativa sobre o Formato .ICS */}
+        <div className="pt-3 border-t border-outline-variant/30 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-on-surface-variant dark:text-gray-400">
+          <div className="flex items-center gap-1.5">
+            <span className="font-semibold text-primary dark:text-primary-fixed-dim">💡 O que é .ICS?</span>
+            <span>Arquivo universal para importar a escala no <strong>Apple Calendar (iPhone/Mac)</strong>, <strong>Outlook</strong> ou qualquer aplicativo de calendário.</span>
+          </div>
+          <button
             type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => exportToPDF(events, config)}
-            icon={<FileText className="w-4 h-4" />}
+            onClick={() => setShowICSInfoModal(true)}
+            className="text-primary dark:text-primary-fixed-dim font-medium hover:underline text-xs flex-shrink-0"
           >
-            Baixar PDF
-          </Button>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => exportToICS(events)}
-            icon={<Download className="w-4 h-4" />}
-          >
-            Baixar .ICS
-          </Button>
-
-          <Button
-            type="button"
-            variant="primary"
-            size="sm"
-            onClick={handleGoogleSync}
-            disabled={isSyncing}
-            icon={<CalendarPlus className="w-4 h-4" />}
-          >
-            {isSyncing
-              ? "Sincronizando..."
-              : status === "authenticated"
-              ? "Sincronizar Google Agenda"
-              : "Conectar & Sincronizar Google"}
-          </Button>
+            Como importar &rarr;
+          </button>
         </div>
       </Card>
 
@@ -334,6 +367,71 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
           </div>
         </Modal>
       )}
+
+      {/* Modal Explicativa do Formato .ICS */}
+      <Modal
+        isOpen={showICSInfoModal}
+        onClose={() => setShowICSInfoModal(false)}
+        title="O que é o arquivo .ICS?"
+        description="Entenda como funciona o formato universal de calendário e como utilizá-lo no seu celular ou computador."
+      >
+        <div className="flex flex-col gap-4 py-2 text-xs md:text-sm text-on-surface dark:text-gray-300 leading-relaxed">
+          <div className="p-4 rounded-2xl bg-primary/5 dark:bg-primary/10 border border-primary/20 space-y-2">
+            <h4 className="font-bold text-primary dark:text-primary-fixed-dim flex items-center gap-2 text-sm">
+              <CalendarCheck className="w-4 h-4" />
+              <span>Formato Universal iCalendar (.ics)</span>
+            </h4>
+            <p className="text-xs text-on-surface-variant dark:text-gray-300">
+              O <strong>.ICS</strong> é o padrão internacional de troca de calendários. Ele permite que todos os dias, horários de abstinência e lembretes do seu propósito sejam importados de uma só vez para o seu aplicativo de agenda favorito, sem precisar digitar evento por evento.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <h5 className="font-bold text-xs uppercase tracking-wider text-secondary dark:text-gray-400">
+              Como importar no seu dispositivo:
+            </h5>
+
+            <div className="p-3.5 rounded-xl border border-outline-variant/30 dark:border-white/10 space-y-1 bg-surface-bright dark:bg-slate-800">
+              <div className="font-semibold text-xs text-on-surface dark:text-white flex items-center gap-1.5">
+                <Smartphone className="w-4 h-4 text-primary dark:text-primary-fixed-dim" />
+                <span>No iPhone / iPad (Apple Calendar):</span>
+              </div>
+              <p className="text-[12px] text-on-surface-variant dark:text-gray-400">
+                1. Toque em <strong>"Baixar .ICS"</strong>.<br />
+                2. Abra o arquivo baixado no iOS e toque em <strong>"Adicionar Todos"</strong>.<br />
+                3. Pronto! Todas as sessões e notificações de oração ficam salvas no seu calendário da Apple.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-xl border border-outline-variant/30 dark:border-white/10 space-y-1 bg-surface-bright dark:bg-slate-800">
+              <div className="font-semibold text-xs text-on-surface dark:text-white flex items-center gap-1.5">
+                <CalendarIcon className="w-4 h-4 text-primary dark:text-primary-fixed-dim" />
+                <span>No Microsoft Outlook / Outros Aplicativos:</span>
+              </div>
+              <p className="text-[12px] text-on-surface-variant dark:text-gray-400">
+                Dê um duplo clique no arquivo <strong>.ics</strong> baixado no seu computador ou importe-o através do menu <em>Arquivo &rarr; Abrir e Exportar &rarr; Importar Calendário</em>.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2.5 pt-2">
+            <Button variant="ghost" size="sm" onClick={() => setShowICSInfoModal(false)}>
+              Fechar
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => {
+                setShowICSInfoModal(false);
+                exportToICS(events);
+              }}
+              icon={<Download className="w-4 h-4" />}
+            >
+              Baixar .ICS Agora
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
