@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { PWAInstallButton } from "@/components/pwa/PWAInstallButton";
 import { clsx } from "clsx";
 
 export function TopNavBar() {
@@ -25,7 +26,7 @@ export function TopNavBar() {
           <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-2xl icon-fill group-hover:scale-105 transition-transform">
             local_fire_department
           </span>
-          <span className="font-semibold text-lg text-primary dark:text-primary-fixed-dim tracking-tight">
+          <span className="font-semibold text-lg text-primary dark:text-primary-fixed-dim tracking-tight hidden sm:inline">
             Jejum com Propósito
           </span>
         </Link>
@@ -55,8 +56,11 @@ export function TopNavBar() {
           })}
         </nav>
 
-        {/* Actions / Auth + Theme Toggle */}
-        <div className="flex items-center gap-3">
+        {/* Actions / PWA + Theme Toggle + Auth */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Botão Baixar PWA (Desktop / Tablet) */}
+          <PWAInstallButton variant="header" />
+
           {/* Theme Toggle (Light / Dark mode) */}
           <ThemeToggle />
 

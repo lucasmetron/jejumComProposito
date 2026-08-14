@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ManageFastModal } from "@/components/schedule/ManageFastModal";
 import { VerseOfTheDay } from "@/components/spiritual/VerseOfTheDay";
+import { PWAInstallButton } from "@/components/pwa/PWAInstallButton";
 import { VerseData } from "@/lib/verseService";
 import {
   Flame,
@@ -383,6 +384,9 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
               <ArrowRight className="w-5 h-5 text-secondary dark:text-gray-400 group-hover:translate-x-1 transition-transform flex-shrink-0" />
             </Link>
           </section>
+
+          {/* Banner de Instalação PWA */}
+          <PWAInstallButton variant="banner" />
         </div>
       )}
 

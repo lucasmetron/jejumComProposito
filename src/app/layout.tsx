@@ -1,15 +1,39 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { NextAuthProvider } from "@/components/providers/NextAuthProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { TopNavBar } from "@/components/layout/TopNavBar";
 import { BottomNavBar } from "@/components/layout/BottomNavBar";
 import { Footer } from "@/components/layout/Footer";
+import { PWARegister } from "@/components/pwa/PWARegister";
+
+export const viewport: Viewport = {
+  themeColor: "#28626f",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   title: "Jejum com Propósito - Planejador de Jejum Espiritual",
   description:
     "Organize suas jornadas de oração e consagração com um cronograma devocional inteligente, sincronização com Google Calendar, exportação em PDF e acompanhamento personalizado.",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Jejum com Propósito",
+  },
   keywords: [
     "jejum espiritual",
     "jejum religioso",
@@ -18,6 +42,7 @@ export const metadata: Metadata = {
     "propósito",
     "google calendar sync",
     "planejador de jejum",
+    "pwa",
   ],
 };
 
@@ -29,6 +54,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="scroll-smooth" suppressHydrationWarning>
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Jejum com Propósito" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -43,6 +74,7 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-background text-on-background dark:bg-slate-950 dark:text-gray-100 antialiased selection:bg-primary-fixed selection:text-on-primary-fixed transition-colors">
         <NextAuthProvider>
           <ThemeProvider>
+            <PWARegister />
             <TopNavBar />
             <main className="flex-grow pt-[84px] pb-20 md:pb-8">{children}</main>
             <BottomNavBar />
