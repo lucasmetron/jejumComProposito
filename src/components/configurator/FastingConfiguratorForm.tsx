@@ -163,7 +163,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               max={watchedValues.durationDays || 7}
               value={watchedValues.frequencyDays || watchedValues.durationDays || 7}
               onChange={(e) => setValue("frequencyDays", parseInt(e.target.value, 10))}
-              className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary"
+              className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-grab active:cursor-grabbing accent-primary"
             />
 
             <div className="flex justify-between text-xs text-secondary dark:text-gray-400">
@@ -204,7 +204,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
             max={24}
             value={watchedValues.targetHours || 12}
             onChange={(e) => setValue("targetHours", parseInt(e.target.value, 10))}
-            className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary"
+            className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-grab active:cursor-grabbing accent-primary"
           />
           <div className="flex justify-between text-xs text-secondary dark:text-gray-400">
             <span>1 hora (Mínimo)</span>
