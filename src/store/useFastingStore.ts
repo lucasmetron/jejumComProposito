@@ -31,6 +31,8 @@ export interface FastingStoreState {
   resetConfig: () => void;
   clearFastingData: () => void;
   setSelectedEventId: (id: string | null) => void;
+  setSyncedCalendarEventIds: (ids: string[]) => void;
+  setIsGoogleCalendarSynced: (synced: boolean) => void;
 }
 
 export const DEFAULT_CONFIG: FastingConfig = {
@@ -48,6 +50,8 @@ export const DEFAULT_CONFIG: FastingConfig = {
   isAbsoluteFast: false,
   purposeTitle: "",
   intention: "",
+  syncedCalendarEventIds: [],
+  isGoogleCalendarSynced: false,
 };
 
 export const useFastingStore = create<FastingStoreState>()(
@@ -150,6 +154,25 @@ export const useFastingStore = create<FastingStoreState>()(
 
       setSelectedEventId: (id) => {
         set({ selectedEventId: id });
+      },
+
+      setSyncedCalendarEventIds: (ids) => {
+        set((state) => ({
+          config: {
+            ...state.config,
+            syncedCalendarEventIds: ids,
+            isGoogleCalendarSynced: ids.length > 0,
+          },
+        }));
+      },
+
+      setIsGoogleCalendarSynced: (synced) => {
+        set((state) => ({
+          config: {
+            ...state.config,
+            isGoogleCalendarSynced: synced,
+          },
+        }));
       },
     }),
     {

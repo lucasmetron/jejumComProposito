@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { clsx } from "clsx";
 
+import { useSession } from "next-auth/react";
+
 interface ManageFastModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -29,48 +31,107 @@ type ViewState = "menu" | "reschedule" | "interrupt" | "delete";
 
 export function ManageFastModal({ isOpen, onClose }: ManageFastModalProps) {
   const router = useRouter();
-  const { config, rescheduleSchedule, interruptFast, clearFastingData } = useFastingStore();
+  const { data: session, status } = useSession();
+  const { config, rescheduleSchedule, interruptFast, clearFastingData, setSyncedCalendarEventIds } = useFastingStore();
 
   const [view, setView] = useState<ViewState>("menu");
   const [reflection, setReflection] = useState("");
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [customDate, setCustomDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   const handleClose = () => {
     setView("menu");
     setReflection("");
     setFeedbackMsg(null);
     setShowDatePicker(false);
+    setIsSyncing(false);
     onClose();
   };
 
-  const handleReschedule = (startOption: "today" | "tomorrow" | "custom", date?: string) => {
-    rescheduleSchedule(startOption, date);
+  const handleReschedule = async (startOption: "today" | "tomorrow" | "custom", date?: string) => {
+    setIsSyncing(true);
+    const updatedEvents = rescheduleSchedule(startOption, date);
+
+    // Se o usuário estiver autenticado e possuir eventos sincronizados no Google Agenda
+    if (status === "authenticated" && (config.isGoogleCalendarSynced || (config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0))) {
+      try {
+        const previousEventIds = config.syncedCalendarEventIds || [];
+        const res = await fetch("/api/calendar/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            events: updatedEvents,
+            previousEventIds,
+          }),
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.eventIds) {
+            setSyncedCalendarEventIds(json.eventIds);
+          }
+        }
+      } catch (err) {
+        console.error("Erro ao sincronizar reagendamento no Google Agenda:", err);
+      }
+    }
+
+    setIsSyncing(false);
     setFeedbackMsg(
       startOption === "today"
-        ? "Cronograma reajustado com sucesso para iniciar hoje!"
+        ? "Cronograma reajustado e sincronizado com sucesso para iniciar hoje!"
         : startOption === "tomorrow"
-        ? "Cronograma reajustado com sucesso para iniciar amanhã!"
-        : `Cronograma reajustado para iniciar em ${date}!`
+        ? "Cronograma reajustado e sincronizado com sucesso para iniciar amanhã!"
+        : `Cronograma reajustado e sincronizado para iniciar em ${date}!`
     );
     setTimeout(() => {
       handleClose();
     }, 1500);
   };
 
-  const handleInterrupt = () => {
+  const handleInterrupt = async () => {
+    setIsSyncing(true);
+    // Limpar eventos futuros do Google Agenda se houver
+    if (status === "authenticated" && config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0) {
+      try {
+        await fetch("/api/calendar/clear", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ eventIds: config.syncedCalendarEventIds }),
+        });
+      } catch (err) {
+        console.error("Erro ao limpar eventos do Google Agenda:", err);
+      }
+    }
+
     interruptFast("Interrupção voluntária por saúde / imprevisto", reflection);
-    setFeedbackMsg("Propósito finalizado e arquivado com paz. Você pode iniciar outro quando estiver pronto.");
+    setIsSyncing(false);
+    setFeedbackMsg("Propósito finalizado e agenda sincronizada com paz. Você pode iniciar outro quando estiver pronto.");
     setTimeout(() => {
       handleClose();
       router.push("/");
     }, 1500);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
+    setIsSyncing(true);
+    // Remover todos os eventos do Google Agenda
+    if (status === "authenticated" && config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0) {
+      try {
+        await fetch("/api/calendar/clear", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ eventIds: config.syncedCalendarEventIds }),
+        });
+      } catch (err) {
+        console.error("Erro ao remover eventos do Google Agenda:", err);
+      }
+    }
+
     clearFastingData();
-    setFeedbackMsg("Jejum cancelado e dados reiniciados com sucesso.");
+    setIsSyncing(false);
+    setFeedbackMsg("Jejum cancelado, dados reiniciados e agenda limpa com sucesso.");
     setTimeout(() => {
       handleClose();
       router.push("/");

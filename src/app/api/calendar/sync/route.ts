@@ -18,7 +18,29 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { events } = body as { events: SpiritualFastEvent[] };
+    const { events, previousEventIds } = body as {
+      events: SpiritualFastEvent[];
+      previousEventIds?: string[];
+    };
+
+    // 1. Limpar eventos anteriores se houver (para atualizações / reagendamento)
+    if (previousEventIds && Array.isArray(previousEventIds) && previousEventIds.length > 0) {
+      for (const eventId of previousEventIds) {
+        try {
+          await fetch(
+            `https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${session.accessToken}`,
+              },
+            }
+          );
+        } catch (delErr) {
+          console.warn(`Aviso ao excluir evento anterior ${eventId}:`, delErr);
+        }
+      }
+    }
 
     if (!events || !Array.isArray(events) || events.length === 0) {
       return NextResponse.json(
@@ -87,10 +109,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const eventIds = createdEvents.map((e) => e.id).filter(Boolean);
+
     return NextResponse.json({
       success: true,
       message: `${createdEvents.length} eventos de jejum foram sincronizados com seu Google Agenda com sucesso!`,
       syncedCount: createdEvents.length,
+      eventIds,
       errors: errors.length > 0 ? errors : undefined,
     });
   } catch (error: any) {

@@ -75,9 +75,9 @@ const WEEKDAYS = [
 ];
 
 export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => void }) {
-  const { config, setConfig, generateSchedule } = useFastingStore();
+  const { config, setConfig, generateSchedule, setSyncedCalendarEventIds, setIsGoogleCalendarSynced } = useFastingStore();
   const { data: session, status } = useSession();
-  const [syncWithGoogle, setSyncWithGoogle] = React.useState(true);
+  const [syncWithGoogle, setSyncWithGoogle] = React.useState(config.isGoogleCalendarSynced ?? true);
   const [isSyncingCalendar, setIsSyncingCalendar] = React.useState(false);
 
   const {
@@ -151,11 +151,22 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
     if (syncWithGoogle && status === "authenticated" && generatedEvents.length > 0) {
       setIsSyncingCalendar(true);
       try {
-        await fetch("/api/calendar/sync", {
+        const previousEventIds = config.syncedCalendarEventIds || [];
+        const res = await fetch("/api/calendar/sync", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ events: generatedEvents }),
+          body: JSON.stringify({
+            events: generatedEvents,
+            previousEventIds,
+          }),
         });
+
+        if (res.ok) {
+          const json = await res.json();
+          if (json.eventIds && Array.isArray(json.eventIds)) {
+            setSyncedCalendarEventIds(json.eventIds);
+          }
+        }
       } catch (err) {
         console.error("Erro ao sincronizar com Google Agenda:", err);
       } finally {

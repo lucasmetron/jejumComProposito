@@ -59,6 +59,8 @@ export const fastingConfigSchema = z
       .max(500, "A intenção de oração não deve ultrapassar 500 caracteres.")
       .optional()
       .default(""),
+    syncedCalendarEventIds: z.array(z.string()).optional().default([]),
+    isGoogleCalendarSynced: z.boolean().optional().default(false),
   })
   .refine(
     (data) => {

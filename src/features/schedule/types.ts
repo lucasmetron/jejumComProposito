@@ -33,4 +33,6 @@ export interface FastingConfig {
   isAbsoluteFast: boolean; // true = absolute (no water), false = with water permitted
   purposeTitle?: string; // Optional custom name/dedication for the spiritual purpose
   intention?: string; // Prayer request or spiritual motive
+  syncedCalendarEventIds?: string[]; // IDs dos eventos criados no Google Agenda
+  isGoogleCalendarSynced?: boolean; // Se o propósito está com sincronização ativa no Google Agenda
 }
