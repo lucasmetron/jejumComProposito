@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jejum com Propósito - Início</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected from Style Guidance -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#434846",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#a8cdd4",
+                    "secondary-fixed": "#e0e3e1",
+                    "on-primary-fixed-variant": "#284c52",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#a8cdd4",
+                    "on-primary-container": "#12383e",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#dde4e3",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#e5efff",
+                    "tertiary-fixed-dim": "#c1c8c7",
+                    "on-primary-fixed": "#001f24",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#959c9c",
+                    "surface-dim": "#ccdbf2",
+                    "outline": "#71787a",
+                    "secondary": "#5b5f5e",
+                    "on-tertiary-fixed": "#161d1d",
+                    "inverse-on-surface": "#e9f1ff",
+                    "secondary-fixed-dim": "#c4c7c5",
+                    "background": "#f8f9ff",
+                    "primary": "#41646a",
+                    "on-tertiary-container": "#2d3434",
+                    "on-surface": "#0d1c2d",
+                    "on-secondary-container": "#5f6362",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#233143",
+                    "on-tertiary-fixed-variant": "#414848",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#414849",
+                    "surface-bright": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "surface-tint": "#41646a",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#dde0de",
+                    "surface-container-low": "#eef4ff",
+                    "surface-container-high": "#dbe9ff",
+                    "primary-fixed": "#c4e9f1",
+                    "surface-container-highest": "#d4e4fa",
+                    "surface-variant": "#d4e4fa",
+                    "on-secondary-fixed": "#181c1b",
+                    "outline-variant": "#c1c8c9",
+                    "tertiary": "#596060",
+                    "on-background": "#0d1c2d",
+                    "primary-container": "#7da1a8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "section-gap": "48px",
+                    "stack-gap": "16px",
+                    "touch-target-min": "48px",
+                    "container-padding-desktop": "64px",
+                    "container-padding-mobile": "24px"
+            },
+            "fontFamily": {
+                    "title-md": ["Geist", "sans-serif"],
+                    "headline-lg": ["Geist", "sans-serif"],
+                    "body-md": ["Geist", "sans-serif"],
+                    "body-lg": ["Geist", "sans-serif"],
+                    "display": ["Geist", "sans-serif"],
+                    "label-sm": ["Geist", "sans-serif"],
+                    "headline-lg-mobile": ["Geist", "sans-serif"]
+            },
+            "fontSize": {
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "300"}],
+                    "label-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Base styles */
+        body {
+            font-family: 'Geist', sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-background text-on-background">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-[30px] border-b border-outline-variant/30 dark:border-outline/20">
+<div class="flex justify-between items-center h-[72px] px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
+<!-- Brand Logo -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-weight="fill">local_fire_department</span>
+<span class="font-title-md text-title-md font-medium text-primary dark:text-primary-fixed-dim">Jejum com Propósito</span>
+</div>
+<!-- Navigation Links (Desktop) -->
+<div class="hidden md:flex items-center gap-8 h-full">
+<a class="h-full flex items-center font-body-md text-body-md text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 mt-[2px] opacity-100 transition-all duration-200" href="#">
+                    Início
+                </a>
+<a class="h-full flex items-center font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">
+                    Propósito
+                </a>
+<a class="h-full flex items-center font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">
+                    Sobre
+                </a>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center min-h-[48px] px-6 rounded-full bg-primary text-on-primary font-label-sm text-label-sm hover:bg-primary/90 transition-colors">
+                    Entrar
+                </button>
+<button class="flex items-center justify-center min-w-[48px] min-h-[48px] text-primary dark:text-primary-fixed-dim hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="flex-grow pt-[104px] pb-section-gap px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto w-full flex flex-col gap-section-gap">
+<!-- Hero Section -->
+<section class="relative rounded-2xl overflow-hidden min-h-[320px] flex items-center justify-center p-8 bg-surface-container-high border border-outline-variant/20" data-alt="A serene morning landscape with soft, high-key light mode lighting, conveying a sense of digital sanctuary, spiritual focus, and quietude. The color palette incorporates gentle sage greens, pristine whites, and muted tones for an airy, expansive feeling." style="background-image: linear-gradient(to right, rgba(248,249,255,0.9), rgba(248,249,255,0.7)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZGox7AyXJC-Ns7D90F6z-IOat-CxD1zL1qC4uzvmj1zEkTOryQm7V33R33-HcixvyfEC-pPWfKlQnjI9QlgiTmP18gjxfeF4M6QPiHMszGkQO_XMGhmMNKzPH-1Uj1sGVWCl4dUCPWvcN1Y0iSE65Wi5KSbO0W8HhOC65d21_KF0-HCxuwLahbiCiASBwtDQ_FVimuVnPX88zdhydQvbdarSVxy0Mcw5tsUQ03Fj6yry-sVETNFIJ'); background-size: cover; background-position: center;">
+<div class="relative z-10 text-center max-w-2xl flex flex-col items-center gap-stack-gap">
+<span class="px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase tracking-widest inline-flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">wb_sunny</span>
+                    Inspiração Diária
+                </span>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+                    "O silêncio do corpo é a voz do espírito."
+                </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mt-2">
+                    Reserve este momento para interiorizar suas intenções. Cada hora é um passo mais próximo do seu propósito.
+                </p>
+</div>
+</section>
+<!-- Bento Grid Layout for Dashboard -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Active Fast Card (Primary Focus) -->
+<div class="lg:col-span-8 rounded-2xl border border-outline-variant/30 bg-surface p-8 flex flex-col gap-6 shadow-[0_4px_20px_rgba(65,100,106,0.05)]">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<h2 class="font-title-md text-title-md text-on-surface">Jejum Atual</h2>
+<span class="font-body-md text-body-md text-secondary">Propósito: Clareza Espiritual</span>
+</div>
+<span class="px-3 py-1 rounded-full bg-primary-container/20 text-primary font-label-sm text-label-sm border border-primary/20">
+                        Em Andamento
+                    </span>
+</div>
+<!-- Timer Display -->
+<div class="flex flex-col items-center justify-center py-8">
+<div class="relative w-64 h-64 flex items-center justify-center rounded-full border-[1px] border-outline-variant/20">
+<!-- Simulated Progress Ring -->
+<svg class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 100 100">
+<circle class="text-surface-container-high" cx="50" cy="50" fill="none" r="48" stroke="currentColor" stroke-width="2"></circle>
+<circle class="text-primary transition-all duration-1000 ease-out" cx="50" cy="50" fill="none" r="48" stroke="currentColor" stroke-dasharray="301" stroke-dashoffset="120" stroke-width="2"></circle>
+</svg>
+<div class="flex flex-col items-center text-center z-10">
+<span class="font-display text-display text-on-surface tracking-tighter">14:22:05</span>
+<span class="font-body-md text-body-md text-secondary mt-2">restantes</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant/20">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Início</span>
+<span class="font-body-md text-body-md text-on-surface">Hoje, 20:00</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Fim</span>
+<span class="font-body-md text-body-md text-on-surface">Amanhã, 12:00 (16h)</span>
+</div>
+</div>
+</div>
+<!-- Side Column for Actions & Progress -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Quick Actions -->
+<div class="flex flex-col gap-4">
+<h3 class="font-title-md text-title-md text-on-surface">Ações Rápidas</h3>
+<button class="w-full flex items-center gap-4 p-4 rounded-xl border border-outline-variant/30 bg-surface hover:bg-surface-container-low transition-colors text-left group">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">add</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Configurar Novo Propósito</span>
+<span class="font-body-md text-body-md text-secondary text-sm">Defina uma nova intenção</span>
+</div>
+</button>
+<button class="w-full flex items-center gap-4 p-4 rounded-xl border border-outline-variant/30 bg-surface hover:bg-surface-container-low transition-colors text-left group">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">Ver Minha Escala</span>
+<span class="font-body-md text-body-md text-secondary text-sm">Próximos jejuns agendados</span>
+</div>
+</button>
+</div>
+<!-- Journey Progress -->
+<div class="rounded-2xl border border-outline-variant/30 bg-surface p-6 flex flex-col gap-4 mt-auto">
+<h3 class="font-title-md text-title-md text-on-surface">Jornada Semanal</h3>
+<div class="flex items-end justify-between h-32 pt-4">
+<!-- Bar Chart Mockup -->
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-8 bg-surface-container-high rounded-t-sm h-[40%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded transition-opacity whitespace-nowrap">12h</div>
+</div>
+<span class="text-xs text-secondary font-label-sm">D</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-8 bg-surface-container-high rounded-t-sm h-[60%] relative group"></div>
+<span class="text-xs text-secondary font-label-sm">S</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-8 bg-primary/60 rounded-t-sm h-[80%] relative group"></div>
+<span class="text-xs text-secondary font-label-sm">T</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-8 bg-primary rounded-t-sm h-[100%] shadow-[0_0_15px_rgba(65,100,106,0.2)] relative group"></div>
+<span class="text-xs text-on-surface font-label-sm font-bold">Q</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-8 bg-surface-container rounded-t-sm h-0 relative group"></div>
+<span class="text-xs text-secondary/50 font-label-sm">Q</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-8 bg-surface-container rounded-t-sm h-0 relative group"></div>
+<span class="text-xs text-secondary/50 font-label-sm">S</span>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<div class="w-8 bg-surface-container rounded-t-sm h-0 relative group"></div>
+<span class="text-xs text-secondary/50 font-label-sm">S</span>
+</div>
+</div>
+<p class="text-sm text-center text-secondary font-body-md mt-2">Você atingiu 80% da sua meta esta semana.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap border-t border-outline-variant/20 bg-surface-container-low dark:bg-surface-container-lowest mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center gap-stack-gap px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-title-md text-title-md text-on-surface dark:text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill">local_fire_department</span>
+                    Jejum com Propósito
+                </span>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-center md:text-left">
+                    © 2024 Jejum com Propósito. Espiritualidade com intenção.
+                </p>
+</div>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded" href="#">
+                    Termos de Uso
+                </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded" href="#">
+                    Política de Privacidade
+                </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded" href="#">
+                    Contato
+                </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded" href="#">
+                    Nossa Missão
+                </a>
+</nav>
+</div>
+</footer>
+</body></html>

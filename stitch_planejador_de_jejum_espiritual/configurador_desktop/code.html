@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jejum com Propósito - Configuração</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#434846",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#a8cdd4",
+                        "secondary-fixed": "#e0e3e1",
+                        "on-primary-fixed-variant": "#284c52",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#a8cdd4",
+                        "on-primary-container": "#12383e",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#dde4e3",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#e5efff",
+                        "tertiary-fixed-dim": "#c1c8c7",
+                        "on-primary-fixed": "#001f24",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#959c9c",
+                        "surface-dim": "#ccdbf2",
+                        "outline": "#71787a",
+                        "secondary": "#5b5f5e",
+                        "on-tertiary-fixed": "#161d1d",
+                        "inverse-on-surface": "#e9f1ff",
+                        "secondary-fixed-dim": "#c4c7c5",
+                        "background": "#f8f9ff",
+                        "primary": "#41646a",
+                        "on-tertiary-container": "#2d3434",
+                        "on-surface": "#0d1c2d",
+                        "on-secondary-container": "#5f6362",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#233143",
+                        "on-tertiary-fixed-variant": "#414848",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#414849",
+                        "surface-bright": "#f8f9ff",
+                        "surface": "#f8f9ff",
+                        "surface-tint": "#41646a",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#dde0de",
+                        "surface-container-low": "#eef4ff",
+                        "surface-container-high": "#dbe9ff",
+                        "primary-fixed": "#c4e9f1",
+                        "surface-container-highest": "#d4e4fa",
+                        "surface-variant": "#d4e4fa",
+                        "on-secondary-fixed": "#181c1b",
+                        "outline-variant": "#c1c8c9",
+                        "tertiary": "#596060",
+                        "on-background": "#0d1c2d",
+                        "primary-container": "#7da1a8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "section-gap": "48px",
+                        "stack-gap": "16px",
+                        "touch-target-min": "48px",
+                        "container-padding-desktop": "64px",
+                        "container-padding-mobile": "24px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Geist", "sans-serif"],
+                        "headline-lg": ["Geist", "sans-serif"],
+                        "body-md": ["Geist", "sans-serif"],
+                        "body-lg": ["Geist", "sans-serif"],
+                        "display": ["Geist", "sans-serif"],
+                        "label-sm": ["Geist", "sans-serif"],
+                        "headline-lg-mobile": ["Geist", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "300" }],
+                        "label-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Geist', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        .icon-fill { font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        
+        /* Subtle custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #dde0de; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c1c8c9; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-[30px] border-b border-outline-variant/30 dark:border-outline/20">
+<div class="flex justify-between items-center h-[72px] px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
+<!-- Brand -->
+<div class="flex items-center gap-2">
+<svg class="text-primary" fill="none" height="28" viewbox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C6.48 2 2 6.48 2 12V22H8V12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12V22H22V12C22 6.48 17.52 2 12 2Z" fill="currentColor" opacity="0.6"></path>
+<path d="M12 18C10.5 18 9.5 16.5 9.5 15C9.5 13.5 12 10 12 10C12 10 14.5 13.5 14.5 15C14.5 16.5 13.5 18 12 18Z" fill="currentColor"></path>
+</svg>
+<span class="font-title-md text-title-md font-medium text-primary dark:text-primary-fixed-dim uppercase tracking-wider">Jejum com Propósito</span>
+</div>
+<!-- Navigation Links (Desktop) -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Início</a>
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 opacity-80 transition-all duration-200" href="#">Propósito</a>
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300" href="#">Sobre</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden md:block font-label-sm text-label-sm text-primary hover:text-primary-container transition-colors">Entrar</button>
+<button class="text-primary hover:opacity-80 transition-opacity flex items-center justify-center w-touch-target-min h-touch-target-min">
+<span class="material-symbols-outlined text-[24px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[104px] pb-section-gap px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-section-gap max-w-2xl">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Configurar Propósito</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Defina a estrutura e as intenções para sua próxima jornada de jejum espiritual.</p>
+</div>
+<!-- Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
+<!-- Left Column: Form / Configurator -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- Duração Card -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 md:p-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+<h2 class="font-title-md text-title-md text-on-surface">Duração do Propósito</h2>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<label class="relative cursor-pointer">
+<input checked="" class="peer sr-only" name="duration" type="radio"/>
+<div class="h-16 flex flex-col items-center justify-center rounded-lg border border-outline-variant/50 bg-transparent peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+<span class="font-body-md text-body-md font-medium text-on-surface">1 Dia</span>
+</div>
+</label>
+<label class="relative cursor-pointer">
+<input class="peer sr-only" name="duration" type="radio"/>
+<div class="h-16 flex flex-col items-center justify-center rounded-lg border border-outline-variant/50 bg-transparent peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+<span class="font-body-md text-body-md font-medium text-on-surface">3 Dias</span>
+</div>
+</label>
+<label class="relative cursor-pointer">
+<input class="peer sr-only" name="duration" type="radio"/>
+<div class="h-16 flex flex-col items-center justify-center rounded-lg border border-outline-variant/50 bg-transparent peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+<span class="font-body-md text-body-md font-medium text-on-surface">7 Dias</span>
+</div>
+</label>
+<label class="relative cursor-pointer">
+<input class="peer sr-only" name="duration" type="radio"/>
+<div class="h-16 flex flex-col items-center justify-center rounded-lg border border-outline-variant/50 bg-transparent peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+<span class="font-body-md text-body-md font-medium text-on-surface">Personalizado</span>
+</div>
+</label>
+</div>
+</section>
+<!-- Horas (Janela) Card -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 md:p-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<h2 class="font-title-md text-title-md text-on-surface">Janela Diária (Horas)</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Selecione o modelo de jejum intermitente que melhor se adapta à sua rotina de oração.</p>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<label class="flex items-start gap-4 p-4 rounded-lg border border-outline-variant/30 hover:border-primary/50 cursor-pointer transition-colors bg-surface-bright">
+<div class="pt-1">
+<input class="text-primary focus:ring-primary h-4 w-4 border-outline-variant" name="window" type="radio"/>
+</div>
+<div>
+<div class="font-body-md text-body-md font-medium text-on-surface">Jejum de 12h</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">12h Jejum / 12h Alimentação</div>
+</div>
+</label>
+<label class="flex items-start gap-4 p-4 rounded-lg border border-primary bg-primary/5 cursor-pointer transition-colors">
+<div class="pt-1">
+<input checked="" class="text-primary focus:ring-primary h-4 w-4 border-outline-variant" name="window" type="radio"/>
+</div>
+<div>
+<div class="font-body-md text-body-md font-medium text-on-surface">Jejum de 16h</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">16h Jejum / 8h Alimentação</div>
+</div>
+</label>
+<label class="flex items-start gap-4 p-4 rounded-lg border border-outline-variant/30 hover:border-primary/50 cursor-pointer transition-colors bg-surface-bright">
+<div class="pt-1">
+<input class="text-primary focus:ring-primary h-4 w-4 border-outline-variant" name="window" type="radio"/>
+</div>
+<div>
+<div class="font-body-md text-body-md font-medium text-on-surface">Jejum Completo</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1">24h de Abstenção</div>
+</div>
+</label>
+</div>
+</section>
+<!-- Frequência Card -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 md:p-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">event_repeat</span>
+<h2 class="font-title-md text-title-md text-on-surface">Frequência</h2>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="px-6 py-2 rounded-full border border-primary bg-primary text-on-primary font-label-sm text-label-sm transition-all shadow-[0_4px_20px_rgba(65,100,106,0.15)]">
+                            Todos os dias
+                        </button>
+<button class="px-6 py-2 rounded-full border border-outline-variant/50 text-on-surface hover:bg-surface-container transition-all font-label-sm text-label-sm">
+                            Apenas dias úteis
+                        </button>
+<button class="px-6 py-2 rounded-full border border-outline-variant/50 text-on-surface hover:bg-surface-container transition-all font-label-sm text-label-sm">
+                            Dias específicos
+                        </button>
+</div>
+</section>
+<!-- Configurações Avançadas Card -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 md:p-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">settings</span>
+<h2 class="font-title-md text-title-md text-on-surface">Configurações Avançadas</h2>
+</div>
+<div class="space-y-6">
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+<div>
+<h3 class="font-body-md text-body-md font-medium text-on-surface">Permitir Água</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Jejum parcial focado apenas em alimentos sólidos.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-high rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/20">
+<div>
+<h3 class="font-body-md text-body-md font-medium text-on-surface">Notificações de Oração</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Lembretes para orar durante a janela de jejum.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-high rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div>
+<label class="block font-body-md text-body-md font-medium text-on-surface mb-2">Foco/Intenção Principal (Opcional)</label>
+<input class="w-full bg-surface-bright border border-outline-variant/40 text-on-surface font-body-md text-body-md rounded-lg p-3 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-shadow" placeholder="Ex: Direção profissional, Cura, Quebrantamento" type="text"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Preview & Actions -->
+<div class="lg:col-span-4 lg:sticky lg:top-[104px]">
+<div class="bg-surface-container-low border border-outline-variant/20 rounded-2xl p-6 md:p-8 flex flex-col h-full shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
+<h3 class="font-title-md text-title-md text-on-surface mb-6 border-b border-outline-variant/20 pb-4">Sua Escala</h3>
+<div class="flex-grow space-y-6 mb-8">
+<!-- Summary Item -->
+<div class="flex gap-4 items-start">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-primary text-[20px]">calendar_month</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Período</p>
+<p class="font-body-md text-body-md text-on-surface font-medium mt-1">Hoje - 3 Dias</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Termina em 24 de Outubro</p>
+</div>
+</div>
+<!-- Summary Item -->
+<div class="flex gap-4 items-start">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+<span class="material-symbols-outlined text-primary text-[20px]">timelapse</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Janela</p>
+<p class="font-body-md text-body-md text-on-surface font-medium mt-1">16 Horas de Jejum</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">20:00 às 12:00</p>
+</div>
+</div>
+<!-- Mini Scripture Preview -->
+<div class="mt-8 p-4 bg-surface-container-highest rounded-lg border border-outline-variant/20">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Leitura Sugerida (Dia 1)</p>
+<p class="font-body-md text-body-md text-on-surface italic">"Não só de pão viverá o homem..."</p>
+<p class="font-label-sm text-label-sm text-primary mt-2 text-right">Mateus 4:4</p>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-3 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm hover:opacity-90 transition-opacity shadow-[0_4px_14px_rgba(65,100,106,0.2)]">
+                            Confirmar Propósito
+                        </button>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg border border-outline-variant/50 text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                                Baixar PDF
+                            </button>
+<button class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg border border-outline-variant/50 text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+                                Sincronizar
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-lowest border-t border-outline-variant/20 w-full py-section-gap mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center gap-stack-gap px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto focus:outline-none focus:ring-2 focus:ring-primary/20">
+<div class="font-title-md text-title-md text-on-surface dark:text-on-surface-variant flex items-center gap-2">
+<svg class="text-on-surface-variant" fill="none" height="20" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2C6.48 2 2 6.48 2 12V22H8V12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12V22H22V12C22 6.48 17.52 2 12 2Z" fill="currentColor" opacity="0.6"></path>
+<path d="M12 18C10.5 18 9.5 16.5 9.5 15C9.5 13.5 12 10 12 10C12 10 14.5 13.5 14.5 15C14.5 16.5 13.5 18 12 18Z" fill="currentColor"></path>
+</svg>
+                © 2024 Jejum com Propósito. Espiritualidade com intenção.
+            </div>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Termos de Uso</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Política de Privacidade</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Contato</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Nossa Missão</a>
+</nav>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sobre - Jejum com Propósito</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#434846",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#a8cdd4",
+                    "secondary-fixed": "#e0e3e1",
+                    "on-primary-fixed-variant": "#284c52",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#a8cdd4",
+                    "on-primary-container": "#12383e",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#dde4e3",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#e5efff",
+                    "tertiary-fixed-dim": "#c1c8c7",
+                    "on-primary-fixed": "#001f24",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#959c9c",
+                    "surface-dim": "#ccdbf2",
+                    "outline": "#71787a",
+                    "secondary": "#5b5f5e",
+                    "on-tertiary-fixed": "#161d1d",
+                    "inverse-on-surface": "#e9f1ff",
+                    "secondary-fixed-dim": "#c4c7c5",
+                    "background": "#f8f9ff",
+                    "primary": "#41646a",
+                    "on-tertiary-container": "#2d3434",
+                    "on-surface": "#0d1c2d",
+                    "on-secondary-container": "#5f6362",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#233143",
+                    "on-tertiary-fixed-variant": "#414848",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#414849",
+                    "surface-bright": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "surface-tint": "#41646a",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#dde0de",
+                    "surface-container-low": "#eef4ff",
+                    "surface-container-high": "#dbe9ff",
+                    "primary-fixed": "#c4e9f1",
+                    "surface-container-highest": "#d4e4fa",
+                    "surface-variant": "#d4e4fa",
+                    "on-secondary-fixed": "#181c1b",
+                    "outline-variant": "#c1c8c9",
+                    "tertiary": "#596060",
+                    "on-background": "#0d1c2d",
+                    "primary-container": "#7da1a8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "section-gap": "48px",
+                    "stack-gap": "16px",
+                    "touch-target-min": "48px",
+                    "container-padding-desktop": "64px",
+                    "container-padding-mobile": "24px"
+            },
+            "fontFamily": {
+                    "title-md": ["Geist"],
+                    "headline-lg": ["Geist"],
+                    "body-md": ["Geist"],
+                    "body-lg": ["Geist"],
+                    "display": ["Geist"],
+                    "label-sm": ["Geist"],
+                    "headline-lg-mobile": ["Geist"]
+            },
+            "fontSize": {
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "300"}],
+                    "label-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #f8f9ff; /* surface color */
+            color: #0d1c2d; /* on-surface color */
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary-fixed selection:text-on-primary-fixed flex flex-col min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-[30px] border-b border-outline-variant/30">
+<div class="flex justify-between items-center h-[72px] px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
+<!-- Brand -->
+<div class="font-title-md text-title-md font-medium text-primary">
+                Jejum com Propósito
+            </div>
+<!-- Navigation Links -->
+<div class="hidden md:flex items-center gap-8">
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors duration-300" href="#">
+                    Início
+                </a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors duration-300" href="#">
+                    Propósito
+                </a>
+<!-- Active Link -->
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 opacity-80 transition-all duration-200" href="#">
+                    Sobre
+                </a>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-4">
+<button class="hidden md:block font-label-sm text-label-sm text-primary hover:opacity-80 transition-opacity">
+                    Entrar
+                </button>
+<button class="text-primary hover:opacity-80 transition-opacity flex items-center justify-center w-touch-target-min h-touch-target-min">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[140px] pb-[120px] px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto w-full flex flex-col gap-[120px]">
+<!-- Hero Section -->
+<section class="flex flex-col items-center text-center max-w-4xl mx-auto gap-stack-gap">
+<h1 class="font-display text-display text-on-surface">
+                Compreendendo o Propósito
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                O jejum não é apenas a abstenção, mas um convite à quietude. É o espaço que criamos internamente para escutar com mais clareza, alinhando nossas intenções com nossa espiritualidade.
+            </p>
+<div class="w-full mt-12 rounded-xl overflow-hidden border border-outline-variant/20 aspect-[21/9]">
+<img class="w-full h-full object-cover" data-alt="A serene, wide-angle shot of a minimalist, light-flooded interior space. Tall windows let in soft, diffused morning sunlight, casting gentle shadows across a clean, pale floor. The color palette is dominated by pristine whites, soft greys, and subtle touches of sage green. The mood is tranquil, contemplative, and spiritually uplifting, evoking a sense of quietude and purposeful space. High key lighting, clear and peaceful aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhSlYpnz0c9QMvD0Yu51oo7_zZlOsVdBB3ar16KNzcJ1LZsRNZntJ_oPiLlVeZXWhh5xHI-Aa0mnWaEiaZe108enUVi6KzQ2R4Q1cfVVo_bBDJ1cvAPtR9_5Er7vjfM-uCjcweeyTIIWR7313v-ST-nq3Pm57KYKUMFTGQFXITrWyHmOyaggexREHmXnPUNvjVCgDIWz99PZa2TVIquhrCQ3lG0MU_tnlubKJjP_MaUQZp3jSgiboC"/>
+</div>
+</section>
+<!-- Nossa Missão Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-section-gap items-center">
+<div class="md:col-span-5 order-2 md:order-1 rounded-xl overflow-hidden border border-outline-variant/20 aspect-[4/5]">
+<img class="w-full h-full object-cover" data-alt="A close-up, top-down view of a pair of hands gently resting on a minimalist, beautifully bound journal lying on a clean, light-colored wooden table. Beside the journal is a simple, unadorned ceramic cup and a small, delicate sage green plant. The scene is bathed in soft, natural light, reflecting a refined light-mode aesthetic with muted earthy tones and subtle green accents. The atmosphere conveys deep intentionality, peace, and quiet reflection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-bla3kMFPWHNVCPH9osuGdvIiTeL91x9QyQ_g1j7xKNky4KTPOc1kdmamR3AKNeNg2co89-R21F8FqotoJFxT_gL_8gDPFgN3irn6KpSX9Dq0dONlFe1UNhQDWkepNYgQ3bsDCbwu8sWjlACbQdT5SFAveqc7b2UuwKobRrbEjQmkXiZX2c3OVjhqtKj2jckwLIOkJWpP78tF1T0fqUW5XuedZLCtHHF2HFLbkltmQ9lWrxiHbU94"/>
+</div>
+<div class="md:col-span-6 md:col-start-7 order-1 md:order-2 flex flex-col gap-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant/30 w-fit">
+<span class="material-symbols-outlined text-primary text-[16px]">psychiatry</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Nossa Missão</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">
+                    Criar um santuário digital para a sua prática.
+                </h2>
+<div class="font-body-md text-body-md text-on-surface-variant space-y-4">
+<p>
+                        Em um mundo saturado de ruído e distrações constantes, o 'Jejum com Propósito' nasce do desejo de oferecer uma ferramenta que não exija sua atenção, mas que a apoie.
+                    </p>
+<p>
+                        Acreditamos no "Minimalismo Refinado" — a ideia de que a interface deve atuar como uma companheira silenciosa durante seus períodos de oração e jejum. Removemos o excesso visual para que você possa focar no que é essencial: seu estado interno.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Como se Organizar Section (Bento Grid Style) -->
+<section class="flex flex-col gap-12">
+<div class="text-center max-w-2xl mx-auto flex flex-col gap-4">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Como se Organizar</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">A preparação do ambiente e da mente é tão importante quanto a prática em si. Siga estes pilares para estruturar seu momento.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors duration-300">
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface mb-2">Defina a Intenção</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Antes de iniciar, tenha clareza sobre o propósito deste jejum. É por direção, arrependimento ou gratidão? Anote sua intenção.</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors duration-300">
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">spa</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface mb-2">Prepare o Espaço</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Encontre um local tranquilo. O ambiente externo frequentemente reflete e influencia o ambiente interno. Busque a quietude.</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-8 flex flex-col gap-6 hover:border-primary/50 transition-colors duration-300">
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface mb-2">Respeite o Ritmo</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">O jejum não é uma maratona de resistência física. Ouça seu corpo e mantenha-se focado no aspecto espiritual da disciplina.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Orientações Práticas Section -->
+<section class="bg-surface-container-low rounded-2xl p-container-padding-mobile md:p-container-padding-desktop flex flex-col md:flex-row gap-section-gap border border-outline-variant/20">
+<div class="md:w-1/3 flex flex-col gap-4">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Orientações Práticas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Dicas estruturais para manter a constância e o foco durante o seu período de consagração.</p>
+</div>
+<div class="md:w-2/3 flex flex-col gap-6">
+<!-- List Item -->
+<div class="flex gap-4 p-6 bg-surface-container-lowest rounded-xl border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary mt-1">water_drop</span>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Hidratação é Fundamental</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">A menos que esteja realizando um jejum absoluto sob supervisão, mantenha a ingestão de água constante para evitar dores de cabeça e fadiga extrema.</p>
+</div>
+</div>
+<!-- List Item -->
+<div class="flex gap-4 p-6 bg-surface-container-lowest rounded-xl border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary mt-1">menu_book</span>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Associe a Leitura</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Substitua o tempo que gastaria com as refeições (ou redes sociais) pela leitura das escrituras ou meditação focada na sua intenção.</p>
+</div>
+</div>
+<!-- List Item -->
+<div class="flex gap-4 p-6 bg-surface-container-lowest rounded-xl border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary mt-1">nightlight</span>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">O Retorno Gradual</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Quebre o jejum com alimentos leves. A forma como você finaliza a prática demonstra o mesmo nível de intencionalidade de como a começou.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-section-gap bg-surface-container-low border-t border-outline-variant/20 mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center gap-stack-gap px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
+<!-- Brand / Copyright -->
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-title-md text-title-md text-on-surface">
+                    Jejum com Propósito
+                </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">
+                    © 2024 Jejum com Propósito. Espiritualidade com intenção.
+                </span>
+</div>
+<!-- Links -->
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded" href="#">
+                    Termos de Uso
+                </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded" href="#">
+                    Política de Privacidade
+                </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded" href="#">
+                    Contato
+                </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded" href="#">
+                    Nossa Missão
+                </a>
+</div>
+</div>
+</footer>
+</body></html>

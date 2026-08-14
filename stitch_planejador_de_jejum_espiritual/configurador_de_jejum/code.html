@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Configurador do Propósito - Aura de Graça</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts (Fallback to Inter for 'Geist' clean aesthetic) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* Map Geist to Inter for this demo */
+        @font-face {
+            font-family: 'Geist';
+            src: local('Inter'), local('sans-serif');
+        }
+        
+        body {
+            /* Subtle radial gradient to simulate "Light" */
+            background: radial-gradient(circle at top center, var(--tw-colors-surface-bright) 0%, var(--tw-colors-background) 100%);
+            min-height: 100vh;
+        }
+
+        /* Hide scrollbar for cleaner look in the form */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#e0e3e1",
+                        "surface-container-low": "#eef4ff",
+                        "on-tertiary-fixed-variant": "#414848",
+                        "background": "#f8f9ff",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#d4e4fa",
+                        "outline": "#71787a",
+                        "tertiary-fixed": "#dde4e3",
+                        "primary": "#41646a",
+                        "tertiary": "#596060",
+                        "tertiary-fixed-dim": "#c1c8c7",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#41646a",
+                        "on-tertiary-fixed": "#161d1d",
+                        "surface-container-highest": "#d4e4fa",
+                        "surface": "#f8f9ff",
+                        "inverse-surface": "#233143",
+                        "inverse-primary": "#a8cdd4",
+                        "on-primary-fixed": "#001f24",
+                        "on-background": "#0d1c2d",
+                        "on-secondary-container": "#5f6362",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#a8cdd4",
+                        "outline-variant": "#c1c8c9",
+                        "primary-fixed": "#c4e9f1",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#284c52",
+                        "secondary-fixed-dim": "#c4c7c5",
+                        "on-surface": "#0d1c2d",
+                        "tertiary-container": "#959c9c",
+                        "surface-container": "#e5efff",
+                        "secondary-container": "#dde0de",
+                        "on-primary-container": "#12383e",
+                        "inverse-on-surface": "#e9f1ff",
+                        "primary-container": "#7da1a8",
+                        "secondary": "#5b5f5e",
+                        "on-surface-variant": "#414849",
+                        "surface-container-high": "#dbe9ff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#ccdbf2",
+                        "on-tertiary-container": "#2d3434",
+                        "surface-bright": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#181c1b",
+                        "on-secondary-fixed-variant": "#434846"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-gap": "16px",
+                        "section-gap": "48px",
+                        "touch-target-min": "48px",
+                        "base": "4px",
+                        "container-padding-desktop": "64px",
+                        "container-padding-mobile": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "display": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "body-md": ["Geist"],
+                        "title-md": ["Geist"],
+                        "headline-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "300" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant/30 dark:border-outline/20 docked full-width top-0 sticky flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop h-20 w-full z-50 flat no shadows">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">auto_awesome</span>
+<span class="font-display text-title-md tracking-widest text-primary dark:text-primary-fixed uppercase">Aura de Graça</span>
+</div>
+<!-- Desktop Nav Links (Hidden on Mobile per JSON intent, blending with prompt request) -->
+<div class="hidden md:flex items-center gap-8">
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Início</a>
+<a class="font-label-sm text-label-sm text-primary dark:text-primary-fixed font-medium" href="#">Propósito</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Sobre</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex font-label-sm text-label-sm text-primary dark:text-primary-fixed font-medium hover:bg-primary-container/10 dark:hover:bg-primary-fixed-dim/10 rounded-full transition-all active:scale-95 duration-200 ease-in-out px-4 py-2 border border-outline-variant/30">
+                Entrar com Google
+            </button>
+<button class="md:hidden font-label-sm text-label-sm text-primary dark:text-primary-fixed hover:bg-primary-container/10 rounded-full p-2 transition-all">
+<span class="material-symbols-outlined">login</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-3xl mx-auto px-container-padding-mobile md:px-0 pt-section-gap flex flex-col gap-section-gap">
+<!-- Page Header -->
+<section class="text-center flex flex-col gap-base items-center">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Configurador do Propósito</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg">Estabeleça sua jornada de jejum e oração. Defina os ritmos que guiarão seu santuário digital.</p>
+</section>
+<!-- Configuration Card -->
+<div class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-6 md:p-8 flex flex-col gap-8 shadow-[0_4px_40px_-10px_rgba(65,100,106,0.05)]">
+<form class="flex flex-col gap-6" id="proposito-form">
+<!-- Basic Configs -->
+<div class="flex flex-col gap-6">
+<h2 class="font-title-md text-title-md text-on-surface border-b border-outline-variant/20 pb-2">Fundamentos</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-base">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Duração do Propósito</label>
+<select class="bg-surface border border-outline-variant/30 text-on-surface font-body-md text-body-md rounded-lg p-3 min-h-[48px] focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors appearance-none">
+<option>Semanal (7 dias)</option>
+<option>Mensal (30 dias)</option>
+<option>Quaresma (40 dias)</option>
+</select>
+</div>
+<div class="flex flex-col gap-base">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Horas de Consagração diária</label>
+<input class="bg-surface border border-outline-variant/30 text-on-surface font-body-md text-body-md rounded-lg p-3 min-h-[48px] focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors" max="24" min="1" type="number" value="12"/>
+</div>
+</div>
+<div class="flex flex-col gap-base">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Frequência</label>
+<select class="bg-surface border border-outline-variant/30 text-on-surface font-body-md text-body-md rounded-lg p-3 min-h-[48px] focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors appearance-none">
+<option>Todos os dias</option>
+<option>3x na semana</option>
+<option>Apenas finais de semana</option>
+</select>
+</div>
+</div>
+<!-- Advanced Configs (Accordion) -->
+<details class="group border border-outline-variant/20 rounded-lg bg-surface/50 overflow-hidden">
+<summary class="font-title-md text-title-md text-on-surface p-4 flex justify-between items-center cursor-pointer min-h-[48px] select-none hover:bg-surface-variant/30 transition-colors">
+                        Configurações Avançadas
+                        <span class="material-symbols-outlined transition-transform duration-300 group-open:-rotate-180 text-on-surface-variant">expand_more</span>
+</summary>
+<div class="p-4 pt-2 flex flex-col gap-6 border-t border-outline-variant/10">
+<!-- Start Times -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Horários de Início Sugeridos</label>
+<div class="flex flex-wrap gap-3">
+<label class="flex items-center gap-2 cursor-pointer bg-surface border border-outline-variant/30 rounded-full px-4 py-2 min-h-[48px] hover:border-primary transition-colors has-[:checked]:bg-primary-container/20 has-[:checked]:border-primary">
+<input checked="" class="accent-primary w-4 h-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">08:00</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer bg-surface border border-outline-variant/30 rounded-full px-4 py-2 min-h-[48px] hover:border-primary transition-colors has-[:checked]:bg-primary-container/20 has-[:checked]:border-primary">
+<input class="accent-primary w-4 h-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">12:00</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer bg-surface border border-outline-variant/30 rounded-full px-4 py-2 min-h-[48px] hover:border-primary transition-colors has-[:checked]:bg-primary-container/20 has-[:checked]:border-primary">
+<input class="accent-primary w-4 h-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface">18:00</span>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Start Toggle -->
+<div class="flex justify-between items-center bg-surface border border-outline-variant/30 rounded-lg p-3 min-h-[48px]">
+<span class="font-body-md text-body-md text-on-surface">Iniciar Hoje</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+</label>
+</div>
+<!-- Absolute Fast Toggle -->
+<div class="flex justify-between items-center bg-surface border border-outline-variant/30 rounded-lg p-3 min-h-[48px]">
+<span class="font-body-md text-body-md text-on-surface">Jejum Absoluto</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+</label>
+</div>
+</div>
+<!-- Distribution -->
+<div class="flex flex-col gap-base">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Distribuição</label>
+<select class="bg-surface border border-outline-variant/30 text-on-surface font-body-md text-body-md rounded-lg p-3 min-h-[48px] focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors appearance-none">
+<option>Alternada (Dias fixos)</option>
+<option>Aleatória (Guiada pelo Espírito)</option>
+</select>
+</div>
+</div>
+</details>
+<!-- Primary Action -->
+<button class="mt-4 w-full bg-primary text-on-primary font-title-md text-title-md py-4 rounded-xl shadow-[0_8px_20px_-10px_rgba(65,100,106,0.4)] hover:shadow-[0_8px_20px_-10px_rgba(65,100,106,0.6)] hover:-translate-y-0.5 active:scale-[0.98] transition-all min-h-[48px] flex justify-center items-center gap-2" type="button">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_add_on</span>
+                    Gerar Escala de Jejum
+                </button>
+</form>
+</div>
+<!-- Results / Preview Area -->
+<section class="flex flex-col gap-6 mt-4">
+<h3 class="font-title-md text-title-md text-on-surface">Sua Escala (Pré-visualização)</h3>
+<!-- Bento-style preview grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Day Card 1 -->
+<div class="bg-surface-container border border-outline-variant/10 rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-16 h-16 bg-primary-container/20 rounded-bl-full -mr-4 -mt-4"></div>
+<span class="font-label-sm text-label-sm text-secondary">Dia 1 • Amanhã</span>
+<span class="font-title-md text-title-md text-on-surface">12h de Jejum</span>
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 08:00 - 20:00</span>
+</div>
+<!-- Day Card 2 -->
+<div class="bg-surface-container border border-outline-variant/10 rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-16 h-16 bg-primary-container/20 rounded-bl-full -mr-4 -mt-4"></div>
+<span class="font-label-sm text-label-sm text-secondary">Dia 2 • Quarta</span>
+<span class="font-title-md text-title-md text-on-surface">12h de Jejum</span>
+<span class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 08:00 - 20:00</span>
+</div>
+<!-- Day Card 3 -->
+<div class="bg-surface border border-outline-variant/30 border-dashed rounded-xl p-4 flex flex-col items-center justify-center gap-2 opacity-60">
+<span class="material-symbols-outlined text-outline">more_horiz</span>
+<span class="font-label-sm text-label-sm text-outline">Mais 5 dias</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-wrap gap-4 mt-2">
+<button class="flex-1 bg-secondary-container/50 text-on-secondary-container hover:bg-secondary-container font-label-sm text-label-sm py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 min-h-[48px]">
+<span class="material-symbols-outlined">download</span> Download .ics
+                </button>
+<button class="flex-1 bg-surface border border-outline-variant/30 text-on-surface hover:bg-surface-variant/30 font-label-sm text-label-sm py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 min-h-[48px]">
+<span class="material-symbols-outlined">picture_as_pdf</span> Exportar PDF
+                </button>
+<button class="flex-1 bg-surface border border-outline-variant/30 text-on-surface hover:bg-surface-variant/30 font-label-sm text-label-sm py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 min-h-[48px] w-full md:w-auto">
+<span class="material-symbols-outlined">sync</span> Sincronizar Google
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="bg-surface/80 dark:bg-inverse-surface/90 backdrop-blur-3xl docked full-width bottom-0 rounded-t-xl border-t border-outline-variant/20 shadow-sm fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 pb-safe md:hidden">
+<!-- Início -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim opacity-70 hover:opacity-100 transition-opacity tap-highlight-transparent active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Início</span>
+</a>
+<!-- Propósito (Active State) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed bg-primary-container/20 dark:bg-primary-fixed-dim/10 rounded-2xl px-6 py-1 hover:opacity-100 transition-opacity tap-highlight-transparent active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings_heart</span>
+<span class="font-label-sm text-label-sm">Propósito</span>
+</a>
+<!-- Sobre -->
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim opacity-70 hover:opacity-100 transition-opacity tap-highlight-transparent active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">info</span>
+<span class="font-label-sm text-label-sm">Sobre</span>
+</a>
+</nav>
+</body></html>
