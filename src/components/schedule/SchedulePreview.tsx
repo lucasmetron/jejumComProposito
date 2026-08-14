@@ -27,7 +27,11 @@ import {
 } from "lucide-react";
 import { clsx } from "clsx";
 
-export function SchedulePreview() {
+interface SchedulePreviewProps {
+  onEdit?: () => void;
+}
+
+export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
   const { events, config } = useFastingStore();
   const { data: session, status } = useSession();
 
@@ -77,14 +81,21 @@ export function SchedulePreview() {
 
   if (!events || events.length === 0) {
     return (
-      <Card className="p-8 text-center flex flex-col items-center justify-center min-h-[300px]">
-        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+      <Card className="p-8 text-center flex flex-col items-center justify-center min-h-[300px] border-dashed border-2 border-outline-variant/50 dark:border-white/15 bg-surface-container-lowest/50 dark:bg-slate-900/50">
+        <div className="w-14 h-14 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary-fixed-dim mb-4">
           <CalendarIcon className="w-7 h-7" />
         </div>
-        <h3 className="text-lg font-semibold text-on-surface mb-1">Nenhum propósito gerado</h3>
-        <p className="text-sm text-on-surface-variant max-w-sm">
-          Ajuste as preferências no configurador ao lado e clique em &quot;Gerar Cronograma&quot; para visualizar sua escala de jejum.
+        <h3 className="text-lg font-semibold text-on-surface dark:text-white mb-1">
+          Nenhuma escala gerada ainda
+        </h3>
+        <p className="text-xs md:text-sm text-on-surface-variant dark:text-gray-400 max-w-sm mb-5">
+          Ajuste as preferências na aba de configuração e clique em &quot;Gerar Cronograma&quot; para visualizar sua escala devocional.
         </p>
+        {onEdit && (
+          <Button onClick={onEdit} variant="primary" size="sm">
+            Ir para Configuração
+          </Button>
+        )}
       </Card>
     );
   }
@@ -97,12 +108,12 @@ export function SchedulePreview() {
           className={clsx(
             "p-4 rounded-xl flex items-center gap-3 border text-sm animate-in fade-in duration-200",
             syncStatus.type === "success"
-              ? "bg-primary-fixed/40 border-primary/30 text-on-primary-container"
-              : "bg-error-container/60 border-error/30 text-on-error-container"
+              ? "bg-primary-fixed/40 dark:bg-primary/20 border-primary/30 text-on-primary-container dark:text-primary-fixed-dim"
+              : "bg-error-container/60 dark:bg-red-950/50 border-error/30 text-on-error-container dark:text-red-300"
           )}
         >
           {syncStatus.type === "success" ? (
-            <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-primary dark:text-primary-fixed-dim flex-shrink-0" />
           ) : (
             <AlertTriangle className="w-5 h-5 text-error flex-shrink-0" />
           )}
@@ -119,55 +130,55 @@ export function SchedulePreview() {
       {/* Overview Stats Bento */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Card className="p-4 flex flex-col">
-          <span className="text-xs text-secondary font-medium uppercase tracking-wider">
+          <span className="text-xs text-secondary dark:text-gray-400 font-medium uppercase tracking-wider">
             Total de Sessões
           </span>
-          <span className="text-2xl font-bold text-on-surface mt-1">{events.length}</span>
-          <span className="text-[11px] text-on-surface-variant mt-0.5">
+          <span className="text-2xl font-bold text-on-surface dark:text-white mt-1">{events.length}</span>
+          <span className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">
             em {config.durationDays} dias de propósito
           </span>
         </Card>
 
         <Card className="p-4 flex flex-col">
-          <span className="text-xs text-secondary font-medium uppercase tracking-wider">
-            Horas de Consagração
+          <span className="text-xs text-secondary dark:text-gray-400 font-medium uppercase tracking-wider">
+            Horas Consagradas
           </span>
-          <span className="text-2xl font-bold text-primary mt-1">{totalFastHours}h</span>
-          <span className="text-[11px] text-on-surface-variant mt-0.5">tempo total consagrado</span>
+          <span className="text-2xl font-bold text-primary dark:text-primary-fixed-dim mt-1">{totalFastHours}h</span>
+          <span className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">tempo total planejado</span>
         </Card>
 
         <Card className="p-4 flex flex-col">
-          <span className="text-xs text-secondary font-medium uppercase tracking-wider">
+          <span className="text-xs text-secondary dark:text-gray-400 font-medium uppercase tracking-wider">
             Hidratação
           </span>
-          <span className="text-sm font-bold text-on-surface mt-2 truncate">
+          <span className="text-sm font-bold text-on-surface dark:text-white mt-2 truncate">
             {config.isAbsoluteFast ? "Jejum Absoluto" : "Água Permitida"}
           </span>
-          <span className="text-[11px] text-on-surface-variant mt-0.5">
+          <span className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">
             {config.isAbsoluteFast ? "Sem ingestão hídrica" : "Hidratação contínua"}
           </span>
         </Card>
 
         <Card className="p-4 flex flex-col">
-          <span className="text-xs text-secondary font-medium uppercase tracking-wider">
+          <span className="text-xs text-secondary dark:text-gray-400 font-medium uppercase tracking-wider">
             Estratégia
           </span>
-          <span className="text-sm font-bold text-on-surface mt-2 capitalize">
+          <span className="text-sm font-bold text-on-surface dark:text-white mt-2 capitalize">
             {config.distribution === "alternated" ? "Dias Alternados" : "Aleatório Saudável"}
           </span>
-          <span className="text-[11px] text-on-surface-variant mt-0.5">
+          <span className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">
             {config.rampUp ? "Com Ramp-up progressivo" : "Horário constante"}
           </span>
         </Card>
       </div>
 
       {/* Export & Sync Action Bar */}
-      <Card className="p-5 bg-surface-container-low flex flex-wrap items-center justify-between gap-4">
+      <Card className="p-5 bg-surface-container-low dark:bg-slate-900 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2.5">
-          <Share2 className="w-5 h-5 text-primary" />
+          <Share2 className="w-5 h-5 text-primary dark:text-primary-fixed-dim" />
           <div>
-            <h4 className="font-semibold text-sm text-on-surface">Exportar & Sincronizar</h4>
-            <p className="text-xs text-on-surface-variant">
+            <h4 className="font-semibold text-sm text-on-surface dark:text-white">Exportar & Sincronizar</h4>
+            <p className="text-xs text-on-surface-variant dark:text-gray-400">
               Adicione aos seus calendários ou imprima o cronograma devocional
             </p>
           </div>
@@ -214,55 +225,56 @@ export function SchedulePreview() {
       {/* Event Cards List */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between px-1">
-          <h3 className="font-semibold text-base text-on-surface flex items-center gap-2">
-            <CalendarCheck className="w-5 h-5 text-primary" />
+          <h3 className="font-semibold text-base text-on-surface dark:text-white flex items-center gap-2">
+            <CalendarCheck className="w-5 h-5 text-primary dark:text-primary-fixed-dim" />
             Cronograma de Sessões
           </h3>
-          <span className="text-xs text-on-surface-variant">Clique para ver detalhes</span>
+          <span className="text-xs text-secondary dark:text-gray-400">
+            Clique em um dia para ver detalhes
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {events.map((event, idx) => {
-            const startFormatted = format(event.start, "EEEE, dd 'de' MMMM", { locale: ptBR });
-            const timeRange = `${format(event.start, "HH:mm")} às ${format(event.end, "HH:mm")}`;
+          {events.map((event, index) => {
+            const startDate = new Date(event.start);
+            const endDate = new Date(event.end);
 
             return (
               <div
                 key={event.id}
                 onClick={() => setSelectedEvent(event)}
-                className="p-5 rounded-2xl border border-outline-variant/30 bg-surface-container-lowest hover:border-primary/50 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between gap-4 group"
+                className={clsx(
+                  "p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-3 group",
+                  "bg-surface-container-lowest dark:bg-slate-900 border-outline-variant/30 dark:border-white/10 hover:border-primary dark:hover:border-primary/50 hover:shadow-sm"
+                )}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-surface-container-high text-primary">
-                        Sessão {event.sessionNumber}/{event.totalSessions}
+                    <div className="flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim text-xs font-bold flex items-center justify-center">
+                        {index + 1}
                       </span>
-                      {event.isAbsoluteFast ? (
-                        <Badge variant="absolute">Sem Água</Badge>
-                      ) : (
-                        <Badge variant="water">Água Permitida</Badge>
-                      )}
+                      <h4 className="font-semibold text-sm text-on-surface dark:text-white group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
+                        {format(startDate, "EEEE, dd 'de' MMMM", { locale: ptBR })}
+                      </h4>
                     </div>
-                    <h4 className="font-semibold text-sm text-on-surface capitalize group-hover:text-primary transition-colors">
-                      {startFormatted}
-                    </h4>
+                    <p className="text-xs text-secondary dark:text-gray-400 mt-1 pl-8">
+                      {event.title}
+                    </p>
                   </div>
-                  <div className="text-right flex-shrink-0">
-                    <span className="font-bold text-primary text-base">
-                      {event.targetHours}h
-                    </span>
-                  </div>
+                  <Badge variant="primary" size="sm">
+                    {event.targetHours}h de Jejum
+                  </Badge>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-outline-variant/20 text-xs text-on-surface-variant">
-                  <span className="flex items-center gap-1.5 font-medium text-on-surface">
-                    <Clock className="w-3.5 h-3.5 text-primary" />
-                    {timeRange}
-                  </span>
-                  <span className="text-primary font-medium group-hover:underline">
-                    Ver detalhes →
-                  </span>
+                <div className="flex items-center justify-between text-xs text-on-surface-variant dark:text-gray-400 pt-2 border-t border-outline-variant/20 dark:border-white/5 pl-8">
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-primary dark:text-primary-fixed-dim" />
+                    <span>
+                      {format(startDate, "HH:mm")} &rarr; {format(endDate, "HH:mm")}
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-secondary dark:text-gray-400">Ver detalhes &rarr;</span>
                 </div>
               </div>
             );
@@ -270,67 +282,45 @@ export function SchedulePreview() {
         </div>
       </div>
 
-      {/* Event Detail Modal */}
+      {/* Event Details Modal */}
       {selectedEvent && (
         <Modal
           isOpen={!!selectedEvent}
           onClose={() => setSelectedEvent(null)}
-          title={`Sessão ${selectedEvent.sessionNumber} de ${selectedEvent.totalSessions}`}
-          description={format(selectedEvent.start, "EEEE, dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+          title={selectedEvent.title}
         >
-          <div className="flex flex-col gap-5 pt-2">
-            <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-between">
-              <div>
-                <span className="text-xs text-secondary uppercase font-semibold">
-                  Janela de Consagração
+          <div className="flex flex-col gap-4">
+            <div className="p-4 rounded-xl bg-surface-container-low dark:bg-slate-800 flex flex-col gap-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-secondary dark:text-gray-400 font-semibold uppercase">
+                  Data e Duração
                 </span>
-                <div className="text-lg font-bold text-primary">
-                  {format(selectedEvent.start, "HH:mm")} às {format(selectedEvent.end, "HH:mm")}
-                </div>
+                <Badge variant="primary">{selectedEvent.targetHours} horas</Badge>
               </div>
-              <div className="text-right">
-                <span className="text-xs text-secondary uppercase font-semibold">Duração</span>
-                <div className="text-lg font-bold text-on-surface">
-                  {selectedEvent.targetHours} Horas
-                </div>
+              <div className="text-sm font-semibold text-on-surface dark:text-white">
+                {format(new Date(selectedEvent.start), "EEEE, dd 'de' MMMM 'de' yyyy", {
+                  locale: ptBR,
+                })}
+              </div>
+              <div className="text-xs text-secondary dark:text-gray-300 flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5" />
+                Início: {format(new Date(selectedEvent.start), "HH:mm")} &bull; Término:{" "}
+                {format(new Date(selectedEvent.end), "HH:mm")}
               </div>
             </div>
 
-            {/* Hydration Guidance Card */}
-            <div
-              className={clsx(
-                "p-4 rounded-xl border flex items-start gap-3",
-                selectedEvent.isAbsoluteFast
-                  ? "bg-error-container/40 border-error/30 text-on-error-container"
-                  : "bg-primary-fixed/30 border-primary/30 text-on-primary-container"
-              )}
-            >
-              <Droplets className="w-5 h-5 flex-shrink-0 mt-0.5" />
-              <div className="text-xs leading-relaxed">
-                <span className="font-semibold block mb-0.5">
-                  {selectedEvent.isAbsoluteFast
-                    ? "Jejum Absoluto (Sem Água)"
-                    : "Orientação de Hidratação"}
-                </span>
-                {selectedEvent.isAbsoluteFast
-                  ? "Este propósito é de abstenção completa sem ingestão de líquidos. Preserve suas energias e permaneça em oração contínua."
-                  : "Beba água regularmente durante este período para preservar o bom funcionamento do corpo enquanto você dedica sua mente e espírito à oração."}
-              </div>
-            </div>
-
-            {/* Description details */}
-            <div>
-              <span className="text-xs font-semibold uppercase text-secondary tracking-wider block mb-1">
-                Descrição do Evento no Calendário
+            <div className="flex flex-col gap-1.5">
+              <span className="text-xs font-semibold text-secondary dark:text-gray-400 uppercase">
+                Orientações da Sessão
               </span>
-              <pre className="text-xs bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30 text-on-surface whitespace-pre-wrap font-sans">
+              <p className="text-xs text-on-surface-variant dark:text-gray-300 leading-relaxed whitespace-pre-line bg-surface-bright dark:bg-slate-800/60 p-3 rounded-xl border border-outline-variant/20 dark:border-white/5">
                 {selectedEvent.description}
-              </pre>
+              </p>
             </div>
 
-            <div className="flex justify-end gap-3 pt-2">
-              <Button variant="outline" size="sm" onClick={() => setSelectedEvent(null)}>
-                Fechar
+            <div className="pt-2 flex justify-end">
+              <Button size="sm" variant="primary" onClick={() => setSelectedEvent(null)}>
+                Entendido
               </Button>
             </div>
           </div>

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { NextAuthProvider } from "@/components/providers/NextAuthProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { TopNavBar } from "@/components/layout/TopNavBar";
+import { BottomNavBar } from "@/components/layout/BottomNavBar";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
@@ -25,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className="scroll-smooth">
+    <html lang="pt-BR" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -38,11 +40,14 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-background text-on-background antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+      <body className="min-h-screen flex flex-col bg-background text-on-background dark:bg-slate-950 dark:text-gray-100 antialiased selection:bg-primary-fixed selection:text-on-primary-fixed transition-colors">
         <NextAuthProvider>
-          <TopNavBar />
-          <main className="flex-grow pt-[84px]">{children}</main>
-          <Footer />
+          <ThemeProvider>
+            <TopNavBar />
+            <main className="flex-grow pt-[84px] pb-20 md:pb-8">{children}</main>
+            <BottomNavBar />
+            <Footer />
+          </ThemeProvider>
         </NextAuthProvider>
       </body>
     </html>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   fastingConfigSchema,
@@ -66,7 +66,6 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
   const {
     register,
     handleSubmit,
-    control,
     watch,
     setValue,
     formState: { errors },
@@ -98,12 +97,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
       {/* 1. Duração do Propósito */}
       <Card className="p-6 md:p-8">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 rounded-lg bg-primary/10 text-primary">
+          <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim">
             <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-on-surface">Duração do Propósito</h2>
-            <p className="text-xs text-on-surface-variant">Quantos dias durará sua jornada espiritual total</p>
+            <h2 className="text-lg font-semibold text-on-surface dark:text-white">Duração do Propósito</h2>
+            <p className="text-xs text-on-surface-variant dark:text-gray-400">Quantos dias durará sua jornada espiritual total</p>
           </div>
         </div>
 
@@ -124,15 +123,15 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 className={clsx(
                   "p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between min-h-[68px]",
                   isSelected
-                    ? "border-primary bg-primary/5 text-primary ring-1 ring-primary shadow-sm"
-                    : "border-outline-variant/40 hover:border-primary/50 text-on-surface"
+                    ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
+                    : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                 )}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-sm">{preset.label}</span>
-                  {isSelected && <Check className="w-4 h-4 text-primary" />}
+                  {isSelected && <Check className="w-4 h-4 text-primary dark:text-primary-fixed-dim" />}
                 </div>
-                <span className="text-xs text-on-surface-variant">
+                <span className="text-xs text-on-surface-variant dark:text-gray-400">
                   {preset.value === 1 ? "1 dia único" : `${preset.value} dias corridos`}
                 </span>
               </button>
@@ -147,12 +146,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
       {/* 2. Janela Diária de Jejum */}
       <Card className="p-6 md:p-8">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 rounded-lg bg-primary/10 text-primary">
+          <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim">
             <Clock className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-on-surface">Janela Diária de Jejum</h2>
-            <p className="text-xs text-on-surface-variant">
+            <h2 className="text-lg font-semibold text-on-surface dark:text-white">Janela Diária de Jejum</h2>
+            <p className="text-xs text-on-surface-variant dark:text-gray-400">
               Quantidade de horas consecutivas de abstinência por sessão
             </p>
           </div>
@@ -169,15 +168,15 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 className={clsx(
                   "p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1",
                   isSelected
-                    ? "border-primary bg-primary/5 text-primary ring-1 ring-primary shadow-sm"
-                    : "border-outline-variant/40 hover:border-primary/50 text-on-surface"
+                    ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
+                    : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                 )}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-sm">{preset.label}</span>
-                  {isSelected && <Check className="w-4 h-4 text-primary" />}
+                  {isSelected && <Check className="w-4 h-4 text-primary dark:text-primary-fixed-dim" />}
                 </div>
-                <span className="text-xs text-on-surface-variant leading-tight">{preset.sub}</span>
+                <span className="text-xs text-on-surface-variant dark:text-gray-400 leading-tight">{preset.sub}</span>
               </button>
             );
           })}
@@ -191,17 +190,17 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
       <Card className="p-6 md:p-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10 text-primary">
+            <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim">
               <Sliders className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-on-surface">Frequência no Período</h2>
-              <p className="text-xs text-on-surface-variant">
+              <h2 className="text-lg font-semibold text-on-surface dark:text-white">Frequência no Período</h2>
+              <p className="text-xs text-on-surface-variant dark:text-gray-400">
                 Quantos dias você fará o jejum dentro dos {watchedValues.durationDays} dias totais
               </p>
             </div>
           </div>
-          <div className="bg-primary/10 text-primary font-semibold px-3.5 py-1.5 rounded-full text-sm">
+          <div className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold px-3.5 py-1.5 rounded-full text-sm">
             {watchedValues.frequencyDays} {watchedValues.frequencyDays === 1 ? "dia" : "dias"}
           </div>
         </div>
@@ -213,9 +212,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
             max={watchedValues.durationDays || 7}
             value={watchedValues.frequencyDays}
             onChange={(e) => setValue("frequencyDays", parseInt(e.target.value, 10))}
-            className="w-full h-2 bg-surface-container-high rounded-lg appearance-none cursor-pointer accent-primary"
+            className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary"
           />
-          <div className="flex justify-between text-xs text-secondary">
+          <div className="flex justify-between text-xs text-secondary dark:text-gray-400">
             <span>1 dia</span>
             <span>{Math.round((watchedValues.durationDays || 7) / 2)} dias</span>
             <span>{watchedValues.durationDays || 7} dias (Todos)</span>
@@ -238,7 +237,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           <div className="flex flex-col gap-5 pt-2">
             {/* Início Hoje / Amanhã */}
             <div>
-              <label className="text-xs font-semibold uppercase text-secondary tracking-wider block mb-2">
+              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2">
                 Começar quando?
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -248,8 +247,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   className={clsx(
                     "p-3 rounded-xl border text-center font-medium text-sm transition-all",
                     watchedValues.startOption === "today"
-                      ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
-                      : "border-outline-variant/40 hover:border-primary/50 text-on-surface"
+                      ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                      : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                   )}
                 >
                   Hoje
@@ -260,8 +259,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   className={clsx(
                     "p-3 rounded-xl border text-center font-medium text-sm transition-all",
                     watchedValues.startOption === "tomorrow"
-                      ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
-                      : "border-outline-variant/40 hover:border-primary/50 text-on-surface"
+                      ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                      : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                   )}
                 >
                   Amanhã
@@ -271,7 +270,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
             {/* Presets de Horário */}
             <div>
-              <label className="text-xs font-semibold uppercase text-secondary tracking-wider block mb-2">
+              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2">
                 Horário de Início
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -286,13 +285,13 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                       className={clsx(
                         "p-3 rounded-xl border text-center transition-all flex flex-col items-center gap-1",
                         isSelected
-                          ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
-                          : "border-outline-variant/40 hover:border-primary/50 text-on-surface"
+                          ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                          : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                       )}
                     >
                       <Icon className="w-4 h-4" />
                       <span className="font-semibold text-sm">{time.label}</span>
-                      <span className="text-[11px] text-on-surface-variant">{time.sub}</span>
+                      <span className="text-[11px] text-on-surface-variant dark:text-gray-400">{time.sub}</span>
                     </button>
                   );
                 })}
@@ -311,7 +310,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           <div className="flex flex-col gap-5 pt-2">
             {/* Alternado vs Aleatório */}
             <div>
-              <label className="text-xs font-semibold uppercase text-secondary tracking-wider block mb-2">
+              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2">
                 Padrão de Distribuição
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -321,12 +320,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   className={clsx(
                     "p-3 rounded-xl border text-left transition-all",
                     watchedValues.distribution === "alternated"
-                      ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
-                      : "border-outline-variant/40 hover:border-primary/50 text-on-surface"
+                      ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                      : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                   )}
                 >
                   <div className="font-semibold text-sm">Alternado</div>
-                  <div className="text-xs text-on-surface-variant mt-0.5">
+                  <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
                     Pula pelo menos 1 dia de descanso entre cada jejum
                   </div>
                 </button>
@@ -336,12 +335,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   className={clsx(
                     "p-3 rounded-xl border text-left transition-all",
                     watchedValues.distribution === "random"
-                      ? "border-primary bg-primary/5 text-primary ring-1 ring-primary"
-                      : "border-outline-variant/40 hover:border-primary/50 text-on-surface"
+                      ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                      : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                   )}
                 >
                   <div className="font-semibold text-sm">Aleatório Saudável</div>
-                  <div className="text-xs text-on-surface-variant mt-0.5">
+                  <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
                     Espaçamento equilibrado ao longo do período
                   </div>
                 </button>
@@ -350,11 +349,11 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
             {/* Dias Bloqueados */}
             <div>
-              <label className="text-xs font-semibold uppercase text-secondary tracking-wider block mb-1">
+              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
                 Dias Bloqueados (NUNCA agendar nestes dias)
               </label>
-              <p className="text-xs text-on-surface-variant mb-2.5">
-                Clique nos dias da semana em que você tem compromissos inadiáveis ou reuniões familiares.
+              <p className="text-xs text-on-surface-variant dark:text-gray-400 mb-2.5">
+                Clique nos dias da semana em que você tem compromissos ou reuniões inadiáveis.
               </p>
               <div className="grid grid-cols-7 gap-2">
                 {WEEKDAYS.map((w) => {
@@ -373,8 +372,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                       className={clsx(
                         "p-2.5 rounded-lg border text-center transition-all flex flex-col items-center",
                         isBlocked
-                          ? "bg-error-container/60 border-error/40 text-on-error-container line-through"
-                          : "border-outline-variant/40 hover:border-primary/50 text-on-surface"
+                          ? "bg-error-container/60 dark:bg-red-950/60 border-error/40 text-on-error-container dark:text-red-300 line-through"
+                          : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300"
                       )}
                     >
                       <span className="text-xs font-semibold">{w.label}</span>
@@ -398,16 +397,16 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
         >
           <div className="flex flex-col gap-4 pt-2">
             {/* Ramp-up toggle */}
-            <label className="flex items-start justify-between p-4 rounded-xl border border-outline-variant/30 bg-surface-container-low cursor-pointer hover:border-primary/40 transition-colors">
+            <label className="flex items-start justify-between p-4 rounded-xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low dark:bg-slate-800/60 cursor-pointer hover:border-primary/40 transition-colors">
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-primary/10 text-primary mt-0.5">
+                <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim mt-0.5">
                   <TrendingUp className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm text-on-surface">
+                  <div className="font-semibold text-sm text-on-surface dark:text-white">
                     Progressão Gradual (Ramp-up)
                   </div>
-                  <div className="text-xs text-on-surface-variant mt-0.5">
+                  <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
                     Inicia os primeiros jejuns com menor duração e sobe gradualmente até atingir a meta de {watchedValues.targetHours}h.
                   </div>
                 </div>
@@ -416,21 +415,21 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 type="checkbox"
                 checked={watchedValues.rampUp}
                 onChange={(e) => setValue("rampUp", e.target.checked)}
-                className="w-5 h-5 text-primary rounded border-outline-variant focus:ring-primary mt-1"
+                className="w-5 h-5 text-primary rounded border-outline-variant focus:ring-primary mt-1 accent-primary"
               />
             </label>
 
             {/* Absolute Fast toggle */}
-            <label className="flex items-start justify-between p-4 rounded-xl border border-outline-variant/30 bg-surface-container-low cursor-pointer hover:border-primary/40 transition-colors">
+            <label className="flex items-start justify-between p-4 rounded-xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low dark:bg-slate-800/60 cursor-pointer hover:border-primary/40 transition-colors">
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-error/10 text-error mt-0.5">
+                <div className="p-2 rounded-lg bg-error/10 dark:bg-red-900/30 text-error dark:text-red-400 mt-0.5">
                   <ShieldAlert className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm text-on-surface">
+                  <div className="font-semibold text-sm text-on-surface dark:text-white">
                     Jejum Absoluto (Sem Água)
                   </div>
-                  <div className="text-xs text-on-surface-variant mt-0.5">
+                  <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
                     Abstenção total incluindo líquidos. Se desmarcado (padrão), os títulos e lembretes sugerem consumo saudável de água.
                   </div>
                 </div>
@@ -439,7 +438,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 type="checkbox"
                 checked={watchedValues.isAbsoluteFast}
                 onChange={(e) => setValue("isAbsoluteFast", e.target.checked)}
-                className="w-5 h-5 text-error rounded border-outline-variant focus:ring-error mt-1"
+                className="w-5 h-5 text-error rounded border-outline-variant focus:ring-error mt-1 accent-red-600"
               />
             </label>
           </div>
@@ -453,26 +452,26 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
         >
           <div className="flex flex-col gap-4 pt-2">
             <div>
-              <label className="text-xs font-semibold uppercase text-secondary tracking-wider block mb-1">
+              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
                 Título do Propósito (Opcional)
               </label>
               <input
                 type="text"
                 placeholder="Ex: Jejum de Daniel, Consagração Familiar, Direção Profissional..."
                 {...register("purposeTitle")}
-                className="w-full p-3 rounded-xl border border-outline-variant/40 bg-surface-bright text-on-surface text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full p-3 rounded-xl border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm focus:border-primary dark:focus:border-primary-fixed-dim focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
             <div>
-              <label className="text-xs font-semibold uppercase text-secondary tracking-wider block mb-1">
+              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
                 Motivo / Intenção de Oração (Opcional)
               </label>
               <textarea
                 rows={3}
                 placeholder="Escreva pelo que você está clamando e jejuando neste período..."
                 {...register("intention")}
-                className="w-full p-3 rounded-xl border border-outline-variant/40 bg-surface-bright text-on-surface text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+                className="w-full p-3 rounded-xl border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm focus:border-primary dark:focus:border-primary-fixed-dim focus:outline-none focus:ring-1 focus:ring-primary resize-none"
               />
             </div>
           </div>
@@ -488,7 +487,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           className="w-full shadow-md hover:shadow-lg text-base"
           icon={<Sparkles className="w-5 h-5" />}
         >
-          Gerar e Atualizar Cronograma de Propósito
+          Salvar Propósito & Gerar Escala
         </Button>
       </div>
     </form>

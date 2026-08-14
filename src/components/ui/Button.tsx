@@ -30,13 +30,13 @@ export function Button({
     primary:
       "bg-primary text-on-primary hover:bg-primary/90 shadow-sm hover:shadow-[0_4px_12px_rgba(65,100,106,0.25)]",
     secondary:
-      "bg-secondary-container text-on-secondary-container hover:bg-secondary hover:text-on-secondary",
+      "bg-secondary-container text-on-secondary-container hover:bg-secondary hover:text-on-secondary dark:bg-slate-800 dark:text-gray-200 dark:hover:bg-slate-700",
     outline:
-      "border border-outline-variant/50 text-primary hover:bg-primary/5 hover:border-primary",
+      "border border-outline-variant/50 dark:border-white/20 text-primary dark:text-primary-fixed-dim hover:bg-primary/5 dark:hover:bg-white/5 hover:border-primary",
     ghost:
-      "text-on-surface hover:bg-surface-container text-on-surface hover:text-primary",
+      "text-on-surface dark:text-gray-200 hover:bg-surface-container dark:hover:bg-slate-800 hover:text-primary dark:hover:text-primary-fixed-dim",
     tonal:
-      "bg-surface-container-high text-primary hover:bg-surface-container-highest",
+      "bg-surface-container-high dark:bg-slate-800 text-primary dark:text-primary-fixed-dim hover:bg-surface-container-highest dark:hover:bg-slate-700",
   };
 
   return (

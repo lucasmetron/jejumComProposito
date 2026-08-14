@@ -4,6 +4,7 @@ import { FastingConfig, SpiritualFastEvent } from "@/features/schedule/types";
 import { generateSpiritualFastSchedule } from "@/features/schedule/generator";
 
 export interface FastingStoreState {
+  hasConfigured: boolean;
   config: FastingConfig;
   events: SpiritualFastEvent[];
   selectedEventId: string | null;
@@ -12,11 +13,13 @@ export interface FastingStoreState {
   // Actions
   setConfig: (config: Partial<FastingConfig>) => void;
   generateSchedule: () => SpiritualFastEvent[];
+  saveAndGenerateSchedule: () => SpiritualFastEvent[];
   resetConfig: () => void;
+  clearFastingData: () => void;
   setSelectedEventId: (id: string | null) => void;
 }
 
-const DEFAULT_CONFIG: FastingConfig = {
+export const DEFAULT_CONFIG: FastingConfig = {
   period: "weekly",
   durationDays: 7,
   targetHours: 16,
@@ -34,6 +37,7 @@ const DEFAULT_CONFIG: FastingConfig = {
 export const useFastingStore = create<FastingStoreState>()(
   persist(
     (set, get) => ({
+      hasConfigured: false,
       config: DEFAULT_CONFIG,
       events: [],
       selectedEventId: null,
@@ -42,12 +46,15 @@ export const useFastingStore = create<FastingStoreState>()(
       setConfig: (newConfig) => {
         set((state) => {
           const updatedConfig = { ...state.config, ...newConfig };
-          // Automatically regenerate events when config updates
-          const updatedEvents = generateSpiritualFastSchedule(updatedConfig);
-          return {
-            config: updatedConfig,
-            events: updatedEvents,
-          };
+          // If already configured, also regenerate events
+          if (state.hasConfigured) {
+            const updatedEvents = generateSpiritualFastSchedule(updatedConfig);
+            return {
+              config: updatedConfig,
+              events: updatedEvents,
+            };
+          }
+          return { config: updatedConfig };
         });
       },
 
@@ -58,11 +65,31 @@ export const useFastingStore = create<FastingStoreState>()(
         return events;
       },
 
+      saveAndGenerateSchedule: () => {
+        const { config } = get();
+        const events = generateSpiritualFastSchedule(config);
+        set({
+          events,
+          hasConfigured: true,
+        });
+        return events;
+      },
+
       resetConfig: () => {
         const events = generateSpiritualFastSchedule(DEFAULT_CONFIG);
         set({
           config: DEFAULT_CONFIG,
           events,
+          hasConfigured: true,
+          selectedEventId: null,
+        });
+      },
+
+      clearFastingData: () => {
+        set({
+          config: DEFAULT_CONFIG,
+          events: [],
+          hasConfigured: false,
           selectedEventId: null,
         });
       },
