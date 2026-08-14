@@ -6,11 +6,16 @@ export function Footer() {
   return (
     <footer className="border-t border-outline-variant/30 dark:border-white/10 bg-surface-container-low dark:bg-slate-950 mt-auto transition-colors">
       <div className="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop py-10 md:py-12 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-2.5">
-          <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-xl icon-fill">
-            local_fire_department
-          </span>
-          <span className="font-semibold text-primary dark:text-primary-fixed-dim text-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-surface-bright dark:bg-slate-900 border border-primary/20 dark:border-white/10 flex items-center justify-center p-0.5 shadow-sm flex-shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/symbol.png"
+              alt="Logo Jejum com Propósito"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <span className="font-bold text-primary dark:text-primary-fixed-dim text-sm">
             Jejum com Propósito
           </span>
           <span className="text-secondary dark:text-gray-400 text-xs hidden sm:inline">

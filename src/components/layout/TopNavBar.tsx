@@ -22,11 +22,16 @@ export function TopNavBar() {
     <header className="fixed top-0 left-0 right-0 w-full z-50 bg-surface/85 dark:bg-slate-900/85 backdrop-blur-[30px] border-b border-outline-variant/30 dark:border-white/10 transition-colors">
       <div className="flex justify-between items-center h-[72px] px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <span className="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-2xl icon-fill group-hover:scale-105 transition-transform">
-            local_fire_department
-          </span>
-          <span className="font-semibold text-lg text-primary dark:text-primary-fixed-dim tracking-tight hidden sm:inline">
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 sm:w-10 sm:h-10 rounded-full bg-surface-bright dark:bg-slate-800/90 border border-primary/20 dark:border-white/15 shadow-sm flex items-center justify-center p-0.5 group-hover:scale-105 group-hover:border-primary/40 transition-all flex-shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/symbol.png"
+              alt="Logo Jejum com Propósito"
+              className="w-full h-full object-contain drop-shadow-sm"
+            />
+          </div>
+          <span className="font-bold text-lg text-primary dark:text-primary-fixed-dim tracking-tight hidden sm:inline">
             Jejum com Propósito
           </span>
         </Link>

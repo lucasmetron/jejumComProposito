@@ -447,9 +447,14 @@ export function ManageFastModal({ isOpen, onClose }: ManageFastModalProps) {
             <div className="relative flex items-center justify-center">
               {/* Spinning ring */}
               <div className="w-20 h-20 rounded-full border-4 border-primary/20 border-t-primary dark:border-t-primary-fixed-dim animate-spin" />
-              {/* Flame icon pulsing inside */}
+              {/* Brand symbol pulsing inside */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <Flame className="w-8 h-8 text-primary dark:text-primary-fixed-dim animate-pulse" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/brand/symbol.png"
+                  alt="Símbolo Jejum com Propósito"
+                  className="w-10 h-10 object-contain animate-pulse rounded-full"
+                />
               </div>
             </div>
 
