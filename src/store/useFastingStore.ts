@@ -3,17 +3,31 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { FastingConfig, SpiritualFastEvent } from "@/features/schedule/types";
 import { generateSpiritualFastSchedule } from "@/features/schedule/generator";
 
+export interface FastingHistoryItem {
+  id: string;
+  title: string;
+  completedAt: string;
+  status: "completed" | "interrupted";
+  reason?: string;
+  reflection?: string;
+  totalDays: number;
+  totalHours: number;
+}
+
 export interface FastingStoreState {
   hasConfigured: boolean;
   config: FastingConfig;
   events: SpiritualFastEvent[];
   selectedEventId: string | null;
   isGenerating: boolean;
+  history: FastingHistoryItem[];
   
   // Actions
   setConfig: (config: Partial<FastingConfig>) => void;
   generateSchedule: () => SpiritualFastEvent[];
   saveAndGenerateSchedule: () => SpiritualFastEvent[];
+  rescheduleSchedule: (startOption: "today" | "tomorrow") => SpiritualFastEvent[];
+  interruptFast: (reason?: string, reflection?: string) => void;
   resetConfig: () => void;
   clearFastingData: () => void;
   setSelectedEventId: (id: string | null) => void;
@@ -42,11 +56,11 @@ export const useFastingStore = create<FastingStoreState>()(
       events: [],
       selectedEventId: null,
       isGenerating: false,
+      history: [],
 
       setConfig: (newConfig) => {
         set((state) => {
           const updatedConfig = { ...state.config, ...newConfig };
-          // If already configured, also regenerate events
           if (state.hasConfigured) {
             const updatedEvents = generateSpiritualFastSchedule(updatedConfig);
             return {
@@ -75,6 +89,40 @@ export const useFastingStore = create<FastingStoreState>()(
         return events;
       },
 
+      rescheduleSchedule: (startOption: "today" | "tomorrow") => {
+        const { config } = get();
+        const updatedConfig = { ...config, startOption };
+        const updatedEvents = generateSpiritualFastSchedule(updatedConfig);
+        set({
+          config: updatedConfig,
+          events: updatedEvents,
+          hasConfigured: true,
+        });
+        return updatedEvents;
+      },
+
+      interruptFast: (reason?: string, reflection?: string) => {
+        const { config, events, history } = get();
+        const historyEntry: FastingHistoryItem = {
+          id: `hist-${Date.now()}`,
+          title: config.purposeTitle || "Propósito Espiritual",
+          completedAt: new Date().toISOString(),
+          status: "interrupted",
+          reason: reason || "Interrompido por imprevisto / saúde",
+          reflection: reflection || "",
+          totalDays: events.length,
+          totalHours: events.reduce((acc, e) => acc + e.targetHours, 0),
+        };
+
+        set({
+          hasConfigured: false,
+          events: [],
+          selectedEventId: null,
+          config: DEFAULT_CONFIG,
+          history: [historyEntry, ...history],
+        });
+      },
+
       resetConfig: () => {
         const events = generateSpiritualFastSchedule(DEFAULT_CONFIG);
         set({
@@ -101,7 +149,6 @@ export const useFastingStore = create<FastingStoreState>()(
     {
       name: "jejum-proposito-storage",
       storage: createJSONStorage(() => localStorage),
-      // Custom deserializer to convert ISO date strings back to Date objects in events
       onRehydrateStorage: () => (state) => {
         if (state && state.events) {
           state.events = state.events.map((e) => ({

@@ -5,13 +5,14 @@ import Link from "next/link";
 import { useFastingStore } from "@/store/useFastingStore";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { ManageFastModal } from "@/components/schedule/ManageFastModal";
 import {
   Sun,
   Flame,
   Calendar as CalendarIcon,
   Sparkles,
   ArrowRight,
-  RotateCcw,
+  SlidersHorizontal,
   Hourglass,
   Clock,
   CheckCircle2,
@@ -20,12 +21,13 @@ import { format, differenceInSeconds } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 export default function HomePage() {
-  const { hasConfigured, events, config, clearFastingData } = useFastingStore();
+  const { hasConfigured, events, config } = useFastingStore();
   const [mounted, setMounted] = useState(false);
   const [timeLeftStr, setTimeLeftStr] = useState<string>("00:00:00");
   const [progressPercent, setProgressPercent] = useState<number>(0);
   const [isFastingNow, setIsFastingNow] = useState<boolean>(false);
   const [activeSession, setActiveSession] = useState<any>(null);
+  const [isManageModalOpen, setIsManageModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -330,17 +332,18 @@ export default function HomePage() {
               {/* Card Footer Actions */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                 <Link href="/proposito" className="text-xs text-primary dark:text-primary-fixed-dim font-medium hover:underline inline-flex items-center gap-1">
-                  Gerenciar Escala & Sincronizar Google Agenda &rarr;
+                  Ver Escala Completa & Sincronizar Google Agenda &rarr;
                 </Link>
 
-                <button
-                  onClick={clearFastingData}
-                  className="text-xs text-secondary dark:text-gray-400 hover:text-error dark:hover:text-red-400 inline-flex items-center gap-1 transition-colors"
-                  title="Limpar e reiniciar jejum"
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsManageModalOpen(true)}
+                  className="text-xs gap-1.5 border-outline-variant/40 dark:border-white/10"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  Reiniciar Propósito
-                </button>
+                  <SlidersHorizontal className="w-3.5 h-3.5" />
+                  Gerenciar Jejum
+                </Button>
               </div>
             </Card>
 
@@ -426,6 +429,12 @@ export default function HomePage() {
           </section>
         </div>
       )}
+
+      {/* Modal de Gestão Humanizada do Jejum */}
+      <ManageFastModal
+        isOpen={isManageModalOpen}
+        onClose={() => setIsManageModalOpen(false)}
+      />
     </div>
   );
 }

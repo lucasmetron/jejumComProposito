@@ -1,11 +1,14 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+const clientId = process.env.GOOGLE_CLIENT_ID || "dummy-google-client-id";
+const clientSecret = process.env.GOOGLE_CLIENT_SECRET || "dummy-google-client-secret";
+
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      clientId,
+      clientSecret,
       authorization: {
         params: {
           scope: "openid email profile https://www.googleapis.com/auth/calendar.events",
