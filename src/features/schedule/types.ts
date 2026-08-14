@@ -35,4 +35,5 @@ export interface FastingConfig {
   intention?: string; // Prayer request or spiritual motive
   syncedCalendarEventIds?: string[]; // IDs dos eventos criados no Google Agenda
   isGoogleCalendarSynced?: boolean; // Se o propósito está com sincronização ativa no Google Agenda
+  includeWaterReminders?: boolean; // Se deve incluir lembretes de hidratação na agenda
 }

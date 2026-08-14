@@ -52,6 +52,7 @@ export const DEFAULT_CONFIG: FastingConfig = {
   intention: "",
   syncedCalendarEventIds: [],
   isGoogleCalendarSynced: false,
+  includeWaterReminders: true,
 };
 
 export const useFastingStore = create<FastingStoreState>()(

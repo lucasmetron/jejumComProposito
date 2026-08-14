@@ -155,7 +155,7 @@ export function generateSpiritualFastSchedule(config: FastingConfig): SpiritualF
     let hydrationGuidance = "";
     if (isAbsoluteFast) {
       hydrationGuidance = "⚠️ Modalidade: Jejum Absoluto (Sem Água).\nAbstenção total de líquidos durante esta sessão. Mantenha vigília e atenção redobrada.";
-    } else {
+    } else if (config.includeWaterReminders !== false) {
       const waterGlassCount = Math.max(1, Math.floor(sessionHours / 2));
       const totalMl = waterGlassCount * 250;
 
@@ -171,6 +171,8 @@ export function generateSpiritualFastSchedule(config: FastingConfig): SpiritualF
           : "";
 
       hydrationGuidance = `💧 Plano de Hidratação (~${totalMl}ml recomendados):\nBeba aproximadamente 250ml a cada 2 horas para proteger a saúde renal e manter o foco espiritual.${scheduleStr}`;
+    } else {
+      hydrationGuidance = "💧 Modalidade: Com Água (Lembretes específicos de hidratação desativados).";
     }
 
     const intentionNote = intention?.trim() ? `\n\n🙏 Motivo / Intenção de Oração: ${intention.trim()}` : "";

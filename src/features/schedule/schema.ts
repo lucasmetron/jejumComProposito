@@ -61,6 +61,7 @@ export const fastingConfigSchema = z
       .default(""),
     syncedCalendarEventIds: z.array(z.string()).optional().default([]),
     isGoogleCalendarSynced: z.boolean().optional().default(false),
+    includeWaterReminders: z.boolean().optional().default(true),
   })
   .refine(
     (data) => {
