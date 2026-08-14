@@ -8,6 +8,15 @@
 :root {
   --background: #f8f9ff;
   --foreground: #0d1c2d;
+  --toastify-color-light: #ffffff;
+  --toastify-color-dark: #0f172a;
+  --toastify-color-info: #28626f;
+  --toastify-color-success: #28626f;
+  --toastify-color-warning: #ea580c;
+  --toastify-color-error: #dc2626;
+  --toastify-color-progress-success: #388494;
+  --toastify-color-progress-info: #388494;
+  --toastify-toast-bd-radius: 16px;
 }
 
 body {

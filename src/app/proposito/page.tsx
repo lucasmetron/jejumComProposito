@@ -22,13 +22,10 @@ export default function PropositoPage() {
   const [activeTab, setActiveTab] = useState<"config" | "schedule">("config");
   const [justSaved, setJustSaved] = useState(false);
 
-  // If user already configured, default to whatever tab, or switch to schedule on save
+  // Switch to schedule on save and scroll smoothly to top
   const handleSaved = () => {
-    saveAndGenerateSchedule();
-    setJustSaved(true);
     setActiveTab("schedule");
     window.scrollTo({ top: 0, behavior: "smooth" });
-    setTimeout(() => setJustSaved(false), 5000);
   };
 
   return (

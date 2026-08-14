@@ -46,6 +46,9 @@ export const metadata: Metadata = {
   ],
 };
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function RootLayout({
   children,
 }: {
@@ -79,6 +82,17 @@ export default function RootLayout({
             <main className="flex-grow pt-[84px] pb-20 md:pb-8">{children}</main>
             <BottomNavBar />
             <Footer />
+            <ToastContainer
+              position="top-right"
+              autoClose={4000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              toastClassName="!rounded-2xl !font-sans !shadow-lg dark:!bg-slate-900 dark:!text-white dark:!border dark:!border-white/10"
+            />
           </ThemeProvider>
         </NextAuthProvider>
       </body>

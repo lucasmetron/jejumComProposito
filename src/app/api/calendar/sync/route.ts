@@ -18,9 +18,10 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { events, previousEventIds } = body as {
+    const { events, previousEventIds, includeWaterReminders } = body as {
       events: SpiritualFastEvent[];
       previousEventIds?: string[];
+      includeWaterReminders?: boolean;
     };
 
     // 1. Limpar eventos anteriores se houver (para atualizações / reagendamento)
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
     const errors: any[] = [];
 
     for (const event of events) {
+      // 1. Criar o evento principal do jejum
       try {
         const response = await fetch(
           "https://www.googleapis.com/calendar/v3/calendars/primary/events",
@@ -95,6 +97,54 @@ export async function POST(req: NextRequest) {
         }
       } catch (err: any) {
         errors.push({ eventTitle: event.title, error: err?.message || String(err) });
+      }
+
+      // 2. Se for jejum com água e os lembretes estiverem habilitados, criar lembretes a cada 2h na agenda
+      if (!event.isAbsoluteFast && includeWaterReminders !== false) {
+        const sessionHours = event.targetHours;
+        const eventStart = new Date(event.start);
+
+        for (let h = 2; h < sessionHours; h += 2) {
+          const waterStart = new Date(eventStart.getTime() + h * 60 * 60 * 1000);
+          const waterEnd = new Date(waterStart.getTime() + 15 * 60 * 1000); // 15 minutos
+
+          try {
+            const waterRes = await fetch(
+              "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${session.accessToken}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  summary: `💧 Lembrete de Água (250ml) - Sessão ${event.sessionNumber}/${event.totalSessions}`,
+                  description: `Hora de beber água! Consuma 1 copo (250ml) para manter a hidratação e proteger sua saúde durante o jejum espiritual.\n\nSessão: ${event.title}`,
+                  start: {
+                    dateTime: waterStart.toISOString(),
+                  },
+                  end: {
+                    dateTime: waterEnd.toISOString(),
+                  },
+                  reminders: {
+                    useDefault: false,
+                    overrides: [
+                      { method: "popup", minutes: 0 },
+                    ],
+                  },
+                  colorId: "9", // Blueberry / Azul Água no Google Calendar
+                }),
+              }
+            );
+
+            if (waterRes.ok) {
+              const waterData = await waterRes.json();
+              createdEvents.push(waterData);
+            }
+          } catch (waterErr) {
+            console.warn("Aviso ao criar lembrete de água:", waterErr);
+          }
+        }
       }
     }
 

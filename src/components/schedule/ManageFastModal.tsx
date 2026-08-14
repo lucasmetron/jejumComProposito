@@ -21,6 +21,8 @@ import {
 import { clsx } from "clsx";
 
 import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import { Flame } from "lucide-react";
 
 interface ManageFastModalProps {
   isOpen: boolean;
@@ -39,103 +41,148 @@ export function ManageFastModal({ isOpen, onClose }: ManageFastModalProps) {
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [customDate, setCustomDate] = useState(format(new Date(), "yyyy-MM-dd"));
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [isSyncing, setIsSyncing] = useState(false);
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
+  const [loadingModalText, setLoadingModalText] = useState("Processando...");
 
   const handleClose = () => {
     setView("menu");
     setReflection("");
     setFeedbackMsg(null);
     setShowDatePicker(false);
-    setIsSyncing(false);
+    setIsLoadingModal(false);
     onClose();
   };
 
   const handleReschedule = async (startOption: "today" | "tomorrow" | "custom", date?: string) => {
-    setIsSyncing(true);
-    const updatedEvents = rescheduleSchedule(startOption, date);
+    setIsLoadingModal(true);
+    setLoadingModalText("Reajustando cronograma e atualizando Google Agenda...");
 
-    // Se o usuário estiver autenticado e possuir eventos sincronizados no Google Agenda
-    if (status === "authenticated" && (config.isGoogleCalendarSynced || (config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0))) {
-      try {
-        const previousEventIds = config.syncedCalendarEventIds || [];
-        const res = await fetch("/api/calendar/sync", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            events: updatedEvents,
-            previousEventIds,
-          }),
-        });
-        if (res.ok) {
-          const json = await res.json();
-          if (json.eventIds) {
-            setSyncedCalendarEventIds(json.eventIds);
+    const minWaitPromise = new Promise((resolve) => setTimeout(resolve, 2000));
+    let syncError = false;
+
+    const task = (async () => {
+      const updatedEvents = rescheduleSchedule(startOption, date);
+
+      // Se o usuário estiver autenticado e possuir eventos sincronizados no Google Agenda
+      if (status === "authenticated" && (config.isGoogleCalendarSynced || (config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0))) {
+        try {
+          const previousEventIds = config.syncedCalendarEventIds || [];
+          const res = await fetch("/api/calendar/sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              events: updatedEvents,
+              previousEventIds,
+              includeWaterReminders: config.includeWaterReminders,
+            }),
+          });
+          if (res.ok) {
+            const json = await res.json();
+            if (json.eventIds) {
+              setSyncedCalendarEventIds(json.eventIds);
+            }
+          } else {
+            syncError = true;
           }
+        } catch (err) {
+          console.error("Erro ao sincronizar reagendamento no Google Agenda:", err);
+          syncError = true;
         }
-      } catch (err) {
-        console.error("Erro ao sincronizar reagendamento no Google Agenda:", err);
       }
-    }
+    })();
 
-    setIsSyncing(false);
-    setFeedbackMsg(
-      startOption === "today"
-        ? "Cronograma reajustado e sincronizado com sucesso para iniciar hoje!"
-        : startOption === "tomorrow"
-        ? "Cronograma reajustado e sincronizado com sucesso para iniciar amanhã!"
-        : `Cronograma reajustado e sincronizado para iniciar em ${date}!`
-    );
-    setTimeout(() => {
-      handleClose();
-    }, 1500);
+    await Promise.all([task, minWaitPromise]);
+    setIsLoadingModal(false);
+    handleClose();
+
+    if (syncError) {
+      toast.warning("Cronograma reajustado, mas houve uma oscilação ao atualizar o Google Agenda.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
+    } else {
+      toast.success(
+        startOption === "today"
+          ? "Cronograma reajustado para iniciar hoje com sucesso!"
+          : startOption === "tomorrow"
+          ? "Cronograma reajustado para iniciar amanhã com sucesso!"
+          : `Cronograma reajustado para iniciar em ${date}!`,
+        {
+          position: "top-right",
+          autoClose: 4000,
+        }
+      );
+    }
   };
 
   const handleInterrupt = async () => {
-    setIsSyncing(true);
-    // Limpar eventos futuros do Google Agenda se houver
-    if (status === "authenticated" && config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0) {
-      try {
-        await fetch("/api/calendar/clear", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ eventIds: config.syncedCalendarEventIds }),
-        });
-      } catch (err) {
-        console.error("Erro ao limpar eventos do Google Agenda:", err);
-      }
-    }
+    setIsLoadingModal(true);
+    setLoadingModalText("Finalizando propósito e atualizando Google Agenda...");
 
-    interruptFast("Interrupção voluntária por saúde / imprevisto", reflection);
-    setIsSyncing(false);
-    setFeedbackMsg("Propósito finalizado e agenda sincronizada com paz. Você pode iniciar outro quando estiver pronto.");
-    setTimeout(() => {
-      handleClose();
-      router.push("/");
-    }, 1500);
+    const minWaitPromise = new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const task = (async () => {
+      // Limpar eventos futuros do Google Agenda se houver
+      if (status === "authenticated" && config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0) {
+        try {
+          await fetch("/api/calendar/clear", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ eventIds: config.syncedCalendarEventIds }),
+          });
+        } catch (err) {
+          console.error("Erro ao limpar eventos do Google Agenda:", err);
+        }
+      }
+
+      interruptFast("Interrupção voluntária por saúde / imprevisto", reflection);
+    })();
+
+    await Promise.all([task, minWaitPromise]);
+    setIsLoadingModal(false);
+    handleClose();
+
+    toast.success("Propósito finalizado e arquivado com sucesso.", {
+      position: "top-right",
+      autoClose: 4000,
+    });
+
+    router.push("/");
   };
 
   const handleDelete = async () => {
-    setIsSyncing(true);
-    // Remover todos os eventos do Google Agenda
-    if (status === "authenticated" && config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0) {
-      try {
-        await fetch("/api/calendar/clear", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ eventIds: config.syncedCalendarEventIds }),
-        });
-      } catch (err) {
-        console.error("Erro ao remover eventos do Google Agenda:", err);
-      }
-    }
+    setIsLoadingModal(true);
+    setLoadingModalText("Cancelando propósito e limpando Google Agenda...");
 
-    clearFastingData();
-    setIsSyncing(false);
-    setFeedbackMsg("Jejum cancelado, dados reiniciados e agenda limpa com sucesso.");
-    setTimeout(() => {
-      handleClose();
-      router.push("/");
-    }, 1200);
+    const minWaitPromise = new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const task = (async () => {
+      // Remover todos os eventos do Google Agenda
+      if (status === "authenticated" && config.syncedCalendarEventIds && config.syncedCalendarEventIds.length > 0) {
+        try {
+          await fetch("/api/calendar/clear", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ eventIds: config.syncedCalendarEventIds }),
+          });
+        } catch (err) {
+          console.error("Erro ao remover eventos do Google Agenda:", err);
+        }
+      }
+
+      clearFastingData();
+    })();
+
+    await Promise.all([task, minWaitPromise]);
+    setIsLoadingModal(false);
+    handleClose();
+
+    toast.success("Jejum excluído, dados reiniciados e agenda limpa com sucesso!", {
+      position: "top-right",
+      autoClose: 4000,
+    });
+
+    router.push("/proposito");
   };
 
   const handleEditConfig = () => {
@@ -389,6 +436,31 @@ export function ManageFastModal({ isOpen, onClose }: ManageFastModalProps) {
             >
               Sim, Excluir e Recomeçar
             </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Loading de Tela Cheia com Spinner */}
+      {isLoadingModal && (
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-sm rounded-3xl bg-surface dark:bg-slate-900 border border-outline-variant/30 dark:border-white/10 p-8 flex flex-col items-center justify-center text-center shadow-2xl space-y-5 animate-in zoom-in-95 duration-200">
+            <div className="relative flex items-center justify-center">
+              {/* Spinning ring */}
+              <div className="w-20 h-20 rounded-full border-4 border-primary/20 border-t-primary dark:border-t-primary-fixed-dim animate-spin" />
+              {/* Flame icon pulsing inside */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Flame className="w-8 h-8 text-primary dark:text-primary-fixed-dim animate-pulse" />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <h3 className="text-lg font-bold text-on-surface dark:text-white">
+                {loadingModalText}
+              </h3>
+              <p className="text-xs text-on-surface-variant dark:text-gray-400 max-w-xs leading-relaxed">
+                Aguarde um instante enquanto sincronizamos as alterações no seu dispositivo e na agenda.
+              </p>
+            </div>
           </div>
         </div>
       )}

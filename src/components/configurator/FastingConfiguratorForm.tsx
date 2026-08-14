@@ -16,6 +16,7 @@ import { format } from "date-fns";
 import {
   Calendar,
   Clock,
+  Flame,
   Sparkles,
   ShieldAlert,
   Droplets,
@@ -74,8 +75,11 @@ const WEEKDAYS = [
   { day: 6, label: "Sáb", full: "Sábado" },
 ];
 
+import { toast } from "react-toastify";
+
+// In FastingConfiguratorForm component:
 export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => void }) {
-  const { config, hasConfigured, setConfig, generateSchedule, setSyncedCalendarEventIds, setIsGoogleCalendarSynced } = useFastingStore();
+  const { config, hasConfigured, setConfig, generateSchedule, saveAndGenerateSchedule, setSyncedCalendarEventIds, setIsGoogleCalendarSynced } = useFastingStore();
   const { data: session, status } = useSession();
 
   // No primeiro acesso (hasConfigured: false), usa estritamente os valores padrão estabelecidos
@@ -88,7 +92,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
     hasConfigured ? (config.includeWaterReminders ?? true) : true
   );
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [isSyncingCalendar, setIsSyncingCalendar] = useState(false);
+  const [isGeneratingModalOpen, setIsGeneratingModalOpen] = useState(false);
+  const [loadingStepText, setLoadingStepText] = useState("Gerando Jejum...");
 
   const {
     register,
@@ -163,6 +168,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
   }, [watch, setConfig, syncWithGoogle, includeWaterReminders]);
 
   const onSubmit = async (data: FastingConfigInput) => {
+    setIsGeneratingModalOpen(true);
+    setLoadingStepText("Gerando Jejum...");
+
+    // Timer fake de no mínimo 2 segundos para dar tempo visual de processamento
+    const minWaitPromise = new Promise((resolve) => setTimeout(resolve, 2000));
+
     const isAllDays = (data.frequencyDays || data.durationDays) >= data.durationDays;
     const finalData = {
       ...data,
@@ -170,37 +181,72 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
       isGoogleCalendarSynced: syncWithGoogle,
       includeWaterReminders,
     };
+
     setConfig(finalData as any);
     setIsGoogleCalendarSynced(syncWithGoogle);
-    const generatedEvents = generateSchedule();
+    const generatedEvents = saveAndGenerateSchedule();
 
-    if (syncWithGoogle && status === "authenticated" && generatedEvents.length > 0) {
-      setIsSyncingCalendar(true);
-      try {
-        const previousEventIds = config.syncedCalendarEventIds || [];
-        const res = await fetch("/api/calendar/sync", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            events: generatedEvents,
-            previousEventIds,
-          }),
-        });
+    let syncSuccess = true;
+    let syncErrorMessage = "";
 
-        if (res.ok) {
+    const syncTask = (async () => {
+      if (syncWithGoogle && status === "authenticated" && generatedEvents.length > 0) {
+        setLoadingStepText("Sincronizando com o Google Agenda & Lembretes...");
+        try {
+          const previousEventIds = config.syncedCalendarEventIds || [];
+          const res = await fetch("/api/calendar/sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              events: generatedEvents,
+              previousEventIds,
+              includeWaterReminders,
+            }),
+          });
+
           const json = await res.json();
-          if (json.eventIds && Array.isArray(json.eventIds)) {
+          if (!res.ok) {
+            syncSuccess = false;
+            syncErrorMessage = json.message || "Erro ao sincronizar com Google Agenda.";
+          } else if (json.eventIds && Array.isArray(json.eventIds)) {
             setSyncedCalendarEventIds(json.eventIds);
           }
+        } catch (err: any) {
+          syncSuccess = false;
+          syncErrorMessage = err.message || "Falha na conexão com o Google Agenda.";
         }
-      } catch (err) {
-        console.error("Erro ao sincronizar com Google Agenda:", err);
-      } finally {
-        setIsSyncingCalendar(false);
+      }
+    })();
+
+    // Aguarda o processamento E o tempo mínimo de 2 segundos (o que demorar mais)
+    await Promise.all([syncTask, minWaitPromise]);
+
+    setIsGeneratingModalOpen(false);
+
+    if (syncSuccess) {
+      toast.success(
+        syncWithGoogle && status === "authenticated"
+          ? "Jejum gerado e sincronizado com o Google Agenda com sucesso!"
+          : "Escala de jejum espiritual gerada com sucesso!",
+        {
+          position: "top-right",
+          autoClose: 4000,
+        }
+      );
+
+      if (onGenerated) {
+        onGenerated();
+      }
+    } else {
+      toast.error(`Atenção: ${syncErrorMessage}`, {
+        position: "top-right",
+        autoClose: 5000,
+      });
+
+      if (onGenerated) {
+        onGenerated();
       }
     }
-
-    if (onGenerated) onGenerated();
   };
 
   return (
@@ -1008,6 +1054,31 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           Salvar Propósito & Gerar Escala
         </Button>
       </div>
+
+      {/* Modal de Loading Animado ao Gerar Jejum */}
+      {isGeneratingModalOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-sm rounded-3xl bg-surface dark:bg-slate-900 border border-outline-variant/30 dark:border-white/10 p-8 flex flex-col items-center justify-center text-center shadow-2xl space-y-5 animate-in zoom-in-95 duration-200">
+            <div className="relative flex items-center justify-center">
+              {/* Spinning ring */}
+              <div className="w-20 h-20 rounded-full border-4 border-primary/20 border-t-primary dark:border-t-primary-fixed-dim animate-spin" />
+              {/* Flame icon pulsing inside */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Flame className="w-8 h-8 text-primary dark:text-primary-fixed-dim animate-pulse" />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <h3 className="text-lg font-bold text-on-surface dark:text-white">
+                {loadingStepText}
+              </h3>
+              <p className="text-xs text-on-surface-variant dark:text-gray-400 max-w-xs leading-relaxed">
+                Calculando janelas de abstinência, hidratação e preparando sua escala espiritual.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
