@@ -106,18 +106,18 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
   const purposeName = config.purposeTitle?.trim() || "Consagração & Intimidade";
 
   return (
-    <div className="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop pb-section-gap flex flex-col gap-8 md:gap-10">
+    <div className="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop pt-6 pb-section-gap flex flex-col gap-8 md:gap-10">
       {/* 0. Apresentação & Finalidade do Aplicativo (Requisito de Verificação OAuth Google) */}
-      <section className="bg-gradient-to-br from-primary/10 via-surface-container-lowest to-surface-container-low dark:from-primary/20 dark:via-slate-900 dark:to-slate-800/80 rounded-3xl p-6 sm:p-8 md:p-10 border border-primary/20 shadow-sm">
-        <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 dark:bg-primary/25 text-primary dark:text-primary-fixed-dim text-xs font-semibold uppercase tracking-wider">
+      <section className="bg-gradient-to-br from-primary/10 via-surface-container-lowest to-surface-container-low dark:from-primary/20 dark:via-slate-900 dark:to-slate-800/80 rounded-3xl p-6 sm:p-8 md:p-10 border border-primary/20 shadow-sm flex flex-col items-center justify-center text-center">
+        <div className="max-w-3xl space-y-4 flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/15 dark:bg-primary/25 text-primary dark:text-primary-fixed-dim text-xs font-semibold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             Planejador Devocional Espiritual
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-on-surface dark:text-white tracking-tight leading-tight">
             Jejum com Propósito
           </h1>
-          <p className="text-sm sm:text-base text-on-surface-variant dark:text-gray-300 leading-relaxed">
+          <p className="text-sm sm:text-base text-on-surface-variant dark:text-gray-300 leading-relaxed max-w-2xl mx-auto">
             O <strong>Jejum com Propósito</strong> é um aplicativo devocional criado para ajudar
             você a planejar, organizar e manter suas jornadas de consagração e oração. Com ele, você
             define períodos de abstinência, recebe versículos bíblicos diários e pode{" "}
@@ -127,7 +127,7 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
             </strong>{" "}
             para receber lembretes e manter sua disciplina espiritual.
           </p>
-          <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-secondary dark:text-gray-400">
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs text-secondary dark:text-gray-400">
             <span className="flex items-center gap-1.5 bg-surface-bright dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-outline-variant/30 dark:border-white/10">
               <CalendarIcon className="w-3.5 h-3.5 text-primary dark:text-primary-fixed-dim" />{" "}
               Sincronização com Google Agenda

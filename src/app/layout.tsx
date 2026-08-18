@@ -87,7 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThemeProvider>
             <PWARegister />
             <TopNavBar />
-            <main className="flex-grow pt-[84px] pb-20 md:pb-8">{children}</main>
+            <main className="flex-grow pt-[72px] pb-20 md:pb-8">{children}</main>
             <BottomNavBar />
             <Footer />
             <ToastContainer
