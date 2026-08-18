@@ -23,7 +23,7 @@ export function Footer() {
           </span>
         </div>
 
-        <div className="flex items-center gap-6 text-xs text-secondary dark:text-gray-400">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-secondary dark:text-gray-400">
           <Link href="/" className="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
             Início
           </Link>
@@ -32,6 +32,12 @@ export function Footer() {
           </Link>
           <Link href="/sobre" className="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
             Sobre
+          </Link>
+          <Link href="/privacidade" className="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+            Privacidade
+          </Link>
+          <Link href="/termos" className="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+            Termos de Uso
           </Link>
         </div>
 

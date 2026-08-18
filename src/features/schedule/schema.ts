@@ -6,12 +6,23 @@ export const fastingConfigSchema = z
       required_error: "Selecione o período do seu propósito espiritual.",
     }),
     durationDays: z
-      .number({
+      .union([z.number(), z.string()], {
         required_error: "Defina a duração total em dias.",
         invalid_type_error: "A duração deve ser um número válido.",
       })
-      .min(1, "A duração deve ser de pelo menos 1 dia.")
-      .max(40, "O período máximo de consagração é de 40 dias."),
+      .refine(
+        (val) => val !== "" && val !== undefined && val !== null && !isNaN(Number(val)),
+        {
+          message: "Defina a quantidade de dias do propósito.",
+        }
+      )
+      .transform((val) => Number(val))
+      .pipe(
+        z
+          .number()
+          .min(1, "A duração deve ser de pelo menos 1 dia.")
+          .max(40, "O período máximo de consagração é de 40 dias.")
+      ),
     targetHours: z
       .number({
         required_error: "Informe a meta de horas diárias para o jejum.",

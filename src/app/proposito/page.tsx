@@ -72,10 +72,10 @@ export default function PropositoPage() {
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-on-surface dark:text-white tracking-tight flex items-center gap-2.5">
             <Flame className="w-7 h-7 text-primary dark:text-primary-fixed-dim" />
-            Configurador de Propósito & Escala
+            Consagração & Escala Espiritual
           </h1>
           <p className="text-xs md:text-sm text-on-surface-variant dark:text-gray-400 mt-1 max-w-2xl">
-            Defina os parâmetros do seu jejum espiritual. O algoritmo calculará a distribuição ideal de dias e horários para você exportar e sincronizar.
+            Consagre seus dias e horários para buscar a Deus em oração e abstinência. Organizaremos sua escala de jejum e sincronizaremos com sua agenda pessoal.
           </p>
         </div>
 

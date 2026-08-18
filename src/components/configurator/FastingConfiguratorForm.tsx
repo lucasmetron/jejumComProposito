@@ -32,6 +32,7 @@ import {
   BellRing,
 } from "lucide-react";
 import { clsx } from "clsx";
+import { BIBLICAL_PRESETS, BiblicalPreset } from "@/features/schedule/presets";
 
 interface TimePeriod {
   id: "morning" | "afternoon" | "night";
@@ -108,6 +109,43 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
   const watchedValues = watch();
 
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
+
+  const handleSelectPreset = (preset: BiblicalPreset) => {
+    setSelectedPreset(preset.id);
+    if (preset.id === "custom") return;
+
+    if (preset.config.durationDays !== undefined) {
+      setValue("durationDays", preset.config.durationDays, { shouldValidate: true });
+    }
+    if (preset.config.period) {
+      setValue("period", preset.config.period, { shouldValidate: true });
+    }
+    if (preset.config.frequencyDays !== undefined) {
+      setValue("frequencyDays", preset.config.frequencyDays, { shouldValidate: true });
+    }
+    if (preset.config.targetHours !== undefined) {
+      setValue("targetHours", preset.config.targetHours, { shouldValidate: true });
+    }
+    if (preset.config.purposeTitle) {
+      setValue("purposeTitle", preset.config.purposeTitle, { shouldValidate: true });
+    }
+    if (preset.config.intention) {
+      setValue("intention", preset.config.intention, { shouldValidate: true });
+    }
+    if (preset.config.distribution) {
+      setValue("distribution", preset.config.distribution, { shouldValidate: true });
+    }
+    if (preset.config.isAbsoluteFast !== undefined) {
+      setValue("isAbsoluteFast", preset.config.isAbsoluteFast, { shouldValidate: true });
+    }
+
+    toast.info(`Modelo "${preset.name}" aplicado!`, {
+      position: "top-right",
+      autoClose: 3000,
+    });
+  };
+
   const [slotTimes, setSlotTimes] = useState<{
     morning: string;
     afternoon: string;
@@ -151,8 +189,10 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
   useEffect(() => {
     const subscription = watch((value) => {
       if (value) {
-        const dur = value.durationDays ? Number(value.durationDays) : 7;
-        const freq = value.frequencyDays ? Number(value.frequencyDays) : dur;
+        const rawDur = value.durationDays;
+        const dur = rawDur !== "" && rawDur !== undefined && rawDur !== null && !isNaN(Number(rawDur)) && Number(rawDur) > 0 ? Number(rawDur) : 7;
+        const rawFreq = value.frequencyDays;
+        const freq = rawFreq !== "" && rawFreq !== undefined && rawFreq !== null && !isNaN(Number(rawFreq)) && Number(rawFreq) > 0 ? Math.min(Number(rawFreq), dur) : dur;
         const target = value.targetHours ? Number(value.targetHours) : 12;
         setConfig({
           ...value,
@@ -249,22 +289,185 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
     }
   };
 
+  const onInvalid = (fieldErrors: any) => {
+    const errorList = Object.entries(fieldErrors)
+      .map(([_, err]: [string, any]) => err?.message)
+      .filter(Boolean);
+
+    if (errorList.length > 0) {
+      toast.warn(errorList[0] as string, {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    } else {
+      toast.warn("Por favor, verifique os campos obrigatórios destacados antes de gerar o propósito.", {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="flex flex-col gap-6">
       {/* ========================================================================= */}
-      {/* SEÇÃO 1: CONFIGURAÇÃO RÁPIDA (PRINCIPAL)                                  */}
+      {/* SEÇÃO 1: O CORAÇÃO DO PROPÓSITO (TÍTULO & MOTIVO DE ORAÇÃO)               */}
       {/* ========================================================================= */}
 
-      {/* 1. Duração & Frequência do Propósito */}
+      {/* 1. Propósito & Intenção de Clamor */}
+      <Card className="p-6 md:p-8 shadow-sm space-y-6 border border-primary/20 bg-surface-container-lowest dark:bg-slate-900">
+        <div className="flex items-start sm:items-center gap-3">
+          <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim shrink-0 mt-0.5 sm:mt-0">
+            <Sparkles className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-on-surface dark:text-white flex items-center gap-2">
+              <span>Coração do Propósito & Motivo de Oração</span>
+              <span className="text-[11px] font-normal text-secondary dark:text-gray-400 bg-surface-container-high dark:bg-slate-800 px-2 py-0.5 rounded-full">
+                Sincroniza na Agenda
+              </span>
+            </h2>
+            <p className="text-xs text-on-surface-variant dark:text-gray-400">
+              Dê um nome à sua consagração e registre pelo que você está clamando. Este título e motivo serão incluídos na sua escala e no Google Agenda.
+            </p>
+          </div>
+        </div>
+
+        {/* Modelos Bíblicos com 1 Clique */}
+        <div>
+          <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2.5">
+            Modelos de Propósito Bíblico (Preenchimento Rápido)
+          </label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {BIBLICAL_PRESETS.map((preset) => {
+              const isSelected = selectedPreset === preset.id;
+              return (
+                <button
+                  key={preset.id}
+                  type="button"
+                  onClick={() => handleSelectPreset(preset)}
+                  className={clsx(
+                    "p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between gap-2 group",
+                    isSelected
+                      ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                      : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white bg-surface-bright dark:bg-slate-800/80"
+                  )}
+                >
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="font-bold text-xs group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
+                      {preset.name}
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary dark:text-primary-fixed-dim shrink-0">
+                      {preset.badge}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-on-surface-variant dark:text-gray-400 line-clamp-2 leading-tight">
+                    {preset.subtitle}
+                  </p>
+                  <span className="text-[10px] text-primary/70 dark:text-primary-fixed-dim/70 font-serif italic">
+                    {preset.biblicalReference}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="space-y-4 pt-2 border-t border-outline-variant/20 dark:border-white/5">
+          {/* Título do Propósito */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider">
+                Título do Propósito (Opcional)
+              </label>
+              <span className="text-[11px] text-secondary dark:text-gray-400">
+                {(watchedValues.purposeTitle || "").length}/80
+              </span>
+            </div>
+            <input
+              type="text"
+              maxLength={80}
+              placeholder="Ex: Jejum de Daniel, Consagração Familiar, Direção Profissional..."
+              {...register("purposeTitle")}
+              className={clsx(
+                "w-full p-3.5 rounded-xl border bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm font-medium focus:outline-none focus:ring-1 focus:ring-primary shadow-sm transition-all",
+                errors.purposeTitle
+                  ? "border-error focus:border-error ring-1 ring-error"
+                  : "border-outline-variant/40 dark:border-white/10 focus:border-primary dark:focus:border-primary-fixed-dim"
+              )}
+            />
+            {errors.purposeTitle && (
+              <p className="text-xs text-error dark:text-red-400 mt-1.5 flex items-center gap-1 font-medium">
+                <span>⚠️</span> {errors.purposeTitle.message}
+              </p>
+            )}
+
+            {/* Sugestões Rápidas de Títulos */}
+            <div className="flex flex-wrap items-center gap-1.5 mt-2">
+              <span className="text-[11px] text-secondary dark:text-gray-400 mr-1">Sugestões de títulos:</span>
+              {[
+                "Jejum de Daniel",
+                "Consagração Familiar",
+                "Direção Espiritual",
+                "Clamor por Cura & Libertação",
+                "Renovo & Intimidade com Deus",
+              ].map((sug) => (
+                <button
+                  key={sug}
+                  type="button"
+                  onClick={() => setValue("purposeTitle", sug, { shouldValidate: true })}
+                  className="text-xs px-2.5 py-1 rounded-lg bg-surface-container-high dark:bg-slate-800 hover:bg-primary/10 hover:text-primary dark:hover:text-primary-fixed-dim text-on-surface-variant dark:text-gray-300 transition-colors border border-outline-variant/30 dark:border-white/5"
+                >
+                  + {sug}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Motivo / Intenção de Oração */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider">
+                Motivo / Intenção de Oração (Opcional)
+              </label>
+              <span className="text-[11px] text-secondary dark:text-gray-400">
+                {(watchedValues.intention || "").length}/500
+              </span>
+            </div>
+            <textarea
+              rows={3}
+              maxLength={500}
+              placeholder="Escreva pelo que você está clamando ao Senhor (ex: restauração do casamento, sabedoria para decisões, intercessão pelos filhos)..."
+              {...register("intention")}
+              className={clsx(
+                "w-full p-3.5 rounded-xl border bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none shadow-sm transition-all",
+                errors.intention
+                  ? "border-error focus:border-error ring-1 ring-error"
+                  : "border-outline-variant/40 dark:border-white/10 focus:border-primary dark:focus:border-primary-fixed-dim"
+              )}
+            />
+            {errors.intention && (
+              <p className="text-xs text-error dark:text-red-400 mt-1.5 flex items-center gap-1 font-medium">
+                <span>⚠️</span> {errors.intention.message}
+              </p>
+            )}
+          </div>
+        </div>
+      </Card>
+
+      {/* ========================================================================= */}
+      {/* SEÇÃO 2: DURAÇÃO, FREQUÊNCIA & HORÁRIOS                                   */}
+      {/* ========================================================================= */}
+
+      {/* 2. Tempo de Consagração */}
       <Card className="p-6 md:p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim">
             <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-on-surface dark:text-white">Duração & Frequência do Propósito</h2>
+            <h2 className="text-lg font-semibold text-on-surface dark:text-white">Tempo de Consagração (Duração & Frequência)</h2>
             <p className="text-xs text-on-surface-variant dark:text-gray-400">
-              Defina a quantidade de dias totais e quantos dias de jejum fará no período
+              Defina a quantidade de dias totais do propósito e quantos dias de jejum fará no período
             </p>
           </div>
         </div>
@@ -280,12 +483,21 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 type="number"
                 min={1}
                 max={40}
-                value={watchedValues.durationDays ?? 7}
+                value={watchedValues.durationDays === undefined || watchedValues.durationDays === null ? "" : watchedValues.durationDays}
                 onChange={(e) => {
-                  const val = Math.max(1, parseInt(e.target.value, 10) || 1);
-                  setValue("durationDays", val);
-                  setValue("period", val === 7 ? "weekly" : val === 30 ? "monthly" : "custom");
-                  setValue("frequencyDays", val);
+                  const raw = e.target.value;
+                  if (raw === "") {
+                    setValue("durationDays", "" as any, { shouldValidate: true });
+                    return;
+                  }
+                  const num = parseInt(raw, 10);
+                  if (!isNaN(num)) {
+                    setValue("durationDays", num, { shouldValidate: true });
+                    setValue("period", num === 7 ? "weekly" : num === 30 ? "monthly" : "custom");
+                    if ((watchedValues.frequencyDays || 0) > num) {
+                      setValue("frequencyDays", num);
+                    }
+                  }
                 }}
                 className="w-full p-3.5 pl-4 pr-16 rounded-xl border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-base font-medium focus:border-primary dark:focus:border-primary-fixed-dim focus:outline-none focus:ring-1 focus:ring-primary shadow-sm"
                 placeholder="Ex: 7"
@@ -306,23 +518,23 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 Frequência no período
               </label>
               <div className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold px-3 py-1 rounded-full text-xs">
-                {watchedValues.frequencyDays || watchedValues.durationDays || 7} {(watchedValues.frequencyDays || watchedValues.durationDays || 7) === 1 ? "dia" : "dias"} de jejum
+                {watchedValues.frequencyDays || (watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)} {(watchedValues.frequencyDays || (watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)) === 1 ? "dia" : "dias"} de jejum
               </div>
             </div>
 
             <input
               type="range"
               min={1}
-              max={watchedValues.durationDays || 7}
-              value={watchedValues.frequencyDays || watchedValues.durationDays || 7}
+              max={watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7}
+              value={Math.min(watchedValues.frequencyDays || 1, watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)}
               onChange={(e) => setValue("frequencyDays", parseInt(e.target.value, 10))}
               className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-grab active:cursor-grabbing accent-primary"
             />
 
             <div className="flex justify-between text-xs text-secondary dark:text-gray-400">
               <span>1 dia</span>
-              <span>{Math.round((watchedValues.durationDays || 7) / 2)} dias</span>
-              <span>{watchedValues.durationDays || 7} dias (Todos os dias)</span>
+              <span>{Math.round((watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7) / 2)} dias</span>
+              <span>{watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7} dias (Todos os dias)</span>
             </div>
             {errors.frequencyDays && (
               <p className="text-xs text-error mt-1.5">{errors.frequencyDays.message}</p>
@@ -331,7 +543,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
         </div>
       </Card>
 
-      {/* 2. Janela Diária de Jejum */}
+      {/* 3. Janela Diária de Consagração & Oração */}
       <Card className="p-6 md:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div className="flex items-start sm:items-center gap-3">
@@ -339,21 +551,17 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-on-surface dark:text-white">Janela Diária de Jejum</h2>
+              <h2 className="text-lg font-semibold text-on-surface dark:text-white">Janela Diária de Consagração & Oração</h2>
               <p className="text-xs text-on-surface-variant dark:text-gray-400">
-                Quantidade de horas consecutivas de abstinência por sessão
+                Quantidade de horas consecutivas de abstinência e dedicação diária a Deus
               </p>
             </div>
           </div>
           <div className="self-start sm:self-auto inline-flex items-center gap-1.5 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold px-3.5 py-1.5 rounded-full text-xs sm:text-sm whitespace-nowrap">
             {watchedValues.targetHours === 24 ? (
-              <span>24h (Dia Completo)</span>
+              <span>24h (Consagração Integral)</span>
             ) : (
-              <>
-                <span>{watchedValues.targetHours || 12}h Jejum</span>
-                <span className="opacity-40">/</span>
-                <span>{24 - (watchedValues.targetHours || 12)}h Alimentação</span>
-              </>
+              <span>{watchedValues.targetHours || 12}h de Jejum & Oração</span>
             )}
           </div>
         </div>
@@ -997,15 +1205,15 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                     </button>
                   </div>
 
-                  {/* Explicação do Cálculo */}
+                  {/* Explicação do Cuidado Devocional com a Água */}
                   {!watchedValues.isAbsoluteFast && (
                     <div className="p-3.5 rounded-xl border border-primary/20 bg-primary/5 dark:bg-primary/10 text-xs text-on-surface dark:text-gray-300 leading-relaxed space-y-1 animate-in fade-in">
                       <div className="flex items-center gap-2 font-semibold text-primary dark:text-primary-fixed-dim">
                         <Droplets className="w-4 h-4 flex-shrink-0" />
-                        <span>Como calculamos sua hidratação:</span>
+                        <span>Cuidando do Templo do Espírito Santo (1 Coríntios 6:19):</span>
                       </div>
                       <p className="text-[11px] text-on-surface-variant dark:text-gray-400">
-                        Durante sua janela de <strong>{watchedValues.targetHours} horas</strong>, recomendamos o consumo de cerca de <strong>{Math.max(1, Math.floor((watchedValues.targetHours || 12) / 2)) * 250}ml</strong> de água (1 copo de 250ml a cada 2 horas) para proteger os rins e preservar a clareza mental e espiritual.
+                        Durante sua consagração de <strong>{watchedValues.targetHours || 12} horas</strong>, sugerimos a ingestão de cerca de <strong>{Math.max(1, Math.floor((watchedValues.targetHours || 12) / 2)) * 250}ml</strong> de água (~1 copo a cada 2 horas). A hidratação adequada preserva a clareza mental e o vigor físico para a oração contínua.
                       </p>
                     </div>
                   )}
@@ -1013,45 +1221,26 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               </div>
             </AccordionItem>
 
-            {/* Bloco 4: Intenção & Dedicação do Propósito */}
-            <AccordionItem
-              defaultOpen={false}
-              icon={<Sparkles className="w-5 h-5" />}
-              title="Intenção & Dedicação do Propósito"
-              subtitle="Adicione um título e motivo de oração personalizado para a sua escala"
-            >
-              <div className="flex flex-col gap-4 pt-2">
-                <div>
-                  <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
-                    Título do Propósito (Opcional)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Ex: Jejum de Daniel, Consagração Familiar, Direção Profissional..."
-                    {...register("purposeTitle")}
-                    className="w-full p-3 rounded-xl border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm focus:border-primary dark:focus:border-primary-fixed-dim focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
-                    Motivo / Intenção de Oração (Opcional)
-                  </label>
-                  <textarea
-                    rows={3}
-                    placeholder="Escreva pelo que você está clamando e jejuando neste período..."
-                    {...register("intention")}
-                    className="w-full p-3 rounded-xl border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm focus:border-primary dark:focus:border-primary-fixed-dim focus:outline-none focus:ring-1 focus:ring-primary resize-none"
-                  />
-                </div>
-              </div>
-            </AccordionItem>
           </div>
         )}
       </div>
 
+      {/* Resumo Devocional em Tempo Real */}
+      <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 space-y-2">
+        <div className="flex items-center gap-2 text-xs font-bold text-primary dark:text-primary-fixed-dim uppercase tracking-wider">
+          <Sparkles className="w-4 h-4" />
+          <span>Resumo da Sua Consagração</span>
+        </div>
+        <p className="text-xs sm:text-sm text-on-surface dark:text-gray-200 leading-relaxed">
+          Seu propósito {watchedValues.purposeTitle?.trim() ? <strong>&ldquo;{watchedValues.purposeTitle.trim()}&rdquo;</strong> : <strong>Espiritual</strong>} terá{" "}
+          <strong>{watchedValues.frequencyDays || (watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)} {((watchedValues.frequencyDays || (watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)) === 1 ? "dia" : "dias")} de jejum</strong>{" "}
+          ao longo de {watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7} dias, com{" "}
+          <strong>{watchedValues.targetHours || 12} horas diárias</strong> de consagração e oração.
+        </p>
+      </div>
+
       {/* Botão de Salvar & Gerar Escala */}
-      <div className="mt-2">
+      <div>
         <Button
           type="submit"
           variant="primary"
