@@ -4,10 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession, signIn } from "next-auth/react";
-import {
-  fastingConfigSchema,
-  FastingConfigInput,
-} from "@/features/schedule/schema";
+import { fastingConfigSchema, FastingConfigInput } from "@/features/schedule/schema";
 import { useFastingStore, DEFAULT_CONFIG } from "@/store/useFastingStore";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -60,7 +57,18 @@ const TIME_PERIODS: TimePeriod[] = [
   {
     id: "night",
     name: "Noite",
-    hours: ["18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00", "01:00", "02:00", "03:00"],
+    hours: [
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+      "22:00",
+      "23:00",
+      "00:00",
+      "01:00",
+      "02:00",
+      "03:00",
+    ],
     rangeLabel: "18h às 03h",
     icon: Sunset,
   },
@@ -80,7 +88,15 @@ import { toast } from "react-toastify";
 
 // In FastingConfiguratorForm component:
 export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => void }) {
-  const { config, hasConfigured, setConfig, generateSchedule, saveAndGenerateSchedule, setSyncedCalendarEventIds, setIsGoogleCalendarSynced } = useFastingStore();
+  const {
+    config,
+    hasConfigured,
+    setConfig,
+    generateSchedule,
+    saveAndGenerateSchedule,
+    setSyncedCalendarEventIds,
+    setIsGoogleCalendarSynced,
+  } = useFastingStore();
   const { data: session, status } = useSession();
 
   // No primeiro acesso (hasConfigured: false), usa estritamente os valores padrão estabelecidos
@@ -190,9 +206,19 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
     const subscription = watch((value) => {
       if (value) {
         const rawDur = value.durationDays;
-        const dur = rawDur !== "" && rawDur !== undefined && rawDur !== null && !isNaN(Number(rawDur)) && Number(rawDur) > 0 ? Number(rawDur) : 7;
+        const dur =
+          rawDur !== "" &&
+          rawDur !== undefined &&
+          rawDur !== null &&
+          !isNaN(Number(rawDur)) &&
+          Number(rawDur) > 0
+            ? Number(rawDur)
+            : 7;
         const rawFreq = value.frequencyDays;
-        const freq = rawFreq !== "" && rawFreq !== undefined && rawFreq !== null && !isNaN(Number(rawFreq)) && Number(rawFreq) > 0 ? Math.min(Number(rawFreq), dur) : dur;
+        const freq =
+          typeof rawFreq === "number" && !isNaN(rawFreq) && rawFreq > 0
+            ? Math.min(rawFreq, dur)
+            : dur;
         const target = value.targetHours ? Number(value.targetHours) : 12;
         setConfig({
           ...value,
@@ -247,7 +273,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           const json = await res.json();
           if (!res.ok) {
             syncSuccess = false;
-            syncErrorMessage = json.message || "Não foi possível inserir os eventos no Google Agenda. Verifique suas permissões.";
+            syncErrorMessage =
+              json.message ||
+              "Não foi possível inserir os eventos no Google Agenda. Verifique suas permissões.";
           } else if (json.eventIds && Array.isArray(json.eventIds)) {
             setSyncedCalendarEventIds(json.eventIds);
           }
@@ -300,10 +328,13 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
         autoClose: 5000,
       });
     } else {
-      toast.warn("Por favor, verifique os campos obrigatórios destacados antes de gerar o propósito.", {
-        position: "top-right",
-        autoClose: 5000,
-      });
+      toast.warn(
+        "Por favor, verifique os campos obrigatórios destacados antes de gerar o propósito.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+        }
+      );
     }
   };
 
@@ -327,7 +358,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               </span>
             </h2>
             <p className="text-xs text-on-surface-variant dark:text-gray-400">
-              Dê um nome à sua consagração e registre pelo que você está clamando. Este título e motivo serão incluídos na sua escala e no Google Agenda.
+              Dê um nome à sua consagração e registre pelo que você está clamando. Este título e
+              motivo serão incluídos na sua escala e no Google Agenda.
             </p>
           </div>
         </div>
@@ -403,7 +435,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
             {/* Sugestões Rápidas de Títulos */}
             <div className="flex flex-wrap items-center gap-1.5 mt-2">
-              <span className="text-[11px] text-secondary dark:text-gray-400 mr-1">Sugestões de títulos:</span>
+              <span className="text-[11px] text-secondary dark:text-gray-400 mr-1">
+                Sugestões de títulos:
+              </span>
               {[
                 "Jejum de Daniel",
                 "Consagração Familiar",
@@ -465,9 +499,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
             <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-on-surface dark:text-white">Tempo de Consagração (Duração & Frequência)</h2>
+            <h2 className="text-lg font-semibold text-on-surface dark:text-white">
+              Tempo de Consagração (Duração & Frequência)
+            </h2>
             <p className="text-xs text-on-surface-variant dark:text-gray-400">
-              Defina a quantidade de dias totais do propósito e quantos dias de jejum fará no período
+              Defina a quantidade de dias totais do propósito e quantos dias de jejum fará no
+              período
             </p>
           </div>
         </div>
@@ -483,7 +520,11 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 type="number"
                 min={1}
                 max={40}
-                value={watchedValues.durationDays === undefined || watchedValues.durationDays === null ? "" : watchedValues.durationDays}
+                value={
+                  watchedValues.durationDays === undefined || watchedValues.durationDays === null
+                    ? ""
+                    : watchedValues.durationDays
+                }
                 onChange={(e) => {
                   const raw = e.target.value;
                   if (raw === "") {
@@ -518,23 +559,66 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                 Frequência no período
               </label>
               <div className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold px-3 py-1 rounded-full text-xs">
-                {watchedValues.frequencyDays || (watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)} {(watchedValues.frequencyDays || (watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)) === 1 ? "dia" : "dias"} de jejum
+                {watchedValues.frequencyDays ||
+                  (watchedValues.durationDays &&
+                  !isNaN(Number(watchedValues.durationDays)) &&
+                  Number(watchedValues.durationDays) > 0
+                    ? Number(watchedValues.durationDays)
+                    : 7)}{" "}
+                {(watchedValues.frequencyDays ||
+                  (watchedValues.durationDays &&
+                  !isNaN(Number(watchedValues.durationDays)) &&
+                  Number(watchedValues.durationDays) > 0
+                    ? Number(watchedValues.durationDays)
+                    : 7)) === 1
+                  ? "dia"
+                  : "dias"}{" "}
+                de jejum
               </div>
             </div>
 
             <input
               type="range"
               min={1}
-              max={watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7}
-              value={Math.min(watchedValues.frequencyDays || 1, watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)}
+              max={
+                watchedValues.durationDays &&
+                !isNaN(Number(watchedValues.durationDays)) &&
+                Number(watchedValues.durationDays) > 0
+                  ? Number(watchedValues.durationDays)
+                  : 7
+              }
+              value={Math.min(
+                watchedValues.frequencyDays || 1,
+                watchedValues.durationDays &&
+                  !isNaN(Number(watchedValues.durationDays)) &&
+                  Number(watchedValues.durationDays) > 0
+                  ? Number(watchedValues.durationDays)
+                  : 7
+              )}
               onChange={(e) => setValue("frequencyDays", parseInt(e.target.value, 10))}
               className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-grab active:cursor-grabbing accent-primary"
             />
 
             <div className="flex justify-between text-xs text-secondary dark:text-gray-400">
               <span>1 dia</span>
-              <span>{Math.round((watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7) / 2)} dias</span>
-              <span>{watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7} dias (Todos os dias)</span>
+              <span>
+                {Math.round(
+                  (watchedValues.durationDays &&
+                  !isNaN(Number(watchedValues.durationDays)) &&
+                  Number(watchedValues.durationDays) > 0
+                    ? Number(watchedValues.durationDays)
+                    : 7) / 2
+                )}{" "}
+                dias
+              </span>
+              <span>
+                {watchedValues.durationDays &&
+                !isNaN(Number(watchedValues.durationDays)) &&
+                Number(watchedValues.durationDays) > 0
+                  ? Number(watchedValues.durationDays)
+                  : 7}{" "}
+                dias (Todos os dias)
+              </span>
             </div>
             {errors.frequencyDays && (
               <p className="text-xs text-error mt-1.5">{errors.frequencyDays.message}</p>
@@ -551,7 +635,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-on-surface dark:text-white">Janela Diária de Consagração & Oração</h2>
+              <h2 className="text-lg font-semibold text-on-surface dark:text-white">
+                Janela Diária de Consagração & Oração
+              </h2>
               <p className="text-xs text-on-surface-variant dark:text-gray-400">
                 Quantidade de horas consecutivas de abstinência e dedicação diária a Deus
               </p>
@@ -610,7 +696,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                     Sincronizar no Google Agenda automaticamente
                   </div>
                   <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
-                    Adiciona os dias e horários da escala na conta <strong>{session.user?.email}</strong>.
+                    Adiciona os dias e horários da escala na conta{" "}
+                    <strong>{session.user?.email}</strong>.
                   </div>
                 </div>
               </div>
@@ -637,7 +724,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                       </span>
                     </div>
                     <div className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">
-                      Inclui o cálculo e horários de hidratação (~250ml a cada 2h) na descrição dos eventos para proteger sua saúde.
+                      Inclui o cálculo e horários de hidratação (~250ml a cada 2h) na descrição dos
+                      eventos para proteger sua saúde.
                     </div>
                   </div>
                 </div>
@@ -664,7 +752,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   Adicionar lembretes no Google Agenda
                 </div>
                 <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
-                  Conecte sua conta Google para enviar os horários e lembretes de hidratação diretamente para sua agenda.
+                  Conecte sua conta Google para enviar os horários e lembretes de hidratação
+                  diretamente para sua agenda.
                 </div>
               </div>
             </div>
@@ -801,8 +890,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                           typeof watchedValues.customStartDate === "string"
                             ? watchedValues.customStartDate
                             : watchedValues.customStartDate instanceof Date
-                            ? format(watchedValues.customStartDate, "yyyy-MM-dd")
-                            : format(new Date(), "yyyy-MM-dd")
+                              ? format(watchedValues.customStartDate, "yyyy-MM-dd")
+                              : format(new Date(), "yyyy-MM-dd")
                         }
                         onChange={(e) => {
                           setValue("startOption", "custom");
@@ -880,7 +969,11 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         {TIME_PERIODS.map((period) => {
                           const currentTime = slotTimes[period.id];
-                          const pool = watchedValues.allowedStartTimes || ["08:00", "12:00", "18:00"];
+                          const pool = watchedValues.allowedStartTimes || [
+                            "08:00",
+                            "12:00",
+                            "18:00",
+                          ];
                           const isIncluded = pool.includes(currentTime);
                           const Icon = period.icon;
 
@@ -1030,7 +1123,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
             {/* Bloco 2: Distribuição & Dias Bloqueados */}
             {(() => {
-              const isAllDaysFasting = (watchedValues.frequencyDays || watchedValues.durationDays || 7) >= (watchedValues.durationDays || 7);
+              const isAllDaysFasting =
+                (watchedValues.frequencyDays || watchedValues.durationDays || 7) >=
+                (watchedValues.durationDays || 7);
               return (
                 <AccordionItem
                   defaultOpen={!isAllDaysFasting}
@@ -1049,10 +1144,13 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                       </div>
                       <div className="space-y-1">
                         <strong className="block text-sm text-primary dark:text-primary-fixed-dim font-semibold">
-                          Jejum em Todos os Dias Selecionado ({watchedValues.durationDays || 7} de {watchedValues.durationDays || 7} dias)
+                          Jejum em Todos os Dias Selecionado ({watchedValues.durationDays || 7} de{" "}
+                          {watchedValues.durationDays || 7} dias)
                         </strong>
                         <p className="text-xs text-on-surface-variant dark:text-gray-400 leading-relaxed">
-                          Como você escolheu jejuar em todos os dias do propósito, a escala será realizada em todos os dias consecutivos do período. Por isso, a alternância de dias e o bloqueio de datas estão desativados.
+                          Como você escolheu jejuar em todos os dias do propósito, a escala será
+                          realizada em todos os dias consecutivos do período. Por isso, a
+                          alternância de dias e o bloqueio de datas estão desativados.
                         </p>
                       </div>
                     </div>
@@ -1103,7 +1201,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                           Dias Bloqueados (NUNCA agendar nestes dias)
                         </label>
                         <p className="text-xs text-on-surface-variant dark:text-gray-400 mb-2.5">
-                          Clique nos dias da semana em que você tem compromissos ou reuniões inadiáveis.
+                          Clique nos dias da semana em que você tem compromissos ou reuniões
+                          inadiáveis.
                         </p>
                         <div className="grid grid-cols-7 gap-2">
                           {WEEKDAYS.map((w) => {
@@ -1177,7 +1276,8 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                           </span>
                         </div>
                         <p className="text-xs text-on-surface-variant dark:text-gray-400 mt-1 leading-relaxed">
-                          Permite a ingestão de água durante as {watchedValues.targetHours}h de consagração.
+                          Permite a ingestão de água durante as {watchedValues.targetHours}h de
+                          consagração.
                         </p>
                       </div>
                     </button>
@@ -1197,9 +1297,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                         <ShieldAlert className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-semibold text-sm text-error dark:text-red-400">Jejum Absoluto (Sem Água)</div>
+                        <div className="font-semibold text-sm text-error dark:text-red-400">
+                          Jejum Absoluto (Sem Água)
+                        </div>
                         <p className="text-xs text-on-surface-variant dark:text-gray-400 mt-1 leading-relaxed">
-                          Abstenção total incluindo líquidos. Requer discernimento e atenção à saúde.
+                          Abstenção total incluindo líquidos. Requer discernimento e atenção à
+                          saúde.
                         </p>
                       </div>
                     </button>
@@ -1213,14 +1316,20 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                         <span>Cuidando do Templo do Espírito Santo (1 Coríntios 6:19):</span>
                       </div>
                       <p className="text-[11px] text-on-surface-variant dark:text-gray-400">
-                        Durante sua consagração de <strong>{watchedValues.targetHours || 12} horas</strong>, sugerimos a ingestão de cerca de <strong>{Math.max(1, Math.floor((watchedValues.targetHours || 12) / 2)) * 250}ml</strong> de água (~1 copo a cada 2 horas). A hidratação adequada preserva a clareza mental e o vigor físico para a oração contínua.
+                        Durante sua consagração de{" "}
+                        <strong>{watchedValues.targetHours || 12} horas</strong>, sugerimos a
+                        ingestão de cerca de{" "}
+                        <strong>
+                          {Math.max(1, Math.floor((watchedValues.targetHours || 12) / 2)) * 250}ml
+                        </strong>{" "}
+                        de água (~1 copo a cada 2 horas). A hidratação adequada preserva a clareza
+                        mental e o vigor físico para a oração contínua.
                       </p>
                     </div>
                   )}
                 </div>
               </div>
             </AccordionItem>
-
           </div>
         )}
       </div>
@@ -1232,10 +1341,38 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           <span>Resumo da Sua Consagração</span>
         </div>
         <p className="text-xs sm:text-sm text-on-surface dark:text-gray-200 leading-relaxed">
-          Seu propósito {watchedValues.purposeTitle?.trim() ? <strong>&ldquo;{watchedValues.purposeTitle.trim()}&rdquo;</strong> : <strong>Espiritual</strong>} terá{" "}
-          <strong>{watchedValues.frequencyDays || (watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)} {((watchedValues.frequencyDays || (watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7)) === 1 ? "dia" : "dias")} de jejum</strong>{" "}
-          ao longo de {watchedValues.durationDays && !isNaN(Number(watchedValues.durationDays)) && Number(watchedValues.durationDays) > 0 ? Number(watchedValues.durationDays) : 7} dias, com{" "}
-          <strong>{watchedValues.targetHours || 12} horas diárias</strong> de consagração e oração.
+          Seu propósito{" "}
+          {watchedValues.purposeTitle?.trim() ? (
+            <strong>&ldquo;{watchedValues.purposeTitle.trim()}&rdquo;</strong>
+          ) : (
+            <strong>Espiritual</strong>
+          )}{" "}
+          terá{" "}
+          <strong>
+            {watchedValues.frequencyDays ||
+              (watchedValues.durationDays &&
+              !isNaN(Number(watchedValues.durationDays)) &&
+              Number(watchedValues.durationDays) > 0
+                ? Number(watchedValues.durationDays)
+                : 7)}{" "}
+            {(watchedValues.frequencyDays ||
+              (watchedValues.durationDays &&
+              !isNaN(Number(watchedValues.durationDays)) &&
+              Number(watchedValues.durationDays) > 0
+                ? Number(watchedValues.durationDays)
+                : 7)) === 1
+              ? "dia"
+              : "dias"}{" "}
+            de jejum
+          </strong>{" "}
+          ao longo de{" "}
+          {watchedValues.durationDays &&
+          !isNaN(Number(watchedValues.durationDays)) &&
+          Number(watchedValues.durationDays) > 0
+            ? Number(watchedValues.durationDays)
+            : 7}{" "}
+          dias, com <strong>{watchedValues.targetHours || 12} horas diárias</strong> de consagração
+          e oração.
         </p>
       </div>
 

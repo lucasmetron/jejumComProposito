@@ -101,7 +101,8 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
           Nenhuma escala gerada ainda
         </h3>
         <p className="text-xs md:text-sm text-on-surface-variant dark:text-gray-400 max-w-sm mb-5">
-          Ajuste as preferências na aba de configuração e clique em &quot;Gerar Cronograma&quot; para visualizar sua escala devocional.
+          Ajuste as preferências na aba de configuração e clique em &quot;Gerar Cronograma&quot;
+          para visualizar sua escala devocional.
         </p>
         {onEdit && (
           <Button onClick={onEdit} variant="primary" size="sm">
@@ -145,7 +146,9 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
           <span className="text-xs text-secondary dark:text-gray-400 font-medium uppercase tracking-wider">
             Total de Sessões
           </span>
-          <span className="text-2xl font-bold text-on-surface dark:text-white mt-1">{events.length}</span>
+          <span className="text-2xl font-bold text-on-surface dark:text-white mt-1">
+            {events.length}
+          </span>
           <span className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">
             em {config.durationDays} dias de propósito
           </span>
@@ -155,8 +158,12 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
           <span className="text-xs text-secondary dark:text-gray-400 font-medium uppercase tracking-wider">
             Horas Consagradas
           </span>
-          <span className="text-2xl font-bold text-primary dark:text-primary-fixed-dim mt-1">{totalFastHours}h</span>
-          <span className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">tempo total planejado</span>
+          <span className="text-2xl font-bold text-primary dark:text-primary-fixed-dim mt-1">
+            {totalFastHours}h
+          </span>
+          <span className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">
+            tempo total planejado
+          </span>
         </Card>
 
         <Card className="p-4 flex flex-col">
@@ -190,7 +197,9 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
           <div className="flex items-center gap-2.5">
             <Share2 className="w-5 h-5 text-primary dark:text-primary-fixed-dim" />
             <div>
-              <h4 className="font-semibold text-sm text-on-surface dark:text-white">Exportar & Sincronizar</h4>
+              <h4 className="font-semibold text-sm text-on-surface dark:text-white">
+                Exportar & Sincronizar
+              </h4>
               <p className="text-xs text-on-surface-variant dark:text-gray-400">
                 Adicione aos seus calendários ou imprima o cronograma devocional
               </p>
@@ -241,8 +250,8 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
               {isSyncing
                 ? "Sincronizando..."
                 : status === "authenticated"
-                ? "Sincronizar Google Agenda"
-                : "Conectar & Sincronizar Google"}
+                  ? "Sincronizar Google Agenda"
+                  : "Conectar & Sincronizar Google"}
             </Button>
           </div>
         </div>
@@ -250,8 +259,14 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
         {/* Faixa Explicativa sobre o Formato .ICS */}
         <div className="pt-3 border-t border-outline-variant/30 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-on-surface-variant dark:text-gray-400">
           <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-primary dark:text-primary-fixed-dim">💡 O que é .ICS?</span>
-            <span>Arquivo universal para importar a escala no <strong>Apple Calendar (iPhone/Mac)</strong>, <strong>Outlook</strong> ou qualquer aplicativo de calendário.</span>
+            <span className="font-semibold text-primary dark:text-primary-fixed-dim">
+              💡 O que é .ICS?
+            </span>
+            <span>
+              Arquivo universal para importar a escala no{" "}
+              <strong>Apple Calendar (iPhone/Mac)</strong>, <strong>Outlook</strong> ou qualquer
+              aplicativo de calendário.
+            </span>
           </div>
           <button
             type="button"
@@ -315,7 +330,9 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
                       {format(startDate, "HH:mm")} &rarr; {format(endDate, "HH:mm")}
                     </span>
                   </div>
-                  <span className="text-[11px] text-secondary dark:text-gray-400">Ver detalhes &rarr;</span>
+                  <span className="text-[11px] text-secondary dark:text-gray-400">
+                    Ver detalhes &rarr;
+                  </span>
                 </div>
               </div>
             );
@@ -382,7 +399,10 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
               <span>Formato Universal iCalendar (.ics)</span>
             </h4>
             <p className="text-xs text-on-surface-variant dark:text-gray-300">
-              O <strong>.ICS</strong> é o padrão internacional de troca de calendários. Ele permite que todos os dias, horários de abstinência e lembretes do seu propósito sejam importados de uma só vez para o seu aplicativo de agenda favorito, sem precisar digitar evento por evento.
+              O <strong>.ICS</strong> é o padrão internacional de troca de calendários. Ele permite
+              que todos os dias, horários de abstinência e lembretes do seu propósito sejam
+              importados de uma só vez para o seu aplicativo de agenda favorito, sem precisar
+              digitar evento por evento.
             </p>
           </div>
 
@@ -397,9 +417,11 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
                 <span>No iPhone / iPad (Apple Calendar):</span>
               </div>
               <p className="text-[12px] text-on-surface-variant dark:text-gray-400">
-                1. Toque em <strong>"Baixar .ICS"</strong>.<br />
-                2. Abra o arquivo baixado no iOS e toque em <strong>"Adicionar Todos"</strong>.<br />
-                3. Pronto! Todas as sessões e notificações de oração ficam salvas no seu calendário da Apple.
+                1. Toque em <strong>&quot;Baixar .ICS&quot;</strong>.<br />
+                2. Abra o arquivo baixado no iOS e toque em{" "}
+                <strong>&quot;Adicionar Todos&quot;</strong>.<br />
+                3. Pronto! Todas as sessões e notificações de oração ficam salvas no seu calendário
+                da Apple.
               </p>
             </div>
 
@@ -409,7 +431,9 @@ export function SchedulePreview({ onEdit }: SchedulePreviewProps) {
                 <span>No Microsoft Outlook / Outros Aplicativos:</span>
               </div>
               <p className="text-[12px] text-on-surface-variant dark:text-gray-400">
-                Dê um duplo clique no arquivo <strong>.ics</strong> baixado no seu computador ou importe-o através do menu <em>Arquivo &rarr; Abrir e Exportar &rarr; Importar Calendário</em>.
+                Dê um duplo clique no arquivo <strong>.ics</strong> baixado no seu computador ou
+                importe-o através do menu{" "}
+                <em>Arquivo &rarr; Abrir e Exportar &rarr; Importar Calendário</em>.
               </p>
             </div>
           </div>

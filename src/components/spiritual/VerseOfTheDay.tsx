@@ -118,7 +118,7 @@ export function VerseOfTheDay({ initialVerse }: VerseOfTheDayProps) {
           <div className="space-y-3 animate-in fade-in duration-300">
             {/* Texto do Versículo */}
             <blockquote className="text-xl md:text-2xl font-semibold text-on-surface dark:text-white leading-relaxed tracking-tight italic">
-              "{verseData.verse}"
+              &quot;{verseData.verse}&quot;
             </blockquote>
 
             {/* Referência Bíblica */}
@@ -135,7 +135,7 @@ export function VerseOfTheDay({ initialVerse }: VerseOfTheDayProps) {
           </div>
         ) : (
           <p className="text-sm text-secondary dark:text-gray-400">
-            "O silêncio do corpo é a voz do espírito."
+            &quot;O silêncio do corpo é a voz do espírito.&quot;
           </p>
         )}
       </div>
