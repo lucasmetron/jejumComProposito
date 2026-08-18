@@ -107,6 +107,43 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop pb-section-gap flex flex-col gap-8 md:gap-10">
+      {/* 0. Apresentação & Finalidade do Aplicativo (Requisito de Verificação OAuth Google) */}
+      <section className="bg-gradient-to-br from-primary/10 via-surface-container-lowest to-surface-container-low dark:from-primary/20 dark:via-slate-900 dark:to-slate-800/80 rounded-3xl p-6 sm:p-8 md:p-10 border border-primary/20 shadow-sm">
+        <div className="max-w-3xl space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 dark:bg-primary/25 text-primary dark:text-primary-fixed-dim text-xs font-semibold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5" />
+            Planejador Devocional Espiritual
+          </div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-on-surface dark:text-white tracking-tight leading-tight">
+            Jejum com Propósito
+          </h1>
+          <p className="text-sm sm:text-base text-on-surface-variant dark:text-gray-300 leading-relaxed">
+            O <strong>Jejum com Propósito</strong> é um aplicativo devocional criado para ajudar
+            você a planejar, organizar e manter suas jornadas de consagração e oração. Com ele, você
+            define períodos de abstinência, recebe versículos bíblicos diários e pode{" "}
+            <strong>
+              sincronizar seus horários de jejum automaticamente com o Google Calendar (Google
+              Agenda)
+            </strong>{" "}
+            para receber lembretes e manter sua disciplina espiritual.
+          </p>
+          <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-secondary dark:text-gray-400">
+            <span className="flex items-center gap-1.5 bg-surface-bright dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-outline-variant/30 dark:border-white/10">
+              <CalendarIcon className="w-3.5 h-3.5 text-primary dark:text-primary-fixed-dim" />{" "}
+              Sincronização com Google Agenda
+            </span>
+            <span className="flex items-center gap-1.5 bg-surface-bright dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-outline-variant/30 dark:border-white/10">
+              <Clock className="w-3.5 h-3.5 text-primary dark:text-primary-fixed-dim" /> Lembretes e
+              Janelas Diárias
+            </span>
+            <span className="flex items-center gap-1.5 bg-surface-bright dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-outline-variant/30 dark:border-white/10">
+              <Flame className="w-3.5 h-3.5 text-primary dark:text-primary-fixed-dim" /> Cronograma
+              Personalizado
+            </span>
+          </div>
+        </div>
+      </section>
+
       {/* 1. Versículo do Dia (Renderizado no Servidor de forma instantânea) */}
       <VerseOfTheDay initialVerse={initialVerse} />
 
@@ -126,7 +163,8 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
                   Nenhum jejum ativo
                 </h2>
                 <p className="text-xs md:text-sm text-on-surface-variant dark:text-gray-400">
-                  Você ainda não possui uma escala de jejum configurada. Crie seu primeiro propósito espiritual personalizado para gerar seu cronograma devocional.
+                  Você ainda não possui uma escala de jejum configurada. Crie seu primeiro propósito
+                  espiritual personalizado para gerar seu cronograma devocional.
                 </p>
               </div>
 
@@ -244,7 +282,9 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
                     >
                       <span
                         className={`w-2 h-2 rounded-full ${
-                          isFastingNow ? "bg-primary animate-pulse" : "bg-secondary dark:bg-gray-400"
+                          isFastingNow
+                            ? "bg-primary animate-pulse"
+                            : "bg-secondary dark:bg-gray-400"
                         }`}
                       />
                       {isFastingNow ? "Ativo" : "Aguardando"}
@@ -270,10 +310,14 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
                     {isFastingNow
                       ? "Tempo restante para concluir esta sessão"
                       : activeSession
-                      ? `Inicia ${format(new Date(activeSession.start), "EEEE, dd/MM 'às' HH:mm", {
-                          locale: ptBR,
-                        })}`
-                      : "Todas as sessões concluídas com sucesso!"}
+                        ? `Inicia ${format(
+                            new Date(activeSession.start),
+                            "EEEE, dd/MM 'às' HH:mm",
+                            {
+                              locale: ptBR,
+                            }
+                          )}`
+                        : "Todas as sessões concluídas com sucesso!"}
                   </p>
                 </div>
               </div>
@@ -282,7 +326,9 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
               <div className="space-y-4 pt-4 border-t border-outline-variant/20 dark:border-white/10">
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-xs font-medium">
-                    <span className="text-on-surface-variant dark:text-gray-400">Progresso do Período</span>
+                    <span className="text-on-surface-variant dark:text-gray-400">
+                      Progresso do Período
+                    </span>
                     <span className="text-primary dark:text-primary-fixed-dim font-bold">
                       {Math.round(progressPercent)}%
                     </span>
@@ -297,10 +343,12 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
 
                 <div className="flex justify-between items-center text-xs text-secondary dark:text-gray-400 pt-1">
                   <span>
-                    Propósito: <strong className="text-on-surface dark:text-white">{purposeName}</strong>
+                    Propósito:{" "}
+                    <strong className="text-on-surface dark:text-white">{purposeName}</strong>
                   </span>
                   <span>
-                    Meta: <strong className="text-on-surface dark:text-white">{avgHours}h diárias</strong>
+                    Meta:{" "}
+                    <strong className="text-on-surface dark:text-white">{avgHours}h diárias</strong>
                   </span>
                 </div>
               </div>
@@ -334,7 +382,8 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
 
               <div className="pt-6 mt-4 border-t border-outline-variant/20 dark:border-white/10 flex items-center justify-between">
                 <div className="text-xs text-secondary dark:text-gray-400">
-                  Total de sessões: <strong className="text-on-surface dark:text-white">{totalDays} dias</strong>
+                  Total de sessões:{" "}
+                  <strong className="text-on-surface dark:text-white">{totalDays} dias</strong>
                 </div>
                 <Link href="/proposito">
                   <Button variant="outline" size="sm" className="gap-1.5 text-xs">
@@ -391,10 +440,7 @@ export function HomePageClient({ initialVerse }: HomePageClientProps) {
       )}
 
       {/* Modal de Gestão do Jejum */}
-      <ManageFastModal
-        isOpen={isManageModalOpen}
-        onClose={() => setIsManageModalOpen(false)}
-      />
+      <ManageFastModal isOpen={isManageModalOpen} onClose={() => setIsManageModalOpen(false)} />
     </div>
   );
 }

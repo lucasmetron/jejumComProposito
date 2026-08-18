@@ -25,9 +25,7 @@ export const metadata: Metadata = {
       { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
       { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   appleWebApp: {
     capable: true,
@@ -44,35 +42,45 @@ export const metadata: Metadata = {
     "planejador de jejum",
     "pwa",
   ],
+  verification: {
+    google: "fbih7y0D8xoXrQvJXsaJHDJBViuKHRW462m1gjCUZrI",
+  },
 };
 
+import { Open_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-open-sans",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-plus-jakarta-sans",
+});
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className="scroll-smooth" suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      className={`scroll-smooth ${openSans.variable} ${plusJakartaSans.variable}`}
+      suppressHydrationWarning
+    >
       <head>
+        <meta
+          name="google-site-verification"
+          content="fbih7y0D8xoXrQvJXsaJHDJBViuKHRW462m1gjCUZrI"
+        />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Jejum com Propósito" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-          rel="stylesheet"
-        />
       </head>
       <body className="min-h-screen flex flex-col bg-background text-on-background dark:bg-slate-950 dark:text-gray-100 antialiased selection:bg-primary-fixed selection:text-on-primary-fixed transition-colors">
         <NextAuthProvider>

@@ -31,7 +31,7 @@ export function TopNavBar() {
               className="w-full h-full object-contain drop-shadow-sm"
             />
           </div>
-          <span className="font-bold text-lg text-primary dark:text-primary-fixed-dim tracking-tight hidden sm:inline">
+          <span className="font-bold text-base sm:text-lg text-primary dark:text-primary-fixed-dim tracking-tight">
             Jejum com Propósito
           </span>
         </Link>
@@ -39,10 +39,7 @@ export function TopNavBar() {
         {/* Navigation Links (Desktop - matching Print 2) */}
         <nav className="hidden md:flex items-center gap-8 h-full">
           {navLinks.map((link) => {
-            const isActive =
-              link.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(link.href);
+            const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
 
             return (
               <Link
