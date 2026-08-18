@@ -44,7 +44,7 @@ export const DEFAULT_CONFIG: FastingConfig = {
   timeMode: "random",
   allowedStartTimes: ["08:00", "12:00", "18:00"],
   startOption: "tomorrow",
-  distribution: "alternated",
+  distribution: "random",
   blockedDays: [],
   rampUp: false,
   isAbsoluteFast: false,

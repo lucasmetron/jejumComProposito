@@ -333,9 +333,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
       {/* 2. Janela Diária de Jejum */}
       <Card className="p-6 md:p-8 shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+          <div className="flex items-start sm:items-center gap-3">
+            <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim shrink-0 mt-0.5 sm:mt-0">
               <Clock className="w-5 h-5" />
             </div>
             <div>
@@ -345,8 +345,16 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               </p>
             </div>
           </div>
-          <div className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold px-3.5 py-1.5 rounded-full text-sm">
-            {watchedValues.targetHours}h {watchedValues.targetHours === 24 ? "(Dia Completo)" : `Jejum / ${24 - (watchedValues.targetHours || 12)}h Alimentação`}
+          <div className="self-start sm:self-auto inline-flex items-center gap-1.5 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold px-3.5 py-1.5 rounded-full text-xs sm:text-sm whitespace-nowrap">
+            {watchedValues.targetHours === 24 ? (
+              <span>24h (Dia Completo)</span>
+            ) : (
+              <>
+                <span>{watchedValues.targetHours || 12}h Jejum</span>
+                <span className="opacity-40">/</span>
+                <span>{24 - (watchedValues.targetHours || 12)}h Alimentação</span>
+              </>
+            )}
           </div>
         </div>
 

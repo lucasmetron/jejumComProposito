@@ -39,9 +39,11 @@ export const fastingConfigSchema = z
       required_error: "Indique se deseja iniciar hoje ou amanhã.",
     }),
     customStartDate: z.union([z.string(), z.date()]).optional(),
-    distribution: z.enum(["alternated", "random"], {
-      required_error: "Selecione a distribuição dos dias (Alternado ou Aleatório).",
-    }),
+    distribution: z
+      .enum(["alternated", "random"], {
+        required_error: "Selecione a distribuição dos dias (Alternado ou Aleatório).",
+      })
+      .default("random"),
     blockedDays: z
       .array(z.number().min(0).max(6), {
         required_error: "Lista de dias bloqueados inválida.",
