@@ -346,18 +346,18 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
       {/* 1. Propósito & Intenção de Clamor */}
       <Card className="p-6 md:p-8 shadow-sm space-y-6 border border-primary/20 bg-surface-container-lowest dark:bg-slate-900">
-        <div className="flex items-start sm:items-center gap-3">
-          <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim shrink-0 mt-0.5 sm:mt-0">
-            <Sparkles className="w-5 h-5" />
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim shrink-0 mt-0.5 sm:mt-0">
+            <Sparkles className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-on-surface dark:text-white flex items-center gap-2">
+            <h2 className="text-xl md:text-2xl font-bold text-on-surface dark:text-white flex flex-wrap items-center gap-2.5">
               <span>Coração do Propósito & Motivo de Oração</span>
-              <span className="text-[11px] font-normal text-secondary dark:text-gray-400 bg-surface-container-high dark:bg-slate-800 px-2 py-0.5 rounded-full">
+              <span className="text-xs sm:text-sm font-semibold text-primary dark:text-primary-fixed-dim bg-primary/10 dark:bg-primary/20 border border-primary/20 px-2.5 py-0.5 rounded-full">
                 Sincroniza na Agenda
               </span>
             </h2>
-            <p className="text-xs text-on-surface-variant dark:text-gray-400">
+            <p className="text-sm sm:text-base text-on-surface-variant dark:text-gray-300 mt-1 leading-relaxed">
               Dê um nome à sua consagração e registre pelo que você está clamando. Este título e
               motivo serão incluídos na sua escala e no Google Agenda.
             </p>
@@ -366,10 +366,10 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
         {/* Modelos Bíblicos com 1 Clique */}
         <div>
-          <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2.5">
+          <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-3">
             Modelos de Propósito Bíblico (Preenchimento Rápido)
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {BIBLICAL_PRESETS.map((preset) => {
               const isSelected = selectedPreset === preset.id;
               return (
@@ -378,24 +378,24 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   type="button"
                   onClick={() => handleSelectPreset(preset)}
                   className={clsx(
-                    "p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between gap-2 group",
+                    "p-4 rounded-xl border text-left transition-all flex flex-col justify-between gap-2.5 group",
                     isSelected
-                      ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
-                      : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white bg-surface-bright dark:bg-slate-800/80"
+                      ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-2 ring-primary dark:ring-primary-fixed-dim shadow-sm"
+                      : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-200 dark:hover:text-white bg-surface-bright dark:bg-slate-800/80"
                   )}
                 >
-                  <div className="flex items-center justify-between gap-1">
-                    <span className="font-bold text-xs group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
+                  <div className="flex items-center justify-between gap-1.5">
+                    <span className="font-bold text-sm sm:text-base group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
                       {preset.name}
                     </span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary dark:text-primary-fixed-dim shrink-0">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-primary/15 text-primary dark:text-primary-fixed-dim shrink-0">
                       {preset.badge}
                     </span>
                   </div>
-                  <p className="text-[11px] text-on-surface-variant dark:text-gray-400 line-clamp-2 leading-tight">
+                  <p className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-300 line-clamp-2 leading-relaxed">
                     {preset.subtitle}
                   </p>
-                  <span className="text-[10px] text-primary/70 dark:text-primary-fixed-dim/70 font-serif italic">
+                  <span className="text-xs text-primary/80 dark:text-primary-fixed-dim font-serif italic mt-0.5">
                     {preset.biblicalReference}
                   </span>
                 </button>
@@ -404,14 +404,14 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           </div>
         </div>
 
-        <div className="space-y-4 pt-2 border-t border-outline-variant/20 dark:border-white/5">
+        <div className="space-y-5 pt-3 border-t border-outline-variant/20 dark:border-white/5">
           {/* Título do Propósito */}
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider">
                 Título do Propósito (Opcional)
               </label>
-              <span className="text-[11px] text-secondary dark:text-gray-400">
+              <span className="text-xs sm:text-sm font-medium text-secondary dark:text-gray-400">
                 {(watchedValues.purposeTitle || "").length}/80
               </span>
             </div>
@@ -421,21 +421,21 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               placeholder="Ex: Jejum de Daniel, Consagração Familiar, Direção Profissional..."
               {...register("purposeTitle")}
               className={clsx(
-                "w-full p-3.5 rounded-xl border bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm font-medium focus:outline-none focus:ring-1 focus:ring-primary shadow-sm transition-all",
+                "w-full p-3.5 sm:p-4 rounded-xl border bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-base font-medium focus:outline-none focus:ring-1 focus:ring-primary shadow-sm transition-all",
                 errors.purposeTitle
                   ? "border-error focus:border-error ring-1 ring-error"
                   : "border-outline-variant/40 dark:border-white/10 focus:border-primary dark:focus:border-primary-fixed-dim"
               )}
             />
             {errors.purposeTitle && (
-              <p className="text-xs text-error dark:text-red-400 mt-1.5 flex items-center gap-1 font-medium">
+              <p className="text-xs sm:text-sm text-error dark:text-red-400 mt-1.5 flex items-center gap-1 font-medium">
                 <span>⚠️</span> {errors.purposeTitle.message}
               </p>
             )}
 
             {/* Sugestões Rápidas de Títulos */}
-            <div className="flex flex-wrap items-center gap-1.5 mt-2">
-              <span className="text-[11px] text-secondary dark:text-gray-400 mr-1">
+            <div className="flex flex-wrap items-center gap-2 mt-2.5">
+              <span className="text-xs sm:text-sm font-medium text-secondary dark:text-gray-400 mr-1">
                 Sugestões de títulos:
               </span>
               {[
@@ -449,7 +449,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   key={sug}
                   type="button"
                   onClick={() => setValue("purposeTitle", sug, { shouldValidate: true })}
-                  className="text-xs px-2.5 py-1 rounded-lg bg-surface-container-high dark:bg-slate-800 hover:bg-primary/10 hover:text-primary dark:hover:text-primary-fixed-dim text-on-surface-variant dark:text-gray-300 transition-colors border border-outline-variant/30 dark:border-white/5"
+                  className="text-xs sm:text-sm px-3 py-1.5 rounded-xl bg-surface-container-high dark:bg-slate-800 hover:bg-primary/10 hover:text-primary dark:hover:text-primary-fixed-dim text-on-surface-variant dark:text-gray-300 font-medium transition-colors border border-outline-variant/30 dark:border-white/5 shadow-2xs"
                 >
                   + {sug}
                 </button>
@@ -459,11 +459,11 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
           {/* Motivo / Intenção de Oração */}
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider">
                 Motivo / Intenção de Oração (Opcional)
               </label>
-              <span className="text-[11px] text-secondary dark:text-gray-400">
+              <span className="text-xs sm:text-sm font-medium text-secondary dark:text-gray-400">
                 {(watchedValues.intention || "").length}/500
               </span>
             </div>
@@ -473,14 +473,14 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               placeholder="Escreva pelo que você está clamando ao Senhor (ex: restauração do casamento, sabedoria para decisões, intercessão pelos filhos)..."
               {...register("intention")}
               className={clsx(
-                "w-full p-3.5 rounded-xl border bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none shadow-sm transition-all",
+                "w-full p-3.5 sm:p-4 rounded-xl border bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-base focus:outline-none focus:ring-1 focus:ring-primary resize-none shadow-sm transition-all leading-relaxed",
                 errors.intention
                   ? "border-error focus:border-error ring-1 ring-error"
                   : "border-outline-variant/40 dark:border-white/10 focus:border-primary dark:focus:border-primary-fixed-dim"
               )}
             />
             {errors.intention && (
-              <p className="text-xs text-error dark:text-red-400 mt-1.5 flex items-center gap-1 font-medium">
+              <p className="text-xs sm:text-sm text-error dark:text-red-400 mt-1.5 flex items-center gap-1 font-medium">
                 <span>⚠️</span> {errors.intention.message}
               </p>
             )}
@@ -494,15 +494,15 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
       {/* 2. Tempo de Consagração */}
       <Card className="p-6 md:p-8 shadow-sm">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim">
-            <Calendar className="w-5 h-5" />
+        <div className="flex items-center gap-3.5 mb-6">
+          <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim">
+            <Calendar className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-on-surface dark:text-white">
+            <h2 className="text-xl md:text-2xl font-bold text-on-surface dark:text-white">
               Tempo de Consagração (Duração & Frequência)
             </h2>
-            <p className="text-xs text-on-surface-variant dark:text-gray-400">
+            <p className="text-sm sm:text-base text-on-surface-variant dark:text-gray-300 mt-0.5">
               Defina a quantidade de dias totais do propósito e quantos dias de jejum fará no
               período
             </p>
@@ -512,7 +512,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
         <div className="space-y-6">
           {/* Input de Quantidade de Dias */}
           <div>
-            <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2">
+            <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2">
               Quantidade de dias do propósito
             </label>
             <div className="relative">
@@ -540,25 +540,25 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                     }
                   }
                 }}
-                className="w-full p-3.5 pl-4 pr-16 rounded-xl border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-base font-medium focus:border-primary dark:focus:border-primary-fixed-dim focus:outline-none focus:ring-1 focus:ring-primary shadow-sm"
+                className="w-full p-3.5 pl-4 pr-16 rounded-xl border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-lg font-bold focus:border-primary dark:focus:border-primary-fixed-dim focus:outline-none focus:ring-1 focus:ring-primary shadow-sm"
                 placeholder="Ex: 7"
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-medium text-secondary dark:text-gray-400 pointer-events-none">
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-secondary dark:text-gray-400 pointer-events-none">
                 dias
               </span>
             </div>
             {errors.durationDays && (
-              <p className="text-xs text-error mt-1.5">{errors.durationDays.message}</p>
+              <p className="text-xs sm:text-sm text-error mt-1.5">{errors.durationDays.message}</p>
             )}
           </div>
 
           {/* Slider de Frequência */}
-          <div className="pt-4 border-t border-outline-variant/20 dark:border-white/5 space-y-3">
+          <div className="pt-4 border-t border-outline-variant/20 dark:border-white/5 space-y-3.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider">
+              <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider">
                 Frequência no período
               </label>
-              <div className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold px-3 py-1 rounded-full text-xs">
+              <div className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-bold px-3.5 py-1 rounded-full text-sm">
                 {watchedValues.frequencyDays ||
                   (watchedValues.durationDays &&
                   !isNaN(Number(watchedValues.durationDays)) &&
@@ -596,10 +596,10 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   : 7
               )}
               onChange={(e) => setValue("frequencyDays", parseInt(e.target.value, 10))}
-              className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-grab active:cursor-grabbing accent-primary"
+              className="w-full h-2.5 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-grab active:cursor-grabbing accent-primary"
             />
 
-            <div className="flex justify-between text-xs text-secondary dark:text-gray-400">
+            <div className="flex justify-between text-xs sm:text-sm font-medium text-secondary dark:text-gray-400">
               <span>1 dia</span>
               <span>
                 {Math.round(
@@ -621,7 +621,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               </span>
             </div>
             {errors.frequencyDays && (
-              <p className="text-xs text-error mt-1.5">{errors.frequencyDays.message}</p>
+              <p className="text-xs sm:text-sm text-error mt-1.5">{errors.frequencyDays.message}</p>
             )}
           </div>
         </div>
@@ -629,21 +629,21 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
       {/* 3. Janela Diária de Consagração & Oração */}
       <Card className="p-6 md:p-8 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-          <div className="flex items-start sm:items-center gap-3">
-            <div className="p-2 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim shrink-0 mt-0.5 sm:mt-0">
-              <Clock className="w-5 h-5" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div className="flex items-start sm:items-center gap-3.5">
+            <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim shrink-0 mt-0.5 sm:mt-0">
+              <Clock className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-on-surface dark:text-white">
+              <h2 className="text-xl md:text-2xl font-bold text-on-surface dark:text-white">
                 Janela Diária de Consagração & Oração
               </h2>
-              <p className="text-xs text-on-surface-variant dark:text-gray-400">
+              <p className="text-sm sm:text-base text-on-surface-variant dark:text-gray-300 mt-0.5">
                 Quantidade de horas consecutivas de abstinência e dedicação diária a Deus
               </p>
             </div>
           </div>
-          <div className="self-start sm:self-auto inline-flex items-center gap-1.5 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-semibold px-3.5 py-1.5 rounded-full text-xs sm:text-sm whitespace-nowrap">
+          <div className="self-start sm:self-auto inline-flex items-center gap-2 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim font-bold px-4 py-2 rounded-full text-sm sm:text-base whitespace-nowrap">
             {watchedValues.targetHours === 24 ? (
               <span>24h (Consagração Integral)</span>
             ) : (
@@ -652,52 +652,55 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3.5">
           <input
             type="range"
             min={1}
             max={24}
             value={watchedValues.targetHours || 12}
             onChange={(e) => setValue("targetHours", parseInt(e.target.value, 10))}
-            className="w-full h-2 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-grab active:cursor-grabbing accent-primary"
+            className="w-full h-2.5 bg-surface-container-high dark:bg-slate-800 rounded-lg appearance-none cursor-grab active:cursor-grabbing accent-primary"
           />
-          <div className="flex justify-between text-xs text-secondary dark:text-gray-400">
+          <div className="flex justify-between text-xs sm:text-sm font-medium text-secondary dark:text-gray-400">
             <span>1 hora (Mínimo)</span>
             <span>12 horas (Padrão)</span>
             <span>24 horas (Dia Inteiro)</span>
           </div>
         </div>
         {errors.targetHours && (
-          <p className="text-xs text-error mt-2">{errors.targetHours.message}</p>
+          <p className="text-xs sm:text-sm text-error mt-2">{errors.targetHours.message}</p>
         )}
       </Card>
 
-      {/* 3. Google Agenda & Lembretes (Visível no topo da Configuração) */}
-      <Card className="p-6 md:p-8 shadow-sm space-y-4">
+      {/* 4. Google Agenda & Lembretes (Visível no topo da Configuração) */}
+      <Card className="p-6 md:p-8 shadow-sm space-y-5">
         <div>
-          <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
+          <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
             Google Agenda & Lembretes
           </label>
-          <p className="text-xs text-on-surface-variant dark:text-gray-400">
+          <p className="text-sm sm:text-base text-on-surface-variant dark:text-gray-300">
             Adicione automaticamente as sessões e notificações de oração à sua agenda pessoal
           </p>
         </div>
 
         {status === "authenticated" ? (
-          <div className="space-y-3">
+          <div className="space-y-3.5">
             {/* Checkbox Principal do Google Agenda */}
-            <label className="flex items-start justify-between p-4 rounded-xl border border-primary/40 bg-primary/5 dark:bg-primary/10 cursor-pointer hover:border-primary transition-colors">
-              <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim mt-0.5 flex-shrink-0">
-                  <CalendarDays className="w-4 h-4" />
+            <label className="flex items-start justify-between p-4 sm:p-5 rounded-2xl border border-primary/40 bg-primary/5 dark:bg-primary/10 cursor-pointer hover:border-primary transition-colors">
+              <div className="flex items-start gap-3.5">
+                <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim mt-0.5 flex-shrink-0">
+                  <CalendarDays className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm text-on-surface dark:text-white">
+                  <div className="font-bold text-base text-on-surface dark:text-white">
                     Sincronizar no Google Agenda automaticamente
                   </div>
-                  <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
+                  <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-300 mt-1 leading-relaxed">
                     Adiciona os dias e horários da escala na conta{" "}
-                    <strong>{session.user?.email}</strong>.
+                    <strong className="text-on-surface dark:text-white">
+                      {session.user?.email}
+                    </strong>
+                    .
                   </div>
                 </div>
               </div>
@@ -711,19 +714,19 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
             {/* Sub-opção: Lembretes de Beber Água (Aparece somente quando logado e com sync ativo) */}
             {syncWithGoogle && !watchedValues.isAbsoluteFast && (
-              <label className="flex items-start justify-between p-3.5 rounded-xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 cursor-pointer hover:border-primary/40 transition-colors ml-2 sm:ml-4 animate-in fade-in duration-200">
-                <div className="flex items-start gap-3">
-                  <div className="p-1.5 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim mt-0.5 flex-shrink-0">
-                    <Droplets className="w-4 h-4" />
+              <label className="flex items-start justify-between p-4 rounded-xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 cursor-pointer hover:border-primary/40 transition-colors ml-2 sm:ml-4 animate-in fade-in duration-200">
+                <div className="flex items-start gap-3.5">
+                  <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim mt-0.5 flex-shrink-0">
+                    <Droplets className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="font-medium text-xs md:text-sm text-on-surface dark:text-white flex items-center gap-2">
+                    <div className="font-bold text-sm sm:text-base text-on-surface dark:text-white flex items-center gap-2">
                       <span>Lembrete para Beber Água</span>
-                      <span className="text-[10px] uppercase font-bold bg-primary/10 text-primary dark:text-primary-fixed-dim px-2 py-0.5 rounded-full">
+                      <span className="text-xs uppercase font-bold bg-primary/15 text-primary dark:text-primary-fixed-dim px-2.5 py-0.5 rounded-full">
                         Recomendado
                       </span>
                     </div>
-                    <div className="text-[11px] text-on-surface-variant dark:text-gray-400 mt-0.5">
+                    <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-300 mt-1 leading-relaxed">
                       Inclui o cálculo e horários de hidratação (~250ml a cada 2h) na descrição dos
                       eventos para proteger sua saúde.
                     </div>
@@ -736,22 +739,22 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                     setIncludeWaterReminders(e.target.checked);
                     setValue("includeWaterReminders", e.target.checked);
                   }}
-                  className="w-4 h-4 text-primary rounded border-outline-variant focus:ring-primary mt-1 accent-primary cursor-pointer flex-shrink-0"
+                  className="w-5 h-5 text-primary rounded border-outline-variant focus:ring-primary mt-1 accent-primary cursor-pointer flex-shrink-0"
                 />
               </label>
             )}
           </div>
         ) : (
-          <div className="p-4 rounded-xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/60 dark:bg-slate-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-surface-container-high dark:bg-slate-700 text-secondary dark:text-gray-300 mt-0.5 flex-shrink-0">
-                <CalendarDays className="w-4 h-4" />
+          <div className="p-4 sm:p-5 rounded-2xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/60 dark:bg-slate-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-surface-container-high dark:bg-slate-700 text-secondary dark:text-gray-300 mt-0.5 flex-shrink-0">
+                <CalendarDays className="w-5 h-5" />
               </div>
               <div>
-                <div className="font-semibold text-sm text-on-surface dark:text-white">
+                <div className="font-bold text-base text-on-surface dark:text-white">
                   Adicionar lembretes no Google Agenda
                 </div>
-                <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
+                <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-300 mt-0.5 leading-relaxed">
                   Conecte sua conta Google para enviar os horários e lembretes de hidratação
                   diretamente para sua agenda.
                 </div>
@@ -760,9 +763,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
             <Button
               type="button"
               variant="outline"
-              size="sm"
+              size="md"
               onClick={() => signIn("google")}
-              className="flex-shrink-0 text-xs font-semibold gap-2 border-primary/40 text-primary dark:text-primary-fixed-dim hover:bg-primary/10"
+              className="flex-shrink-0 text-sm font-bold gap-2 border-primary/40 text-primary dark:text-primary-fixed-dim hover:bg-primary/10"
             >
               Entrar com o Google
             </Button>
@@ -771,7 +774,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
       </Card>
 
       {/* ========================================================================= */}
-      {/* SEÇÃO 2: BOTÃO E CONTEÚDO DE CONFIGURAÇÕES AVANÇADAS (EXPANSÍVEL)         */}
+      {/* SEÇÃO 3: BOTÃO E CONTEÚDO DE CONFIGURAÇÕES AVANÇADAS (EXPANSÍVEL)         */}
       {/* ========================================================================= */}
 
       <div className="space-y-4">
@@ -780,21 +783,21 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           type="button"
           onClick={() => setShowAdvanced(!showAdvanced)}
           className={clsx(
-            "w-full p-4 rounded-2xl border transition-all flex items-center justify-between text-left group shadow-sm",
+            "w-full p-4 sm:p-5 rounded-2xl border transition-all flex items-center justify-between text-left group shadow-sm",
             showAdvanced
               ? "border-primary/40 dark:border-primary/40 bg-primary/5 dark:bg-primary/10"
               : "border-outline-variant/30 dark:border-white/10 hover:border-primary/40 bg-surface-container-lowest dark:bg-slate-900"
           )}
         >
           <div className="flex items-center gap-3.5">
-            <div className="p-2 rounded-xl bg-secondary-container dark:bg-slate-800 text-secondary dark:text-gray-300 group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
+            <div className="p-2.5 rounded-xl bg-secondary-container dark:bg-slate-800 text-secondary dark:text-gray-300 group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
               <SlidersHorizontal className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-semibold text-sm text-on-surface dark:text-white group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
+              <div className="font-bold text-base sm:text-lg text-on-surface dark:text-white group-hover:text-primary dark:group-hover:text-primary-fixed-dim transition-colors">
                 Configurações Avançadas
               </div>
-              <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
+              <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-400 mt-0.5 leading-relaxed">
                 {showAdvanced
                   ? "Clique para ocultar as opções detalhadas de escala"
                   : "Horários de início, bloqueio de dias da semana, modalidade e dedicação espiritual"}
@@ -802,11 +805,11 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-semibold text-primary dark:text-primary-fixed-dim">
+          <div className="flex items-center gap-2 text-sm font-bold text-primary dark:text-primary-fixed-dim">
             <span>{showAdvanced ? "Ocultar" : "Personalizar"}</span>
             <ChevronDown
               className={clsx(
-                "w-4 h-4 transition-transform duration-300",
+                "w-5 h-5 transition-transform duration-300",
                 showAdvanced && "rotate-180"
               )}
             />
@@ -826,17 +829,17 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               <div className="flex flex-col gap-5 pt-2">
                 {/* Quando Começar */}
                 <div>
-                  <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2">
+                  <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2.5">
                     Começar Quando? (Data de Início)
                   </label>
-                  <div className="grid grid-cols-3 gap-2.5">
+                  <div className="grid grid-cols-3 gap-3">
                     <button
                       type="button"
                       onClick={() => setValue("startOption", "today")}
                       className={clsx(
-                        "p-3 rounded-xl border text-center font-medium text-xs md:text-sm transition-all",
+                        "p-3.5 sm:p-4 rounded-xl border text-center font-bold text-sm sm:text-base transition-all",
                         watchedValues.startOption === "today"
-                          ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim font-semibold"
+                          ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
                           : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                       )}
                     >
@@ -846,9 +849,9 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                       type="button"
                       onClick={() => setValue("startOption", "tomorrow")}
                       className={clsx(
-                        "p-3 rounded-xl border text-center font-medium text-xs md:text-sm transition-all",
+                        "p-3.5 sm:p-4 rounded-xl border text-center font-bold text-sm sm:text-base transition-all",
                         watchedValues.startOption === "tomorrow"
-                          ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim font-semibold"
+                          ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
                           : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                       )}
                     >
@@ -865,22 +868,22 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                         }
                       }}
                       className={clsx(
-                        "p-3 rounded-xl border text-center font-medium text-xs md:text-sm transition-all flex items-center justify-center gap-1.5",
+                        "p-3.5 sm:p-4 rounded-xl border text-center font-bold text-sm sm:text-base transition-all flex items-center justify-center gap-2",
                         watchedValues.startOption === "custom"
-                          ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim font-semibold"
+                          ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
                           : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                       )}
                     >
-                      <CalendarDays className="w-4 h-4" />
+                      <CalendarDays className="w-5 h-5" />
                       Escolher Data
                     </button>
                   </div>
 
                   {/* Seletor de Data */}
                   {watchedValues.startOption === "custom" && (
-                    <div className="mt-3 p-3.5 rounded-xl border border-primary/30 bg-primary/5 dark:bg-primary/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in duration-200">
-                      <div className="flex items-center gap-2 text-xs text-primary dark:text-primary-fixed-dim font-medium">
-                        <CalendarDays className="w-4 h-4 flex-shrink-0" />
+                    <div className="mt-3.5 p-4 rounded-2xl border border-primary/30 bg-primary/5 dark:bg-primary/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in duration-200">
+                      <div className="flex items-center gap-2 text-sm text-primary dark:text-primary-fixed-dim font-bold">
+                        <CalendarDays className="w-5 h-5 flex-shrink-0" />
                         <span>Selecione a data exata no calendário:</span>
                       </div>
                       <input
@@ -897,35 +900,35 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                           setValue("startOption", "custom");
                           setValue("customStartDate", e.target.value);
                         }}
-                        className="p-2.5 rounded-lg border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-xs font-semibold focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer shadow-sm"
+                        className="p-2.5 rounded-xl border border-outline-variant/40 dark:border-white/10 bg-surface-bright dark:bg-slate-800 text-on-surface dark:text-white text-sm font-bold focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer shadow-sm"
                       />
                     </div>
                   )}
                 </div>
 
                 {/* Estratégia de Horário: Sorteio vs Fixo */}
-                <div className="pt-2 border-t border-outline-variant/20 dark:border-white/5 space-y-4">
+                <div className="pt-3 border-t border-outline-variant/20 dark:border-white/5 space-y-4">
                   <div>
-                    <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2">
+                    <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2.5">
                       Regra de Horário para a Escala
                     </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       <button
                         type="button"
                         onClick={() => setValue("timeMode", "random")}
                         className={clsx(
-                          "p-3.5 rounded-xl border text-left transition-all flex items-start gap-3",
+                          "p-4 rounded-xl border text-left transition-all flex items-start gap-3.5",
                           (watchedValues.timeMode || "random") === "random"
-                            ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                            ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
                             : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                         )}
                       >
-                        <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim flex-shrink-0 mt-0.5">
-                          <Shuffle className="w-4 h-4" />
+                        <div className="p-2.5 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim flex-shrink-0 mt-0.5">
+                          <Shuffle className="w-5 h-5" />
                         </div>
                         <div>
-                          <div className="font-semibold text-sm">Sorteio Aleatório (Padrão)</div>
-                          <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5 leading-tight">
+                          <div className="font-bold text-base">Sorteio Aleatório (Padrão)</div>
+                          <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-400 mt-1 leading-snug">
                             Sorteia e varia os horários de início entre os dias da escala
                           </div>
                         </div>
@@ -935,18 +938,18 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                         type="button"
                         onClick={() => setValue("timeMode", "fixed")}
                         className={clsx(
-                          "p-3.5 rounded-xl border text-left transition-all flex items-start gap-3",
+                          "p-4 rounded-xl border text-left transition-all flex items-start gap-3.5",
                           watchedValues.timeMode === "fixed"
-                            ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                            ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
                             : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                         )}
                       >
-                        <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim flex-shrink-0 mt-0.5">
-                          <Clock className="w-4 h-4" />
+                        <div className="p-2.5 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim flex-shrink-0 mt-0.5">
+                          <Clock className="w-5 h-5" />
                         </div>
                         <div>
-                          <div className="font-semibold text-sm">Horário Fixo / Exato</div>
-                          <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5 leading-tight">
+                          <div className="font-bold text-base">Horário Fixo / Exato</div>
+                          <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-400 mt-1 leading-snug">
                             Todas as sessões iniciarão sempre no mesmo horário pré-estabelecido
                           </div>
                         </div>
@@ -956,12 +959,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
                   {/* Sorteio Aleatório: Steppers de Horários */}
                   {(watchedValues.timeMode || "random") === "random" && (
-                    <div className="p-4 rounded-2xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 space-y-3 animate-in fade-in">
+                    <div className="p-4 sm:p-5 rounded-2xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 space-y-3.5 animate-in fade-in">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold text-on-surface dark:text-white">
+                        <span className="text-sm font-bold text-on-surface dark:text-white">
                           Horários participantes do sorteio:
                         </span>
-                        <span className="text-[11px] text-secondary dark:text-gray-400">
+                        <span className="text-xs text-secondary dark:text-gray-400">
                           Use as setas para ajustar o horário
                         </span>
                       </div>
@@ -991,32 +994,32 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                                 setValue("allowedStartTimes", updated);
                               }}
                               className={clsx(
-                                "p-3.5 rounded-2xl border transition-all flex flex-col items-center text-center cursor-pointer select-none relative",
+                                "p-4 rounded-2xl border transition-all flex flex-col items-center text-center cursor-pointer select-none relative",
                                 isIncluded
                                   ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary shadow-sm"
                                   : "border-outline-variant/30 dark:border-white/5 opacity-55 hover:opacity-90 bg-surface-container-lowest dark:bg-slate-900 text-on-surface dark:text-gray-400"
                               )}
                             >
-                              <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider mb-1">
+                              <div className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider mb-1">
                                 <Icon className="w-4 h-4" />
                                 <span>{period.name}</span>
                               </div>
 
                               {/* Stepper */}
-                              <div className="flex items-center justify-center gap-1 my-1 w-full">
+                              <div className="flex items-center justify-center gap-1.5 my-1.5 w-full">
                                 <button
                                   type="button"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleStepTime(period.id, -1);
                                   }}
-                                  className="p-1 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
+                                  className="p-1.5 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
                                   title={`Horário anterior (${period.rangeLabel})`}
                                 >
-                                  <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+                                  <ChevronDown className="w-5 h-5 stroke-[2.5]" />
                                 </button>
 
-                                <span className="font-mono font-bold text-base md:text-lg text-on-surface dark:text-white px-2 py-0.5 rounded-md bg-surface-container-high/50 dark:bg-slate-800/80 min-w-[65px]">
+                                <span className="font-mono font-bold text-lg md:text-xl text-on-surface dark:text-white px-2.5 py-1 rounded-lg bg-surface-container-high/50 dark:bg-slate-800/80 min-w-[70px]">
                                   {currentTime}
                                 </span>
 
@@ -1026,15 +1029,15 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                                     e.stopPropagation();
                                     handleStepTime(period.id, 1);
                                   }}
-                                  className="p-1 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
+                                  className="p-1.5 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
                                   title={`Próximo horário (${period.rangeLabel})`}
                                 >
-                                  <ChevronUp className="w-4 h-4 stroke-[2.5]" />
+                                  <ChevronUp className="w-5 h-5 stroke-[2.5]" />
                                 </button>
                               </div>
 
-                              <span className="text-[10px] text-on-surface-variant dark:text-gray-400 font-medium">
-                                Range: {period.rangeLabel}
+                              <span className="text-xs text-on-surface-variant dark:text-gray-400 font-medium">
+                                Faixa: {period.rangeLabel}
                               </span>
                             </div>
                           );
@@ -1045,12 +1048,12 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
                   {/* Horário Fixo: Stepper Único */}
                   {watchedValues.timeMode === "fixed" && (
-                    <div className="p-4 rounded-2xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 space-y-3 animate-in fade-in">
+                    <div className="p-4 sm:p-5 rounded-2xl border border-outline-variant/30 dark:border-white/10 bg-surface-container-low/50 dark:bg-slate-800/40 space-y-3.5 animate-in fade-in">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold text-on-surface dark:text-white">
+                        <span className="text-sm font-bold text-on-surface dark:text-white">
                           Selecione o horário fixo de início:
                         </span>
-                        <span className="text-[11px] text-secondary dark:text-gray-400">
+                        <span className="text-xs text-secondary dark:text-gray-400">
                           Use as setas para ajustar o horário
                         </span>
                       </div>
@@ -1066,32 +1069,32 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                               key={period.id}
                               onClick={() => setValue("startTime", currentTime)}
                               className={clsx(
-                                "p-3.5 rounded-2xl border transition-all flex flex-col items-center text-center cursor-pointer select-none relative",
+                                "p-4 rounded-2xl border transition-all flex flex-col items-center text-center cursor-pointer select-none relative",
                                 isSelected
                                   ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary shadow-sm"
                                   : "border-outline-variant/30 dark:border-white/5 opacity-55 hover:opacity-90 bg-surface-container-lowest dark:bg-slate-900 text-on-surface dark:text-gray-400"
                               )}
                             >
-                              <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider mb-1">
+                              <div className="flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider mb-1">
                                 <Icon className="w-4 h-4" />
                                 <span>{period.name}</span>
                               </div>
 
                               {/* Stepper */}
-                              <div className="flex items-center justify-center gap-1 my-1 w-full">
+                              <div className="flex items-center justify-center gap-1.5 my-1.5 w-full">
                                 <button
                                   type="button"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleStepTime(period.id, -1);
                                   }}
-                                  className="p-1 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
+                                  className="p-1.5 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
                                   title={`Horário anterior (${period.rangeLabel})`}
                                 >
-                                  <ChevronDown className="w-4 h-4 stroke-[2.5]" />
+                                  <ChevronDown className="w-5 h-5 stroke-[2.5]" />
                                 </button>
 
-                                <span className="font-mono font-bold text-base md:text-lg text-on-surface dark:text-white px-2 py-0.5 rounded-md bg-surface-container-high/50 dark:bg-slate-800/80 min-w-[65px]">
+                                <span className="font-mono font-bold text-lg md:text-xl text-on-surface dark:text-white px-2.5 py-1 rounded-lg bg-surface-container-high/50 dark:bg-slate-800/80 min-w-[70px]">
                                   {currentTime}
                                 </span>
 
@@ -1101,15 +1104,15 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                                     e.stopPropagation();
                                     handleStepTime(period.id, 1);
                                   }}
-                                  className="p-1 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
+                                  className="p-1.5 rounded-lg hover:bg-primary/20 dark:hover:bg-slate-700 text-primary dark:text-primary-fixed-dim hover:scale-110 active:scale-95 transition-all"
                                   title={`Próximo horário (${period.rangeLabel})`}
                                 >
-                                  <ChevronUp className="w-4 h-4 stroke-[2.5]" />
+                                  <ChevronUp className="w-5 h-5 stroke-[2.5]" />
                                 </button>
                               </div>
 
-                              <span className="text-[10px] text-on-surface-variant dark:text-gray-400 font-medium">
-                                Range: {period.rangeLabel}
+                              <span className="text-xs text-on-surface-variant dark:text-gray-400 font-medium">
+                                Faixa: {period.rangeLabel}
                               </span>
                             </div>
                           );
@@ -1138,16 +1141,16 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                   }
                 >
                   {isAllDaysFasting ? (
-                    <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 dark:bg-primary/10 flex items-start gap-3.5 text-xs leading-relaxed text-on-surface dark:text-gray-300 animate-in fade-in">
-                      <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim flex-shrink-0 mt-0.5">
-                        <Lock className="w-4 h-4" />
+                    <div className="p-4 sm:p-5 rounded-2xl border border-primary/30 bg-primary/5 dark:bg-primary/10 flex items-start gap-3.5 text-sm leading-relaxed text-on-surface dark:text-gray-300 animate-in fade-in">
+                      <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim flex-shrink-0 mt-0.5">
+                        <Lock className="w-5 h-5" />
                       </div>
                       <div className="space-y-1">
-                        <strong className="block text-sm text-primary dark:text-primary-fixed-dim font-semibold">
+                        <strong className="block text-base text-primary dark:text-primary-fixed-dim font-bold">
                           Jejum em Todos os Dias Selecionado ({watchedValues.durationDays || 7} de{" "}
                           {watchedValues.durationDays || 7} dias)
                         </strong>
-                        <p className="text-xs text-on-surface-variant dark:text-gray-400 leading-relaxed">
+                        <p className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-300 leading-relaxed">
                           Como você escolheu jejuar em todos os dias do propósito, a escala será
                           realizada em todos os dias consecutivos do período. Por isso, a
                           alternância de dias e o bloqueio de datas estão desativados.
@@ -1158,22 +1161,22 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                     <div className="flex flex-col gap-5 pt-2">
                       {/* Alternado vs Aleatório */}
                       <div>
-                        <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2">
+                        <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-2.5">
                           Padrão de Distribuição
                         </label>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-3.5">
                           <button
                             type="button"
                             onClick={() => setValue("distribution", "alternated")}
                             className={clsx(
-                              "p-3 rounded-xl border text-left transition-all",
+                              "p-4 rounded-xl border text-left transition-all",
                               watchedValues.distribution === "alternated"
-                                ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                                ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
                                 : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                             )}
                           >
-                            <div className="font-semibold text-sm">Alternado</div>
-                            <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
+                            <div className="font-bold text-base">Alternado</div>
+                            <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-400 mt-1 leading-snug">
                               Pula pelo menos 1 dia de descanso entre cada jejum
                             </div>
                           </button>
@@ -1181,14 +1184,14 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                             type="button"
                             onClick={() => setValue("distribution", "random")}
                             className={clsx(
-                              "p-3 rounded-xl border text-left transition-all",
+                              "p-4 rounded-xl border text-left transition-all",
                               watchedValues.distribution === "random"
-                                ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                                ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
                                 : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                             )}
                           >
-                            <div className="font-semibold text-sm">Aleatório Saudável</div>
-                            <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">
+                            <div className="font-bold text-base">Aleatório Saudável</div>
+                            <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-400 mt-1 leading-snug">
                               Espaçamento equilibrado ao longo do período
                             </div>
                           </button>
@@ -1197,14 +1200,14 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
                       {/* Dias Bloqueados */}
                       <div>
-                        <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
+                        <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider block mb-1">
                           Dias Bloqueados (NUNCA agendar nestes dias)
                         </label>
-                        <p className="text-xs text-on-surface-variant dark:text-gray-400 mb-2.5">
+                        <p className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-400 mb-3">
                           Clique nos dias da semana em que você tem compromissos ou reuniões
                           inadiáveis.
                         </p>
-                        <div className="grid grid-cols-7 gap-2">
+                        <div className="grid grid-cols-7 gap-2 sm:gap-2.5">
                           {WEEKDAYS.map((w) => {
                             const isBlocked = (watchedValues.blockedDays || []).includes(w.day);
                             return (
@@ -1219,19 +1222,21 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                                   setValue("blockedDays", updated);
                                 }}
                                 className={clsx(
-                                  "p-2.5 rounded-lg border text-center transition-all flex flex-col items-center",
+                                  "py-3 px-1 rounded-xl border text-center transition-all flex flex-col items-center justify-center",
                                   isBlocked
                                     ? "bg-error-container/60 dark:bg-red-950/60 border-error/40 text-on-error-container dark:text-red-300 line-through"
-                                    : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300"
+                                    : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 bg-surface-bright dark:bg-slate-800"
                                 )}
                               >
-                                <span className="text-xs font-semibold">{w.label}</span>
+                                <span className="text-xs sm:text-sm font-bold">{w.label}</span>
                               </button>
                             );
                           })}
                         </div>
                         {errors.blockedDays && (
-                          <p className="text-xs text-error mt-2">{errors.blockedDays.message}</p>
+                          <p className="text-xs sm:text-sm text-error mt-2">
+                            {errors.blockedDays.message}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -1248,34 +1253,34 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               subtitle="Escolha se o jejum será com água (recomendado) ou absoluto"
             >
               <div className="flex flex-col gap-4 pt-2">
-                <div className="space-y-3">
-                  <label className="text-xs font-semibold uppercase text-secondary dark:text-gray-400 tracking-wider block">
+                <div className="space-y-3.5">
+                  <label className="text-xs sm:text-sm font-bold uppercase text-secondary dark:text-gray-400 tracking-wider block">
                     Tipo de Jejum (Ingestão de Água)
                   </label>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     {/* Com Água */}
                     <button
                       type="button"
                       onClick={() => setValue("isAbsoluteFast", false)}
                       className={clsx(
-                        "p-4 rounded-xl border text-left transition-all flex items-start gap-3.5",
+                        "p-4 sm:p-5 rounded-xl border text-left transition-all flex items-start gap-3.5",
                         !watchedValues.isAbsoluteFast
-                          ? "border-primary dark:border-primary-fixed-dim bg-primary/5 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim"
+                          ? "border-primary dark:border-primary-fixed-dim bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim ring-1 ring-primary dark:ring-primary-fixed-dim shadow-sm"
                           : "border-outline-variant/40 dark:border-white/10 hover:border-primary/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                       )}
                     >
-                      <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim flex-shrink-0 mt-0.5">
-                        <Droplets className="w-4 h-4" />
+                      <div className="p-2.5 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim flex-shrink-0 mt-0.5">
+                        <Droplets className="w-5 h-5" />
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold text-sm">Com Água (Padrão)</span>
-                          <span className="text-[10px] uppercase font-bold bg-primary/10 text-primary dark:text-primary-fixed-dim px-2 py-0.5 rounded-full">
+                          <span className="font-bold text-base">Com Água (Padrão)</span>
+                          <span className="text-xs uppercase font-bold bg-primary/15 text-primary dark:text-primary-fixed-dim px-2.5 py-0.5 rounded-full">
                             Recomendado
                           </span>
                         </div>
-                        <p className="text-xs text-on-surface-variant dark:text-gray-400 mt-1 leading-relaxed">
+                        <p className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-300 mt-1 leading-relaxed">
                           Permite a ingestão de água durante as {watchedValues.targetHours}h de
                           consagração.
                         </p>
@@ -1287,20 +1292,20 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
                       type="button"
                       onClick={() => setValue("isAbsoluteFast", true)}
                       className={clsx(
-                        "p-4 rounded-xl border text-left transition-all flex items-start gap-3.5",
+                        "p-4 sm:p-5 rounded-xl border text-left transition-all flex items-start gap-3.5",
                         watchedValues.isAbsoluteFast
-                          ? "border-error dark:border-red-500 bg-error/5 dark:bg-red-950/30 text-error dark:text-red-400 ring-1 ring-error"
+                          ? "border-error dark:border-red-500 bg-error/10 dark:bg-red-950/30 text-error dark:text-red-400 ring-1 ring-error shadow-sm"
                           : "border-outline-variant/40 dark:border-white/10 hover:border-error/50 text-on-surface dark:text-gray-300 dark:hover:text-white"
                       )}
                     >
-                      <div className="p-2 rounded-lg bg-error/10 dark:bg-red-900/40 text-error dark:text-red-400 flex-shrink-0 mt-0.5">
-                        <ShieldAlert className="w-4 h-4" />
+                      <div className="p-2.5 rounded-lg bg-error/10 dark:bg-red-900/40 text-error dark:text-red-400 flex-shrink-0 mt-0.5">
+                        <ShieldAlert className="w-5 h-5" />
                       </div>
                       <div>
-                        <div className="font-semibold text-sm text-error dark:text-red-400">
+                        <div className="font-bold text-base text-error dark:text-red-400">
                           Jejum Absoluto (Sem Água)
                         </div>
-                        <p className="text-xs text-on-surface-variant dark:text-gray-400 mt-1 leading-relaxed">
+                        <p className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-300 mt-1 leading-relaxed">
                           Abstenção total incluindo líquidos. Requer discernimento e atenção à
                           saúde.
                         </p>
@@ -1310,16 +1315,18 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
 
                   {/* Explicação do Cuidado Devocional com a Água */}
                   {!watchedValues.isAbsoluteFast && (
-                    <div className="p-3.5 rounded-xl border border-primary/20 bg-primary/5 dark:bg-primary/10 text-xs text-on-surface dark:text-gray-300 leading-relaxed space-y-1 animate-in fade-in">
-                      <div className="flex items-center gap-2 font-semibold text-primary dark:text-primary-fixed-dim">
-                        <Droplets className="w-4 h-4 flex-shrink-0" />
+                    <div className="p-4 rounded-2xl border border-primary/20 bg-primary/5 dark:bg-primary/10 text-xs sm:text-sm text-on-surface dark:text-gray-300 leading-relaxed space-y-1.5 animate-in fade-in">
+                      <div className="flex items-center gap-2 font-bold text-sm sm:text-base text-primary dark:text-primary-fixed-dim">
+                        <Droplets className="w-5 h-5 flex-shrink-0" />
                         <span>Cuidando do Templo do Espírito Santo (1 Coríntios 6:19):</span>
                       </div>
-                      <p className="text-[11px] text-on-surface-variant dark:text-gray-400">
+                      <p className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-300 leading-relaxed">
                         Durante sua consagração de{" "}
-                        <strong>{watchedValues.targetHours || 12} horas</strong>, sugerimos a
-                        ingestão de cerca de{" "}
-                        <strong>
+                        <strong className="text-on-surface dark:text-white">
+                          {watchedValues.targetHours || 12} horas
+                        </strong>
+                        , sugerimos a ingestão de cerca de{" "}
+                        <strong className="text-on-surface dark:text-white">
                           {Math.max(1, Math.floor((watchedValues.targetHours || 12) / 2)) * 250}ml
                         </strong>{" "}
                         de água (~1 copo a cada 2 horas). A hidratação adequada preserva a clareza
@@ -1335,17 +1342,19 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
       </div>
 
       {/* Resumo Devocional em Tempo Real */}
-      <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 space-y-2">
-        <div className="flex items-center gap-2 text-xs font-bold text-primary dark:text-primary-fixed-dim uppercase tracking-wider">
-          <Sparkles className="w-4 h-4" />
+      <div className="p-5 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 space-y-2.5">
+        <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-primary dark:text-primary-fixed-dim uppercase tracking-wider">
+          <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
           <span>Resumo da Sua Consagração</span>
         </div>
-        <p className="text-xs sm:text-sm text-on-surface dark:text-gray-200 leading-relaxed">
+        <p className="text-sm sm:text-base text-on-surface dark:text-gray-200 leading-relaxed">
           Seu propósito{" "}
           {watchedValues.purposeTitle?.trim() ? (
-            <strong>&ldquo;{watchedValues.purposeTitle.trim()}&rdquo;</strong>
+            <strong className="text-primary dark:text-primary-fixed-dim">
+              &ldquo;{watchedValues.purposeTitle.trim()}&rdquo;
+            </strong>
           ) : (
-            <strong>Espiritual</strong>
+            <strong className="text-primary dark:text-primary-fixed-dim">Espiritual</strong>
           )}{" "}
           terá{" "}
           <strong>
@@ -1366,13 +1375,19 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
             de jejum
           </strong>{" "}
           ao longo de{" "}
-          {watchedValues.durationDays &&
-          !isNaN(Number(watchedValues.durationDays)) &&
-          Number(watchedValues.durationDays) > 0
-            ? Number(watchedValues.durationDays)
-            : 7}{" "}
-          dias, com <strong>{watchedValues.targetHours || 12} horas diárias</strong> de consagração
-          e oração.
+          <strong>
+            {watchedValues.durationDays &&
+            !isNaN(Number(watchedValues.durationDays)) &&
+            Number(watchedValues.durationDays) > 0
+              ? Number(watchedValues.durationDays)
+              : 7}{" "}
+            dias
+          </strong>
+          , com{" "}
+          <strong className="text-primary dark:text-primary-fixed-dim">
+            {watchedValues.targetHours || 12} horas diárias
+          </strong>{" "}
+          de consagração e oração.
         </p>
       </div>
 
@@ -1382,7 +1397,7 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
           type="submit"
           variant="primary"
           size="lg"
-          className="w-full shadow-md hover:shadow-lg text-base"
+          className="w-full shadow-md hover:shadow-lg text-base sm:text-lg font-bold py-4"
           icon={<Sparkles className="w-5 h-5" />}
         >
           Salvar Propósito & Gerar Escala
@@ -1407,11 +1422,11 @@ export function FastingConfiguratorForm({ onGenerated }: { onGenerated?: () => v
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <h3 className="text-lg font-bold text-on-surface dark:text-white">
+            <div className="space-y-2">
+              <h3 className="text-xl font-bold text-on-surface dark:text-white">
                 {loadingStepText}
               </h3>
-              <p className="text-xs text-on-surface-variant dark:text-gray-400 max-w-xs leading-relaxed">
+              <p className="text-sm text-on-surface-variant dark:text-gray-300 max-w-xs leading-relaxed">
                 Calculando janelas de abstinência, hidratação e preparando sua escala espiritual.
               </p>
             </div>

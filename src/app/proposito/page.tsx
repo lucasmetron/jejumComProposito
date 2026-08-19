@@ -63,57 +63,61 @@ export default function PropositoPage() {
       {/* Header & Breadcrumb */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2">
         <div>
-          <div className="flex items-center gap-2 text-xs text-secondary dark:text-gray-400 mb-1">
-            <Link href="/" className="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+          <div className="flex items-center gap-2 text-sm text-secondary dark:text-gray-400 mb-1">
+            <Link
+              href="/"
+              className="hover:text-primary dark:hover:text-primary-fixed-dim transition-colors"
+            >
               Início
             </Link>
             <span>/</span>
-            <span className="text-on-surface dark:text-gray-200 font-medium">Propósito</span>
+            <span className="text-on-surface dark:text-gray-200 font-semibold">Propósito</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-on-surface dark:text-white tracking-tight flex items-center gap-2.5">
-            <Flame className="w-7 h-7 text-primary dark:text-primary-fixed-dim" />
+          <h1 className="text-2xl md:text-4xl font-bold text-on-surface dark:text-white tracking-tight flex items-center gap-3">
+            <Flame className="w-8 h-8 text-primary dark:text-primary-fixed-dim" />
             Consagração & Escala Espiritual
           </h1>
-          <p className="text-xs md:text-sm text-on-surface-variant dark:text-gray-400 mt-1 max-w-2xl">
-            Consagre seus dias e horários para buscar a Deus em oração e abstinência. Organizaremos sua escala de jejum e sincronizaremos com sua agenda pessoal.
+          <p className="text-sm md:text-base text-on-surface-variant dark:text-gray-300 mt-1 max-w-2xl leading-relaxed">
+            Consagre seus dias e horários para buscar a Deus em oração e abstinência. Organizaremos
+            sua escala de jejum e sincronizaremos com sua agenda pessoal.
           </p>
         </div>
 
         {/* Tab Toggle Buttons */}
-        <div className="flex items-center bg-surface-container-low dark:bg-slate-900 p-1.5 rounded-2xl border border-outline-variant/30 dark:border-white/10 self-start md:self-auto">
+        <div className="flex items-center bg-surface-container-low dark:bg-slate-900 p-1.5 rounded-2xl border border-outline-variant/30 dark:border-white/10 self-start md:self-auto shadow-sm">
           <button
             onClick={() => setActiveTab("config")}
             className={clsx(
-              "flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-medium transition-all",
+              "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm md:text-base font-medium transition-all",
               activeTab === "config"
-                ? "bg-surface-container-lowest dark:bg-slate-800 text-primary dark:text-primary-fixed-dim shadow-sm font-semibold"
+                ? "bg-surface-container-lowest dark:bg-slate-800 text-primary dark:text-primary-fixed-dim shadow-sm font-bold"
                 : "text-secondary dark:text-gray-400 hover:text-on-surface dark:hover:text-gray-200"
             )}
           >
-            <Sliders className="w-4 h-4" />
+            <Sliders className="w-4 h-4 sm:w-5 sm:h-5" />
             Configuração
           </button>
           <button
             onClick={handleScheduleTabClick}
             className={clsx(
-              "flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-medium transition-all relative",
+              "flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm md:text-base font-medium transition-all relative",
               !hasSchedule && "opacity-40 hover:opacity-60 cursor-not-allowed",
               hasSchedule && activeTab === "schedule"
-                ? "bg-surface-container-lowest dark:bg-slate-800 text-primary dark:text-primary-fixed-dim shadow-sm font-semibold"
+                ? "bg-surface-container-lowest dark:bg-slate-800 text-primary dark:text-primary-fixed-dim shadow-sm font-bold"
                 : "text-secondary dark:text-gray-400 hover:text-on-surface dark:hover:text-gray-200"
             )}
           >
-            <CalendarIcon className="w-4 h-4" />
+            <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             Minha Escala
             {hasSchedule && (
               <span
                 className={clsx(
                   "w-2.5 h-2.5 rounded-full transition-colors flex-shrink-0 shadow-sm",
-                  isFastingNow
-                    ? "bg-emerald-500 animate-pulse"
-                    : "bg-red-500"
+                  isFastingNow ? "bg-emerald-500 animate-pulse" : "bg-red-500"
                 )}
-                title={isFastingNow ? "Jejum em andamento agora" : "Nenhum jejum em andamento no momento"}
+                title={
+                  isFastingNow ? "Jejum em andamento agora" : "Nenhum jejum em andamento no momento"
+                }
               />
             )}
           </button>
@@ -122,15 +126,16 @@ export default function PropositoPage() {
 
       {/* Success Notification Banner */}
       {justSaved && (
-        <div className="p-4 rounded-2xl bg-primary/10 dark:bg-primary/20 border border-primary/30 flex items-center justify-between gap-4 text-xs md:text-sm text-primary dark:text-primary-fixed-dim animate-fadeIn">
-          <div className="flex items-center gap-2.5">
-            <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+        <div className="p-4 sm:p-5 rounded-2xl bg-primary/10 dark:bg-primary/20 border border-primary/30 flex items-center justify-between gap-4 text-sm sm:text-base text-primary dark:text-primary-fixed-dim animate-fadeIn">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-6 h-6 flex-shrink-0" />
             <span>
-              <strong>Propósito salvo com sucesso!</strong> Seus dados foram persistidos no navegador e a escala foi gerada.
+              <strong>Propósito salvo com sucesso!</strong> Seus dados foram persistidos no
+              navegador e a escala foi gerada.
             </span>
           </div>
           <Link href="/">
-            <Button size="sm" variant="primary" className="text-xs px-3">
+            <Button size="md" variant="primary" className="text-xs sm:text-sm px-4">
               Ver no Início &rarr;
             </Button>
           </Link>

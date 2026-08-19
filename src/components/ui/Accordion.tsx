@@ -39,10 +39,18 @@ export function AccordionItem({
         className="w-full flex items-center justify-between p-5 text-left hover:bg-surface-container-low dark:hover:bg-slate-800 transition-colors"
       >
         <div className="flex items-center gap-3">
-          {icon && <div className="text-primary dark:text-primary-fixed-dim flex-shrink-0">{icon}</div>}
+          {icon && (
+            <div className="text-primary dark:text-primary-fixed-dim flex-shrink-0">{icon}</div>
+          )}
           <div>
-            <div className="font-semibold text-on-surface dark:text-white text-sm md:text-base">{title}</div>
-            {subtitle && <div className="text-xs text-on-surface-variant dark:text-gray-400 mt-0.5">{subtitle}</div>}
+            <div className="font-bold text-on-surface dark:text-white text-base md:text-lg">
+              {title}
+            </div>
+            {subtitle && (
+              <div className="text-xs sm:text-sm text-on-surface-variant dark:text-gray-400 mt-0.5">
+                {subtitle}
+              </div>
+            )}
           </div>
         </div>
         <ChevronDown
@@ -53,7 +61,7 @@ export function AccordionItem({
         />
       </button>
       {isOpen && (
-        <div className="p-5 pt-2 border-t border-outline-variant/20 dark:border-white/5 text-on-surface-variant dark:text-gray-300 text-sm animate-in fade-in-50 duration-200">
+        <div className="p-5 sm:p-6 pt-2 border-t border-outline-variant/20 dark:border-white/5 text-on-surface-variant dark:text-gray-300 text-sm sm:text-base animate-in fade-in-50 duration-200">
           {children}
         </div>
       )}
