@@ -130,8 +130,8 @@ export default function PropositoPage() {
           <div className="flex items-center gap-3">
             <CheckCircle2 className="w-6 h-6 flex-shrink-0" />
             <span>
-              <strong>Propósito salvo com sucesso!</strong> Seus dados foram persistidos no
-              navegador e a escala foi gerada.
+              <strong>Propósito salvo com sucesso!</strong> Seus dados foram salvos e sincronizados
+              com sua conta e a escala foi gerada.
             </span>
           </div>
           <Link href="/">

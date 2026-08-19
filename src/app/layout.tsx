@@ -47,6 +47,7 @@ export const metadata: Metadata = {
   },
 };
 
+import { UserPurposeSyncProvider } from "@/components/providers/UserPurposeSyncProvider";
 import { Open_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -84,25 +85,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-screen flex flex-col bg-background text-on-background dark:bg-slate-950 dark:text-gray-100 antialiased selection:bg-primary-fixed selection:text-on-primary-fixed transition-colors">
         <NextAuthProvider>
-          <ThemeProvider>
-            <PWARegister />
-            <TopNavBar />
-            <main className="flex-grow pt-[72px] pb-20 md:pb-8">{children}</main>
-            <BottomNavBar />
-            <Footer />
-            <ToastContainer
-              position="top-right"
-              autoClose={4000}
-              hideProgressBar={false}
-              newestOnTop
-              closeOnClick
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              className="!p-2.5"
-              toastClassName="!rounded-2xl !p-2.5 !font-sans !shadow-lg dark:!bg-slate-900 dark:!text-white dark:!border dark:!border-white/10"
-            />
-          </ThemeProvider>
+          <UserPurposeSyncProvider>
+            <ThemeProvider>
+              <PWARegister />
+              <TopNavBar />
+              <main className="flex-grow pt-[72px] pb-20 md:pb-8">{children}</main>
+              <BottomNavBar />
+              <Footer />
+              <ToastContainer
+                position="top-right"
+                autoClose={4000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                className="!p-2.5"
+                toastClassName="!rounded-2xl !p-2.5 !font-sans !shadow-lg dark:!bg-slate-900 dark:!text-white dark:!border dark:!border-white/10"
+              />
+            </ThemeProvider>
+          </UserPurposeSyncProvider>
         </NextAuthProvider>
       </body>
     </html>

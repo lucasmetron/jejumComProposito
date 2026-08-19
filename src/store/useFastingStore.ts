@@ -21,18 +21,29 @@ export interface FastingStoreState {
   selectedEventId: string | null;
   isGenerating: boolean;
   history: FastingHistoryItem[];
-  
+  isCloudSynced: boolean;
+
   // Actions
   setConfig: (config: Partial<FastingConfig>) => void;
   generateSchedule: () => SpiritualFastEvent[];
   saveAndGenerateSchedule: () => SpiritualFastEvent[];
-  rescheduleSchedule: (startOption: "today" | "tomorrow" | "custom", customStartDate?: string | Date) => SpiritualFastEvent[];
+  rescheduleSchedule: (
+    startOption: "today" | "tomorrow" | "custom",
+    customStartDate?: string | Date
+  ) => SpiritualFastEvent[];
   interruptFast: (reason?: string, reflection?: string) => void;
   resetConfig: () => void;
   clearFastingData: () => void;
   setSelectedEventId: (id: string | null) => void;
   setSyncedCalendarEventIds: (ids: string[]) => void;
   setIsGoogleCalendarSynced: (synced: boolean) => void;
+  loadFromCloud: (payload: {
+    config: FastingConfig;
+    events: SpiritualFastEvent[];
+    hasConfigured: boolean;
+    history?: FastingHistoryItem[];
+  }) => void;
+  syncToCloud: () => Promise<boolean>;
 }
 
 export const DEFAULT_CONFIG: FastingConfig = {
@@ -55,6 +66,31 @@ export const DEFAULT_CONFIG: FastingConfig = {
   includeWaterReminders: true,
 };
 
+// Helper interno para enviar dados ao backend de forma assíncrona e segura
+export async function pushPurposeToCloud(state: {
+  config: FastingConfig;
+  events: SpiritualFastEvent[];
+  hasConfigured: boolean;
+  history: FastingHistoryItem[];
+}) {
+  try {
+    const res = await fetch("/api/user/purpose", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        config: state.config,
+        events: state.events,
+        hasConfigured: state.hasConfigured,
+        history: state.history,
+      }),
+    });
+    return res.ok;
+  } catch (e) {
+    console.warn("Aviso ao sincronizar propósito na nuvem:", e);
+    return false;
+  }
+}
+
 export const useFastingStore = create<FastingStoreState>()(
   persist(
     (set, get) => ({
@@ -64,6 +100,7 @@ export const useFastingStore = create<FastingStoreState>()(
       selectedEventId: null,
       isGenerating: false,
       history: [],
+      isCloudSynced: false,
 
       setConfig: (newConfig) => {
         set((state) => {
@@ -86,14 +123,27 @@ export const useFastingStore = create<FastingStoreState>()(
       saveAndGenerateSchedule: () => {
         const { config } = get();
         const events = generateSpiritualFastSchedule(config);
-        set({
+        const newState = {
           events,
           hasConfigured: true,
+        };
+        set(newState);
+
+        // Dispara sync na nuvem se autenticado
+        pushPurposeToCloud({
+          config,
+          events,
+          hasConfigured: true,
+          history: get().history,
         });
+
         return events;
       },
 
-      rescheduleSchedule: (startOption: "today" | "tomorrow" | "custom", customStartDate?: string | Date) => {
+      rescheduleSchedule: (
+        startOption: "today" | "tomorrow" | "custom",
+        customStartDate?: string | Date
+      ) => {
         const { config } = get();
         const updatedConfig = {
           ...config,
@@ -101,11 +151,21 @@ export const useFastingStore = create<FastingStoreState>()(
           customStartDate: customStartDate !== undefined ? customStartDate : config.customStartDate,
         };
         const updatedEvents = generateSpiritualFastSchedule(updatedConfig);
-        set({
+        const newState = {
           config: updatedConfig,
           events: updatedEvents,
           hasConfigured: true,
+        };
+        set(newState);
+
+        // Dispara sync na nuvem se autenticado
+        pushPurposeToCloud({
+          config: updatedConfig,
+          events: updatedEvents,
+          hasConfigured: true,
+          history: get().history,
         });
+
         return updatedEvents;
       },
 
@@ -122,12 +182,22 @@ export const useFastingStore = create<FastingStoreState>()(
           totalHours: events.reduce((acc, e) => acc + e.targetHours, 0),
         };
 
+        const newHistory = [historyEntry, ...history];
+
         set({
           hasConfigured: false,
           events: [],
           selectedEventId: null,
           config: DEFAULT_CONFIG,
-          history: [historyEntry, ...history],
+          history: newHistory,
+        });
+
+        // Dispara sync na nuvem se autenticado
+        pushPurposeToCloud({
+          config: DEFAULT_CONFIG,
+          events: [],
+          hasConfigured: false,
+          history: newHistory,
         });
       },
 
@@ -148,6 +218,14 @@ export const useFastingStore = create<FastingStoreState>()(
           hasConfigured: false,
           selectedEventId: null,
         });
+
+        // Dispara sync na nuvem se autenticado
+        pushPurposeToCloud({
+          config: DEFAULT_CONFIG,
+          events: [],
+          hasConfigured: false,
+          history: get().history,
+        });
       },
 
       setSelectedEventId: (id) => {
@@ -155,22 +233,61 @@ export const useFastingStore = create<FastingStoreState>()(
       },
 
       setSyncedCalendarEventIds: (ids) => {
-        set((state) => ({
-          config: {
+        set((state) => {
+          const updatedConfig = {
             ...state.config,
             syncedCalendarEventIds: ids,
             isGoogleCalendarSynced: ids.length > 0,
-          },
-        }));
+          };
+          // Sync changes
+          pushPurposeToCloud({
+            config: updatedConfig,
+            events: state.events,
+            hasConfigured: state.hasConfigured,
+            history: state.history,
+          });
+          return { config: updatedConfig };
+        });
       },
 
       setIsGoogleCalendarSynced: (synced) => {
-        set((state) => ({
-          config: {
+        set((state) => {
+          const updatedConfig = {
             ...state.config,
             isGoogleCalendarSynced: synced,
-          },
+          };
+          return { config: updatedConfig };
+        });
+      },
+
+      loadFromCloud: (payload) => {
+        const parsedEvents = (payload.events || []).map((e) => ({
+          ...e,
+          start: new Date(e.start),
+          end: new Date(e.end),
         }));
+
+        set({
+          config: payload.config || DEFAULT_CONFIG,
+          events: parsedEvents,
+          hasConfigured: payload.hasConfigured ?? parsedEvents.length > 0,
+          history: payload.history || [],
+          isCloudSynced: true,
+        });
+      },
+
+      syncToCloud: async () => {
+        const { config, events, hasConfigured, history } = get();
+        const success = await pushPurposeToCloud({
+          config,
+          events,
+          hasConfigured,
+          history,
+        });
+        if (success) {
+          set({ isCloudSynced: true });
+        }
+        return success;
       },
     }),
     {
